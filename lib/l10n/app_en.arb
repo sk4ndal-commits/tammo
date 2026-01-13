@@ -65,5 +65,30 @@
   "editPetTitle": "Edit Profile",
   "save": "Save",
   "timelinePlaceholder": "Timeline",
-  "noEntriesYet": "No entries yet."
+  "noEntriesYet": "No entries yet.",
+  "symptomLogTitle": "Capture Symptom",
+  "eventTypeLabel": "Symptom / Event *",
+  "eventTypeError": "Please select a type",
+  "eventTypeVomiting": "Vomiting",
+  "eventTypeDiarrhea": "Diarrhea",
+  "eventTypeAppetite": "Appetite",
+  "eventTypeBehavior": "Behavior",
+  "eventTypeOther": "Other",
+  "eventDateLabel": "Date & Time",
+  "frequencyLabel": "Frequency (per day)",
+  "capture": "Capture",
+  "delete": "Delete",
+  "statisticsTitle": "Symptom Overview",
+  "periodLast7Days": "Last 7 Days",
+  "periodLast30Days": "Last 30 Days",
+  "summary": "Summary",
+  "conspicuousFrequency": "Conspicuously frequent!",
+  "frequencyCount": "{count} times",
+  "@frequencyCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

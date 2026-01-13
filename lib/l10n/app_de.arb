@@ -33,5 +33,30 @@
   "editPetTitle": "Profil bearbeiten",
   "save": "Speichern",
   "timelinePlaceholder": "Verlauf",
-  "noEntriesYet": "Noch keine Einträge vorhanden."
+  "noEntriesYet": "Noch keine Einträge vorhanden.",
+  "symptomLogTitle": "Symptom erfassen",
+  "eventTypeLabel": "Symptom / Ereignis *",
+  "eventTypeError": "Bitte Typ auswählen",
+  "eventTypeVomiting": "Erbrechen",
+  "eventTypeDiarrhea": "Durchfall",
+  "eventTypeAppetite": "Appetit",
+  "eventTypeBehavior": "Verhalten",
+  "eventTypeOther": "Sonstiges",
+  "eventDateLabel": "Datum & Uhrzeit",
+  "frequencyLabel": "Häufigkeit (pro Tag)",
+  "capture": "Erfassen",
+  "delete": "Löschen",
+  "statisticsTitle": "Verlaufsübersicht",
+  "periodLast7Days": "Letzte 7 Tage",
+  "periodLast30Days": "Letzte 30 Tage",
+  "summary": "Zusammenfassung",
+  "conspicuousFrequency": "Auffällig häufig!",
+  "frequencyCount": "{count} Mal",
+  "@frequencyCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

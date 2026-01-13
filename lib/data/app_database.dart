@@ -20,7 +20,18 @@ class Pets extends Table {
   DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
 }
 
-@DriftDatabase(tables: [Pets])
+class Events extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get petId => text().references(Pets, #petId)();
+  TextColumn get type => text()(); // z.B. 'vomiting', 'diarrhea', 'appetite', 'behavior'
+  DateTimeColumn get timestamp => dateTime().withDefault(currentDateAndTime)();
+  IntColumn get frequency => integer().withDefault(const Constant(1))();
+  TextColumn get notes => text().nullable()();
+  TextColumn get photoPath => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+@DriftDatabase(tables: [Pets, Events])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

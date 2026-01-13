@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../ui/screens/home_screen.dart';
 import '../ui/screens/onboarding_screen.dart';
 import '../ui/screens/pet_edit_screen.dart';
+import '../ui/screens/symptom_log_screen.dart';
+import '../ui/screens/statistics_screen.dart';
 import '../features/pet/application/pet_controller.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -22,6 +24,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/edit-pet',
         builder: (context, state) => const PetEditScreen(),
+      ),
+      GoRoute(
+        path: '/symptom-log',
+        builder: (context, state) => const SymptomLogScreen(),
+      ),
+      GoRoute(
+        path: '/statistics',
+        builder: (context, state) => const StatisticsScreen(),
       ),
     ],
     redirect: (context, state) {

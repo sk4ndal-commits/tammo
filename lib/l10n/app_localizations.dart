@@ -301,6 +301,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No entries yet.'**
   String get noEntriesYet;
+
+  /// No description provided for @symptomLogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture Symptom'**
+  String get symptomLogTitle;
+
+  /// No description provided for @eventTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Symptom / Event *'**
+  String get eventTypeLabel;
+
+  /// No description provided for @eventTypeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a type'**
+  String get eventTypeError;
+
+  /// No description provided for @eventTypeVomiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Vomiting'**
+  String get eventTypeVomiting;
+
+  /// No description provided for @eventTypeDiarrhea.
+  ///
+  /// In en, this message translates to:
+  /// **'Diarrhea'**
+  String get eventTypeDiarrhea;
+
+  /// No description provided for @eventTypeAppetite.
+  ///
+  /// In en, this message translates to:
+  /// **'Appetite'**
+  String get eventTypeAppetite;
+
+  /// No description provided for @eventTypeBehavior.
+  ///
+  /// In en, this message translates to:
+  /// **'Behavior'**
+  String get eventTypeBehavior;
+
+  /// No description provided for @eventTypeOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get eventTypeOther;
+
+  /// No description provided for @eventDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date & Time'**
+  String get eventDateLabel;
+
+  /// No description provided for @frequencyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency (per day)'**
+  String get frequencyLabel;
+
+  /// No description provided for @capture.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture'**
+  String get capture;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @statisticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Symptom Overview'**
+  String get statisticsTitle;
+
+  /// No description provided for @periodLast7Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 Days'**
+  String get periodLast7Days;
+
+  /// No description provided for @periodLast30Days.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 Days'**
+  String get periodLast30Days;
+
+  /// No description provided for @summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get summary;
+
+  /// No description provided for @conspicuousFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Conspicuously frequent!'**
+  String get conspicuousFrequency;
+
+  /// No description provided for @frequencyCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} times'**
+  String frequencyCount(int count);
 }
 
 class _AppLocalizationsDelegate

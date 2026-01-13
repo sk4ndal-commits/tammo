@@ -121,4 +121,60 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noEntriesYet => 'No entries yet.';
+
+  @override
+  String get symptomLogTitle => 'Capture Symptom';
+
+  @override
+  String get eventTypeLabel => 'Symptom / Event *';
+
+  @override
+  String get eventTypeError => 'Please select a type';
+
+  @override
+  String get eventTypeVomiting => 'Vomiting';
+
+  @override
+  String get eventTypeDiarrhea => 'Diarrhea';
+
+  @override
+  String get eventTypeAppetite => 'Appetite';
+
+  @override
+  String get eventTypeBehavior => 'Behavior';
+
+  @override
+  String get eventTypeOther => 'Other';
+
+  @override
+  String get eventDateLabel => 'Date & Time';
+
+  @override
+  String get frequencyLabel => 'Frequency (per day)';
+
+  @override
+  String get capture => 'Capture';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get statisticsTitle => 'Symptom Overview';
+
+  @override
+  String get periodLast7Days => 'Last 7 Days';
+
+  @override
+  String get periodLast30Days => 'Last 30 Days';
+
+  @override
+  String get summary => 'Summary';
+
+  @override
+  String get conspicuousFrequency => 'Conspicuously frequent!';
+
+  @override
+  String frequencyCount(int count) {
+    return '$count times';
+  }
 }

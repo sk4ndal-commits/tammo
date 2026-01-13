@@ -121,4 +121,60 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get noEntriesYet => 'Noch keine Einträge vorhanden.';
+
+  @override
+  String get symptomLogTitle => 'Symptom erfassen';
+
+  @override
+  String get eventTypeLabel => 'Symptom / Ereignis *';
+
+  @override
+  String get eventTypeError => 'Bitte Typ auswählen';
+
+  @override
+  String get eventTypeVomiting => 'Erbrechen';
+
+  @override
+  String get eventTypeDiarrhea => 'Durchfall';
+
+  @override
+  String get eventTypeAppetite => 'Appetit';
+
+  @override
+  String get eventTypeBehavior => 'Verhalten';
+
+  @override
+  String get eventTypeOther => 'Sonstiges';
+
+  @override
+  String get eventDateLabel => 'Datum & Uhrzeit';
+
+  @override
+  String get frequencyLabel => 'Häufigkeit (pro Tag)';
+
+  @override
+  String get capture => 'Erfassen';
+
+  @override
+  String get delete => 'Löschen';
+
+  @override
+  String get statisticsTitle => 'Verlaufsübersicht';
+
+  @override
+  String get periodLast7Days => 'Letzte 7 Tage';
+
+  @override
+  String get periodLast30Days => 'Letzte 30 Tage';
+
+  @override
+  String get summary => 'Zusammenfassung';
+
+  @override
+  String get conspicuousFrequency => 'Auffällig häufig!';
+
+  @override
+  String frequencyCount(int count) {
+    return '$count Mal';
+  }
 }
