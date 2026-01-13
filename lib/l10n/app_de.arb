@@ -85,5 +85,6 @@
   "hideTimeline": "Verlauf ausblenden",
   "undo": "Rückgängig",
   "medicationConfirmed": "Medikament gegeben",
-  "feedingConfirmed": "Fütterung erledigt"
+  "feedingConfirmed": "Fütterung erledigt",
+  "eventLogged": "Symptom erfasst"
 }

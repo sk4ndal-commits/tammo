@@ -571,6 +571,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Feeding done'**
   String get feedingConfirmed;
+
+  /// No description provided for @eventLogged.
+  ///
+  /// In en, this message translates to:
+  /// **'Symptom logged'**
+  String get eventLogged;
 }
 
 class _AppLocalizationsDelegate

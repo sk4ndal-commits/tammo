@@ -17,7 +17,10 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const HomeScreen(),
+        builder: (context, state) {
+          final expandTimeline = state.uri.queryParameters['expandTimeline'] == 'true';
+          return HomeScreen(expandTimeline: expandTimeline);
+        },
       ),
       GoRoute(
         path: '/onboarding',

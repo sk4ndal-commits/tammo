@@ -144,24 +144,22 @@ class _TodayMedicationTile extends ConsumerWidget {
                 : IconButton(
                     icon: const Icon(Icons.radio_button_unchecked),
                     onPressed: () async {
-                      final id = await ref.read(medicationControllerProvider.notifier).checkIn(
+                      await ref.read(medicationControllerProvider.notifier).checkIn(
                             scheduleId: schedule.id!,
                             plannedTimestamp: DateTime.now(),
                           );
                       ref.invalidate(medicationCheckInsProvider(schedule.id!));
                       
                       if (context.mounted) {
-                        ScaffoldMessenger.of(context).clearSnackBars();
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        final messenger = ScaffoldMessenger.of(context);
+                        messenger.clearSnackBars();
+                        messenger.showSnackBar(
                           SnackBar(
                             content: Text(l10n.medicationConfirmed),
-                            action: SnackBarAction(
-                              label: l10n.undo,
-                              onPressed: () async {
-                                await ref.read(medicationControllerProvider.notifier).undoCheckIn(id);
-                                ref.invalidate(medicationCheckInsProvider(schedule.id!));
-                              },
-                            ),
+                            behavior: SnackBarBehavior.floating,
+                            width: 200,
+                            duration: const Duration(seconds: 2),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
                           ),
                         );
                       }
@@ -216,24 +214,22 @@ class _TodayFeedingTile extends ConsumerWidget {
                 : IconButton(
                     icon: const Icon(Icons.radio_button_unchecked),
                     onPressed: () async {
-                      final id = await ref.read(feedingControllerProvider.notifier).checkIn(
+                      await ref.read(feedingControllerProvider.notifier).checkIn(
                             scheduleId: schedule.id!,
                             plannedTimestamp: DateTime.now(),
                           );
                       ref.invalidate(feedingCheckInsProvider(schedule.id!));
                       
-                      if (context.mounted && id != null) {
-                        ScaffoldMessenger.of(context).clearSnackBars();
-                        ScaffoldMessenger.of(context).showSnackBar(
+                      if (context.mounted) {
+                        final messenger = ScaffoldMessenger.of(context);
+                        messenger.clearSnackBars();
+                        messenger.showSnackBar(
                           SnackBar(
                             content: Text(l10n.feedingConfirmed),
-                            action: SnackBarAction(
-                              label: l10n.undo,
-                              onPressed: () async {
-                                await ref.read(feedingControllerProvider.notifier).undoCheckIn(id);
-                                ref.invalidate(feedingCheckInsProvider(schedule.id!));
-                              },
-                            ),
+                            behavior: SnackBarBehavior.floating,
+                            width: 200,
+                            duration: const Duration(seconds: 2),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
                           ),
                         );
                       }

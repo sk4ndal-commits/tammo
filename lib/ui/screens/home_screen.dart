@@ -10,14 +10,29 @@ import '../widgets/pet_header.dart';
 import '../widgets/today_section.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key});
+  final bool expandTimeline;
+  const HomeScreen({super.key, this.expandTimeline = false});
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  bool _showTimeline = false;
+  late bool _showTimeline;
+
+  @override
+  void initState() {
+    super.initState();
+    _showTimeline = widget.expandTimeline;
+  }
+
+  @override
+  void didUpdateWidget(HomeScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.expandTimeline != oldWidget.expandTimeline) {
+      _showTimeline = widget.expandTimeline;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

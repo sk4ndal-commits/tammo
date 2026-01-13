@@ -258,4 +258,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get feedingConfirmed => 'Feeding done';
+
+  @override
+  String get eventLogged => 'Symptom logged';
 }
