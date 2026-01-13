@@ -38,6 +38,7 @@ class ExportService {
     if (includeMedications) {
       medSchedules = await _ref.read(medicationRepositoryProvider).getSchedulesForPet(pet.petId);
       for (final schedule in medSchedules) {
+        if (schedule.id == null) continue;
         final cis = await _ref.read(medicationRepositoryProvider).getCheckInsForSchedule(schedule.id!);
         checkIns[schedule.id!] = cis.where((ci) => ci.timestamp.isAfter(start) && ci.timestamp.isBefore(end)).toList();
       }

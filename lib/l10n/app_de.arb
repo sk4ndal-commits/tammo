@@ -133,5 +133,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "switchPet": "Tier wechseln",
+  "addAnotherPet": "Weiteres Tier hinzufügen",
+  "managePets": "Tiere verwalten"
 }

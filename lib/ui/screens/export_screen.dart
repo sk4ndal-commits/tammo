@@ -40,11 +40,12 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
   }
 
   Future<void> _generateReport() async {
-    final pet = ref.read(petControllerProvider).value;
+    final pet = ref.read(petControllerProvider).value?.activePet;
     if (pet == null) return;
 
     setState(() => _isGenerating = true);
 
+    final l10n = AppLocalizations.of(context)!;
     try {
       final pdfBytes = await ref.read(exportServiceProvider).generatePdf(
         pet: pet,
@@ -63,14 +64,14 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
       if (mounted) {
         await Share.shareXFiles(
           [XFile(filePath)],
-          subject: AppLocalizations.of(context)!.reportTitle(pet.name),
+          subject: l10n.reportTitle(pet.name),
         );
         
         if (!mounted) return;
         
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.exportSuccess),
+            content: Text(l10n.exportSuccess),
             behavior: SnackBarBehavior.floating,
             width: 200,
             duration: const Duration(seconds: 2),

@@ -355,4 +355,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String reportPeriod(String start, String end) {
     return 'Zeitraum: $start bis $end';
   }
+
+  @override
+  String get switchPet => 'Tier wechseln';
+
+  @override
+  String get addAnotherPet => 'Weiteres Tier hinzufügen';
+
+  @override
+  String get managePets => 'Tiere verwalten';
 }

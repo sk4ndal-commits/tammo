@@ -13,7 +13,9 @@ class FeedingController extends StateNotifier<AsyncValue<List<FeedingSchedule>>>
 
   void _init() {
     _ref.listen(petControllerProvider, (previous, next) {
-      if (next.value?.petId != previous?.value?.petId) {
+      final newPet = next.value?.activePet;
+      final oldPet = previous?.value?.activePet;
+      if (newPet?.petId != oldPet?.petId) {
         _loadSchedules();
       }
     });
@@ -21,7 +23,7 @@ class FeedingController extends StateNotifier<AsyncValue<List<FeedingSchedule>>>
   }
 
   Future<void> _loadSchedules() async {
-    final pet = _ref.read(petControllerProvider).value;
+    final pet = _ref.read(petControllerProvider).value?.activePet;
     if (pet == null) {
       state = const AsyncValue.data([]);
       return;
@@ -39,7 +41,7 @@ class FeedingController extends StateNotifier<AsyncValue<List<FeedingSchedule>>>
     required List<String> reminderTimes,
     String? notes,
   }) async {
-    final pet = _ref.read(petControllerProvider).value;
+    final pet = _ref.read(petControllerProvider).value?.activePet;
     if (pet == null) return;
 
     final schedule = FeedingSchedule(

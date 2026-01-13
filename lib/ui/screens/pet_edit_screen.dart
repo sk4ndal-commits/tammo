@@ -76,7 +76,8 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
         title: Text(l10n.editPetTitle),
       ),
       body: petState.when(
-        data: (pet) {
+        data: (state) {
+          final pet = state.activePet;
           if (pet == null) {
             return Center(child: Text(l10n.noPetFound));
           }

@@ -50,6 +50,66 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         ],
       ),
+      drawer: petState.when(
+        data: (state) => Drawer(
+          child: Column(
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                ),
+                child: Center(
+                  child: Text(
+                    l10n.managePets,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: state.allPets.length,
+                  itemBuilder: (context, index) {
+                    final pet = state.allPets[index];
+                    final isActive = pet.petId == state.activePet?.petId;
+                    return ListTile(
+                      leading: Icon(
+                        isActive ? Icons.pets : Icons.pets_outlined,
+                        color: isActive ? Theme.of(context).colorScheme.primary : null,
+                      ),
+                      title: Text(
+                        pet.name,
+                        style: TextStyle(
+                          fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                      subtitle: Text(pet.species),
+                      onTap: () {
+                        ref.read(petControllerProvider.notifier).setActivePet(pet);
+                        Navigator.pop(context);
+                      },
+                      trailing: isActive ? const Icon(Icons.check) : null,
+                    );
+                  },
+                ),
+              ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.add_rounded),
+                title: Text(l10n.addAnotherPet),
+                onTap: () {
+                  Navigator.pop(context);
+                  context.push('/onboarding');
+                },
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+        loading: () => const Drawer(child: Center(child: CircularProgressIndicator())),
+        error: (err, _) => Drawer(child: Center(child: Text('Error: $err'))),
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           showModalBottomSheet<void>(
@@ -125,7 +185,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         label: Text(l10n.capture), // "Erfassen" in German, fits well as a general action label
       ),
       body: petState.when(
-        data: (pet) {
+        data: (state) {
+          final pet = state.activePet;
           if (pet == null) {
             return Center(child: Text(l10n.noPetFound));
           }

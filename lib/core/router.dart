@@ -65,15 +65,11 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       if (petState.isLoading) return null;
 
-      final hasPet = petState.value != null;
+      final hasPet = petState.value?.activePet != null;
       final isGoingToOnboarding = state.matchedLocation == '/onboarding';
 
       if (!hasPet && !isGoingToOnboarding) {
         return '/onboarding';
-      }
-
-      if (hasPet && isGoingToOnboarding) {
-        return '/';
       }
 
       return null;

@@ -15,7 +15,9 @@ class DocumentController extends StateNotifier<AsyncValue<List<Document>>> {
 
   void _init() {
     _ref.listen(petControllerProvider, (previous, next) {
-      if (next.value?.petId != previous?.value?.petId) {
+      final newPet = next.value?.activePet;
+      final oldPet = previous?.value?.activePet;
+      if (newPet?.petId != oldPet?.petId) {
         loadDocuments();
       }
     });
@@ -23,7 +25,7 @@ class DocumentController extends StateNotifier<AsyncValue<List<Document>>> {
   }
 
   Future<void> loadDocuments() async {
-    final pet = _ref.read(petControllerProvider).value;
+    final pet = _ref.read(petControllerProvider).value?.activePet;
     if (pet == null) {
       state = const AsyncValue.data([]);
       return;
@@ -42,7 +44,7 @@ class DocumentController extends StateNotifier<AsyncValue<List<Document>>> {
     required List<String> tags,
     String? notes,
   }) async {
-    final pet = _ref.read(petControllerProvider).value;
+    final pet = _ref.read(petControllerProvider).value?.activePet;
     if (pet == null) return;
 
     // We copy the file to the app's document directory to ensure offline availability

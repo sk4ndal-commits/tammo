@@ -13,7 +13,9 @@ class EventController extends StateNotifier<AsyncValue<List<Event>>> {
   void _init() {
     // Wenn sich das Tier ändert, laden wir die Events neu
     _ref.listen(petControllerProvider, (previous, next) {
-      if (next.value?.petId != previous?.value?.petId) {
+      final newPet = next.value?.activePet;
+      final oldPet = previous?.value?.activePet;
+      if (newPet?.petId != oldPet?.petId) {
         loadEvents();
       }
     });
@@ -21,7 +23,7 @@ class EventController extends StateNotifier<AsyncValue<List<Event>>> {
   }
 
   Future<void> loadEvents() async {
-    final pet = _ref.read(petControllerProvider).value;
+    final pet = _ref.read(petControllerProvider).value?.activePet;
     if (pet == null) {
       state = const AsyncValue.data([]);
       return;
@@ -40,7 +42,7 @@ class EventController extends StateNotifier<AsyncValue<List<Event>>> {
     String? notes,
     String? photoPath,
   }) async {
-    final pet = _ref.read(petControllerProvider).value;
+    final pet = _ref.read(petControllerProvider).value?.activePet;
     if (pet == null) return;
 
     final newEvent = Event(

@@ -2,16 +2,47 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/providers.dart';
 import '../domain/pet.dart';
 
-class PetController extends StateNotifier<AsyncValue<Pet?>> {
+class PetControllerState {
+  final List<Pet> allPets;
+  final Pet? activePet;
+
+  PetControllerState({
+    required this.allPets,
+    this.activePet,
+  });
+
+  PetControllerState copyWith({
+    List<Pet>? allPets,
+    Pet? activePet,
+    bool clearActivePet = false,
+  }) {
+    return PetControllerState(
+      allPets: allPets ?? this.allPets,
+      activePet: clearActivePet ? null : (activePet ?? this.activePet),
+    );
+  }
+}
+
+class PetController extends StateNotifier<AsyncValue<PetControllerState>> {
   final Ref _ref;
 
   PetController(this._ref) : super(const AsyncValue.loading()) {
-    loadPet();
+    loadPets();
   }
 
-  Future<void> loadPet() async {
+  Future<void> loadPets() async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() => _ref.read(petRepositoryProvider).getActivePet());
+    state = await AsyncValue.guard(() async {
+      final pets = await _ref.read(petRepositoryProvider).getAllPets();
+      final activePet = pets.isNotEmpty ? pets.first : null;
+      return PetControllerState(allPets: pets, activePet: activePet);
+    });
+  }
+
+  void setActivePet(Pet pet) {
+    state.whenData((currentState) {
+      state = AsyncValue.data(currentState.copyWith(activePet: pet));
+    });
   }
 
   Future<void> createPet({
@@ -23,9 +54,8 @@ class PetController extends StateNotifier<AsyncValue<Pet?>> {
     String? photoPath,
     String? notes,
   }) async {
-    state = const AsyncValue.loading();
     final newPet = Pet(
-      petId: DateTime.now().millisecondsSinceEpoch.toString(), // Einfache eindeutige ID
+      petId: DateTime.now().millisecondsSinceEpoch.toString(),
       name: name,
       species: species,
       dateOfBirth: dateOfBirth,
@@ -37,10 +67,10 @@ class PetController extends StateNotifier<AsyncValue<Pet?>> {
       updatedAt: DateTime.now(),
     );
 
-    state = await AsyncValue.guard(() async {
-      await _ref.read(petRepositoryProvider).savePet(newPet);
-      return newPet;
-    });
+    await _ref.read(petRepositoryProvider).savePet(newPet);
+    await loadPets();
+    // Automatisch das neu erstellte Tier als aktiv setzen
+    setActivePet(newPet);
   }
 
   Future<void> updatePet({
@@ -52,7 +82,7 @@ class PetController extends StateNotifier<AsyncValue<Pet?>> {
     String? photoPath,
     String? notes,
   }) async {
-    final currentPet = state.value;
+    final currentPet = state.value?.activePet;
     if (currentPet == null) return;
 
     final updatedPet = currentPet.copyWith(
@@ -66,14 +96,17 @@ class PetController extends StateNotifier<AsyncValue<Pet?>> {
       updatedAt: DateTime.now(),
     );
 
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      await _ref.read(petRepositoryProvider).updatePet(updatedPet);
-      return updatedPet;
-    });
+    await _ref.read(petRepositoryProvider).updatePet(updatedPet);
+    await loadPets();
+    setActivePet(updatedPet);
+  }
+
+  Future<void> deletePet(String petId) async {
+    await _ref.read(petRepositoryProvider).deletePet(petId);
+    await loadPets();
   }
 }
 
-final petControllerProvider = StateNotifierProvider<PetController, AsyncValue<Pet?>>((ref) {
+final petControllerProvider = StateNotifierProvider<PetController, AsyncValue<PetControllerState>>((ref) {
   return PetController(ref);
 });

@@ -9,11 +9,14 @@ class DriftPetRepository implements PetRepository {
   DriftPetRepository(this._db);
 
   @override
-  Future<domain.Pet?> getActivePet() async {
-    // Da wir vorerst nur ein Haustier unterstützen, nehmen wir das erste.
-    final petData = await _db.select(_db.pets).getSingleOrNull();
-    if (petData == null) return null;
-    return _mapToEntity(petData);
+  Future<List<domain.Pet>> getAllPets() async {
+    final results = await _db.select(_db.pets).get();
+    return results.map(_mapToEntity).toList();
+  }
+
+  @override
+  Future<void> deletePet(String petId) async {
+    await (_db.delete(_db.pets)..where((t) => t.petId.equals(petId))).go();
   }
 
   @override

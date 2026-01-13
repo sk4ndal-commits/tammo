@@ -13,7 +13,9 @@ class MedicationController extends StateNotifier<AsyncValue<List<MedicationSched
 
   void _init() {
     _ref.listen(petControllerProvider, (previous, next) {
-      if (next.value?.petId != previous?.value?.petId) {
+      final newPet = next.value?.activePet;
+      final oldPet = previous?.value?.activePet;
+      if (newPet?.petId != oldPet?.petId) {
         loadSchedules();
       }
     });
@@ -21,7 +23,7 @@ class MedicationController extends StateNotifier<AsyncValue<List<MedicationSched
   }
 
   Future<void> loadSchedules() async {
-    final pet = _ref.read(petControllerProvider).value;
+    final pet = _ref.read(petControllerProvider).value?.activePet;
     if (pet == null) {
       state = const AsyncValue.data([]);
       return;
@@ -39,7 +41,7 @@ class MedicationController extends StateNotifier<AsyncValue<List<MedicationSched
     DateTime? endDate,
     required List<String> reminderTimes,
   }) async {
-    final pet = _ref.read(petControllerProvider).value;
+    final pet = _ref.read(petControllerProvider).value?.activePet;
     if (pet == null) return;
 
     final schedule = MedicationSchedule(
@@ -94,7 +96,7 @@ class MedicationController extends StateNotifier<AsyncValue<List<MedicationSched
       }
     } else {
       // Benachrichtigungen wieder planen
-      final pet = _ref.read(petControllerProvider).value;
+      final pet = _ref.read(petControllerProvider).value?.activePet;
       if (pet != null) {
         for (var i = 0; i < schedule.reminderTimes.length; i++) {
           final timeParts = schedule.reminderTimes[i].split(':');

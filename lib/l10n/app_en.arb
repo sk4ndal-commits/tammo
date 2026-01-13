@@ -165,5 +165,8 @@
         "type": "String"
       }
     }
-  }
+  },
+  "switchPet": "Switch pet",
+  "addAnotherPet": "Add another pet",
+  "managePets": "Manage pets"
 }

@@ -757,6 +757,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Period: {start} to {end}'**
   String reportPeriod(String start, String end);
+
+  /// No description provided for @switchPet.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch pet'**
+  String get switchPet;
+
+  /// No description provided for @addAnotherPet.
+  ///
+  /// In en, this message translates to:
+  /// **'Add another pet'**
+  String get addAnotherPet;
+
+  /// No description provided for @managePets.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage pets'**
+  String get managePets;
 }
 
 class _AppLocalizationsDelegate

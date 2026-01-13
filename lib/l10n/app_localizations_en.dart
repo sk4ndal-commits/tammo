@@ -355,4 +355,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String reportPeriod(String start, String end) {
     return 'Period: $start to $end';
   }
+
+  @override
+  String get switchPet => 'Switch pet';
+
+  @override
+  String get addAnotherPet => 'Add another pet';
+
+  @override
+  String get managePets => 'Manage pets';
 }
