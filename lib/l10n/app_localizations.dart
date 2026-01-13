@@ -775,6 +775,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Manage pets'**
   String get managePets;
+
+  /// No description provided for @allergiesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Allergies'**
+  String get allergiesLabel;
+
+  /// No description provided for @emergencyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency Mode'**
+  String get emergencyTitle;
+
+  /// No description provided for @emergencySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical health information'**
+  String get emergencySubtitle;
+
+  /// No description provided for @lastEvents.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 5 Events'**
+  String get lastEvents;
+
+  /// No description provided for @medications.
+  ///
+  /// In en, this message translates to:
+  /// **'Medications'**
+  String get medications;
 }
 
 class _AppLocalizationsDelegate

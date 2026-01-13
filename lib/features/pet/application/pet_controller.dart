@@ -52,6 +52,7 @@ class PetController extends StateNotifier<AsyncValue<PetControllerState>> {
     String? gender,
     double? weight,
     String? photoPath,
+    String? allergies,
     String? notes,
   }) async {
     final newPet = Pet(
@@ -62,6 +63,7 @@ class PetController extends StateNotifier<AsyncValue<PetControllerState>> {
       gender: gender,
       weight: weight,
       photoPath: photoPath,
+      allergies: allergies,
       notes: notes,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -80,6 +82,7 @@ class PetController extends StateNotifier<AsyncValue<PetControllerState>> {
     String? gender,
     double? weight,
     String? photoPath,
+    String? allergies,
     String? notes,
   }) async {
     final currentPet = state.value?.activePet;
@@ -92,6 +95,7 @@ class PetController extends StateNotifier<AsyncValue<PetControllerState>> {
       gender: gender,
       weight: weight,
       photoPath: photoPath,
+      allergies: allergies,
       notes: notes,
       updatedAt: DateTime.now(),
     );

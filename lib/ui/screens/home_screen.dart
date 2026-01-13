@@ -45,6 +45,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         title: Text(l10n.appTitle),
         actions: [
           IconButton(
+            icon: const Icon(Icons.warning_amber_rounded, color: Colors.red),
+            onPressed: () => context.push('/emergency'),
+          ),
+          IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () => context.push('/edit-pet'),
           ),
@@ -74,9 +78,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     final pet = state.allPets[index];
                     final isActive = pet.petId == state.activePet?.petId;
                     return ListTile(
-                      leading: Icon(
-                        isActive ? Icons.pets : Icons.pets_outlined,
-                        color: isActive ? Theme.of(context).colorScheme.primary : null,
+                      leading: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: pet.photoPath != null
+                            ? FileImage(File(pet.photoPath!))
+                            : null,
+                        child: pet.photoPath == null
+                            ? Icon(
+                                isActive ? Icons.pets : Icons.pets_outlined,
+                                color: isActive
+                                    ? Theme.of(context).colorScheme.primary
+                                    : null,
+                              )
+                            : null,
                       ),
                       title: Text(
                         pet.name,

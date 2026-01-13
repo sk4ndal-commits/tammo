@@ -364,4 +364,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get managePets => 'Manage pets';
+
+  @override
+  String get allergiesLabel => 'Allergies';
+
+  @override
+  String get emergencyTitle => 'Emergency Mode';
+
+  @override
+  String get emergencySubtitle => 'Critical health information';
+
+  @override
+  String get lastEvents => 'Last 5 Events';
+
+  @override
+  String get medications => 'Medications';
 }

@@ -168,5 +168,10 @@
   },
   "switchPet": "Switch pet",
   "addAnotherPet": "Add another pet",
-  "managePets": "Manage pets"
+  "managePets": "Manage pets",
+  "allergiesLabel": "Allergies",
+  "emergencyTitle": "Emergency Mode",
+  "emergencySubtitle": "Critical health information",
+  "lastEvents": "Last 5 Events",
+  "medications": "Medications"
 }

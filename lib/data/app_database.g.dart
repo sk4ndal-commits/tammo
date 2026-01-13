@@ -57,6 +57,12 @@ class $PetsTable extends Pets with TableInfo<$PetsTable, Pet> {
   late final GeneratedColumn<String> photoPath = GeneratedColumn<String>(
       'photo_path', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _allergiesMeta =
+      const VerificationMeta('allergies');
+  @override
+  late final GeneratedColumn<String> allergies = GeneratedColumn<String>(
+      'allergies', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _notesMeta = const VerificationMeta('notes');
   @override
   late final GeneratedColumn<String> notes = GeneratedColumn<String>(
@@ -88,6 +94,7 @@ class $PetsTable extends Pets with TableInfo<$PetsTable, Pet> {
         gender,
         weight,
         photoPath,
+        allergies,
         notes,
         createdAt,
         updatedAt
@@ -141,6 +148,10 @@ class $PetsTable extends Pets with TableInfo<$PetsTable, Pet> {
       context.handle(_photoPathMeta,
           photoPath.isAcceptableOrUnknown(data['photo_path']!, _photoPathMeta));
     }
+    if (data.containsKey('allergies')) {
+      context.handle(_allergiesMeta,
+          allergies.isAcceptableOrUnknown(data['allergies']!, _allergiesMeta));
+    }
     if (data.containsKey('notes')) {
       context.handle(
           _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
@@ -178,6 +189,8 @@ class $PetsTable extends Pets with TableInfo<$PetsTable, Pet> {
           .read(DriftSqlType.double, data['${effectivePrefix}weight']),
       photoPath: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}photo_path']),
+      allergies: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}allergies']),
       notes: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}notes']),
       createdAt: attachedDatabase.typeMapping
@@ -202,6 +215,7 @@ class Pet extends DataClass implements Insertable<Pet> {
   final String? gender;
   final double? weight;
   final String? photoPath;
+  final String? allergies;
   final String? notes;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -214,6 +228,7 @@ class Pet extends DataClass implements Insertable<Pet> {
       this.gender,
       this.weight,
       this.photoPath,
+      this.allergies,
       this.notes,
       required this.createdAt,
       required this.updatedAt});
@@ -235,6 +250,9 @@ class Pet extends DataClass implements Insertable<Pet> {
     }
     if (!nullToAbsent || photoPath != null) {
       map['photo_path'] = Variable<String>(photoPath);
+    }
+    if (!nullToAbsent || allergies != null) {
+      map['allergies'] = Variable<String>(allergies);
     }
     if (!nullToAbsent || notes != null) {
       map['notes'] = Variable<String>(notes);
@@ -260,6 +278,9 @@ class Pet extends DataClass implements Insertable<Pet> {
       photoPath: photoPath == null && nullToAbsent
           ? const Value.absent()
           : Value(photoPath),
+      allergies: allergies == null && nullToAbsent
+          ? const Value.absent()
+          : Value(allergies),
       notes:
           notes == null && nullToAbsent ? const Value.absent() : Value(notes),
       createdAt: Value(createdAt),
@@ -279,6 +300,7 @@ class Pet extends DataClass implements Insertable<Pet> {
       gender: serializer.fromJson<String?>(json['gender']),
       weight: serializer.fromJson<double?>(json['weight']),
       photoPath: serializer.fromJson<String?>(json['photoPath']),
+      allergies: serializer.fromJson<String?>(json['allergies']),
       notes: serializer.fromJson<String?>(json['notes']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
@@ -296,6 +318,7 @@ class Pet extends DataClass implements Insertable<Pet> {
       'gender': serializer.toJson<String?>(gender),
       'weight': serializer.toJson<double?>(weight),
       'photoPath': serializer.toJson<String?>(photoPath),
+      'allergies': serializer.toJson<String?>(allergies),
       'notes': serializer.toJson<String?>(notes),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
@@ -311,6 +334,7 @@ class Pet extends DataClass implements Insertable<Pet> {
           Value<String?> gender = const Value.absent(),
           Value<double?> weight = const Value.absent(),
           Value<String?> photoPath = const Value.absent(),
+          Value<String?> allergies = const Value.absent(),
           Value<String?> notes = const Value.absent(),
           DateTime? createdAt,
           DateTime? updatedAt}) =>
@@ -323,6 +347,7 @@ class Pet extends DataClass implements Insertable<Pet> {
         gender: gender.present ? gender.value : this.gender,
         weight: weight.present ? weight.value : this.weight,
         photoPath: photoPath.present ? photoPath.value : this.photoPath,
+        allergies: allergies.present ? allergies.value : this.allergies,
         notes: notes.present ? notes.value : this.notes,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
@@ -338,6 +363,7 @@ class Pet extends DataClass implements Insertable<Pet> {
       gender: data.gender.present ? data.gender.value : this.gender,
       weight: data.weight.present ? data.weight.value : this.weight,
       photoPath: data.photoPath.present ? data.photoPath.value : this.photoPath,
+      allergies: data.allergies.present ? data.allergies.value : this.allergies,
       notes: data.notes.present ? data.notes.value : this.notes,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -355,6 +381,7 @@ class Pet extends DataClass implements Insertable<Pet> {
           ..write('gender: $gender, ')
           ..write('weight: $weight, ')
           ..write('photoPath: $photoPath, ')
+          ..write('allergies: $allergies, ')
           ..write('notes: $notes, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -364,7 +391,7 @@ class Pet extends DataClass implements Insertable<Pet> {
 
   @override
   int get hashCode => Object.hash(id, petId, name, species, dateOfBirth, gender,
-      weight, photoPath, notes, createdAt, updatedAt);
+      weight, photoPath, allergies, notes, createdAt, updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -377,6 +404,7 @@ class Pet extends DataClass implements Insertable<Pet> {
           other.gender == this.gender &&
           other.weight == this.weight &&
           other.photoPath == this.photoPath &&
+          other.allergies == this.allergies &&
           other.notes == this.notes &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
@@ -391,6 +419,7 @@ class PetsCompanion extends UpdateCompanion<Pet> {
   final Value<String?> gender;
   final Value<double?> weight;
   final Value<String?> photoPath;
+  final Value<String?> allergies;
   final Value<String?> notes;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
@@ -403,6 +432,7 @@ class PetsCompanion extends UpdateCompanion<Pet> {
     this.gender = const Value.absent(),
     this.weight = const Value.absent(),
     this.photoPath = const Value.absent(),
+    this.allergies = const Value.absent(),
     this.notes = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -416,6 +446,7 @@ class PetsCompanion extends UpdateCompanion<Pet> {
     this.gender = const Value.absent(),
     this.weight = const Value.absent(),
     this.photoPath = const Value.absent(),
+    this.allergies = const Value.absent(),
     this.notes = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -431,6 +462,7 @@ class PetsCompanion extends UpdateCompanion<Pet> {
     Expression<String>? gender,
     Expression<double>? weight,
     Expression<String>? photoPath,
+    Expression<String>? allergies,
     Expression<String>? notes,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -444,6 +476,7 @@ class PetsCompanion extends UpdateCompanion<Pet> {
       if (gender != null) 'gender': gender,
       if (weight != null) 'weight': weight,
       if (photoPath != null) 'photo_path': photoPath,
+      if (allergies != null) 'allergies': allergies,
       if (notes != null) 'notes': notes,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
@@ -459,6 +492,7 @@ class PetsCompanion extends UpdateCompanion<Pet> {
       Value<String?>? gender,
       Value<double?>? weight,
       Value<String?>? photoPath,
+      Value<String?>? allergies,
       Value<String?>? notes,
       Value<DateTime>? createdAt,
       Value<DateTime>? updatedAt}) {
@@ -471,6 +505,7 @@ class PetsCompanion extends UpdateCompanion<Pet> {
       gender: gender ?? this.gender,
       weight: weight ?? this.weight,
       photoPath: photoPath ?? this.photoPath,
+      allergies: allergies ?? this.allergies,
       notes: notes ?? this.notes,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -504,6 +539,9 @@ class PetsCompanion extends UpdateCompanion<Pet> {
     if (photoPath.present) {
       map['photo_path'] = Variable<String>(photoPath.value);
     }
+    if (allergies.present) {
+      map['allergies'] = Variable<String>(allergies.value);
+    }
     if (notes.present) {
       map['notes'] = Variable<String>(notes.value);
     }
@@ -527,6 +565,7 @@ class PetsCompanion extends UpdateCompanion<Pet> {
           ..write('gender: $gender, ')
           ..write('weight: $weight, ')
           ..write('photoPath: $photoPath, ')
+          ..write('allergies: $allergies, ')
           ..write('notes: $notes, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -2999,6 +3038,7 @@ typedef $$PetsTableCreateCompanionBuilder = PetsCompanion Function({
   Value<String?> gender,
   Value<double?> weight,
   Value<String?> photoPath,
+  Value<String?> allergies,
   Value<String?> notes,
   Value<DateTime> createdAt,
   Value<DateTime> updatedAt,
@@ -3012,6 +3052,7 @@ typedef $$PetsTableUpdateCompanionBuilder = PetsCompanion Function({
   Value<String?> gender,
   Value<double?> weight,
   Value<String?> photoPath,
+  Value<String?> allergies,
   Value<String?> notes,
   Value<DateTime> createdAt,
   Value<DateTime> updatedAt,
@@ -3117,6 +3158,9 @@ class $$PetsTableFilterComposer extends Composer<_$AppDatabase, $PetsTable> {
 
   ColumnFilters<String> get photoPath => $composableBuilder(
       column: $table.photoPath, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get allergies => $composableBuilder(
+      column: $table.allergies, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get notes => $composableBuilder(
       column: $table.notes, builder: (column) => ColumnFilters(column));
@@ -3244,6 +3288,9 @@ class $$PetsTableOrderingComposer extends Composer<_$AppDatabase, $PetsTable> {
   ColumnOrderings<String> get photoPath => $composableBuilder(
       column: $table.photoPath, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get allergies => $composableBuilder(
+      column: $table.allergies, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<String> get notes => $composableBuilder(
       column: $table.notes, builder: (column) => ColumnOrderings(column));
 
@@ -3286,6 +3333,9 @@ class $$PetsTableAnnotationComposer
 
   GeneratedColumn<String> get photoPath =>
       $composableBuilder(column: $table.photoPath, builder: (column) => column);
+
+  GeneratedColumn<String> get allergies =>
+      $composableBuilder(column: $table.allergies, builder: (column) => column);
 
   GeneratedColumn<String> get notes =>
       $composableBuilder(column: $table.notes, builder: (column) => column);
@@ -3418,6 +3468,7 @@ class $$PetsTableTableManager extends RootTableManager<
             Value<String?> gender = const Value.absent(),
             Value<double?> weight = const Value.absent(),
             Value<String?> photoPath = const Value.absent(),
+            Value<String?> allergies = const Value.absent(),
             Value<String?> notes = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
             Value<DateTime> updatedAt = const Value.absent(),
@@ -3431,6 +3482,7 @@ class $$PetsTableTableManager extends RootTableManager<
             gender: gender,
             weight: weight,
             photoPath: photoPath,
+            allergies: allergies,
             notes: notes,
             createdAt: createdAt,
             updatedAt: updatedAt,
@@ -3444,6 +3496,7 @@ class $$PetsTableTableManager extends RootTableManager<
             Value<String?> gender = const Value.absent(),
             Value<double?> weight = const Value.absent(),
             Value<String?> photoPath = const Value.absent(),
+            Value<String?> allergies = const Value.absent(),
             Value<String?> notes = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
             Value<DateTime> updatedAt = const Value.absent(),
@@ -3457,6 +3510,7 @@ class $$PetsTableTableManager extends RootTableManager<
             gender: gender,
             weight: weight,
             photoPath: photoPath,
+            allergies: allergies,
             notes: notes,
             createdAt: createdAt,
             updatedAt: updatedAt,

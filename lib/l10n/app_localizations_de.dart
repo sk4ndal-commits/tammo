@@ -364,4 +364,19 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get managePets => 'Tiere verwalten';
+
+  @override
+  String get allergiesLabel => 'Allergien';
+
+  @override
+  String get emergencyTitle => 'Notfall-Modus';
+
+  @override
+  String get emergencySubtitle => 'Wichtige Gesundheitsinfos';
+
+  @override
+  String get lastEvents => 'Letzte 5 Ereignisse';
+
+  @override
+  String get medications => 'Medikamente';
 }

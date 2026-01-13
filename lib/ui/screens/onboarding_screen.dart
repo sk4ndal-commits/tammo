@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import '../../l10n/app_localizations.dart';
 import '../../features/pet/application/pet_controller.dart';
-import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -17,15 +21,33 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final _nameController = TextEditingController();
   final _notesController = TextEditingController();
   final _weightController = TextEditingController();
+  final _allergiesController = TextEditingController();
   DateTime? _selectedDate;
   String? _selectedGender;
   String? _selectedSpecies;
+  String? _photoPath;
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final image = await picker.pickImage(source: ImageSource.gallery);
+    
+    if (image != null) {
+      final appDocDir = await getApplicationDocumentsDirectory();
+      final fileName = 'pet_profile_${DateTime.now().millisecondsSinceEpoch}${p.extension(image.path)}';
+      final savedFile = await File(image.path).copy(p.join(appDocDir.path, fileName));
+      
+      setState(() {
+        _photoPath = savedFile.path;
+      });
+    }
+  }
 
   @override
   void dispose() {
     _nameController.dispose();
     _notesController.dispose();
     _weightController.dispose();
+    _allergiesController.dispose();
     super.dispose();
   }
 
@@ -37,6 +59,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             dateOfBirth: _selectedDate,
             gender: _selectedGender,
             weight: double.tryParse(_weightController.text),
+            photoPath: _photoPath,
+            allergies: _allergiesController.text,
             notes: _notesController.text,
           );
       if (mounted) {
@@ -66,6 +90,24 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ),
               const SizedBox(height: 8),
               Text(l10n.onboardingHint),
+              const SizedBox(height: 24),
+              Center(
+                child: GestureDetector(
+                  onTap: _pickImage,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                    backgroundImage: _photoPath != null ? FileImage(File(_photoPath!)) : null,
+                    child: _photoPath == null
+                        ? Icon(
+                            Icons.add_a_photo_rounded,
+                            size: 40,
+                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                          )
+                        : null,
+                  ),
+                ),
+              ),
               const SizedBox(height: 24),
               TextFormField(
                 controller: _nameController,
@@ -154,6 +196,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   border: const OutlineInputBorder(),
                 ),
                 maxLines: 3,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _allergiesController,
+                decoration: InputDecoration(
+                  labelText: l10n.allergiesLabel,
+                  border: const OutlineInputBorder(),
+                ),
+                maxLines: 2,
               ),
               const SizedBox(height: 24),
               ElevatedButton(

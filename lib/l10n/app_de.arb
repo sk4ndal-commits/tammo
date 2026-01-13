@@ -136,5 +136,10 @@
   },
   "switchPet": "Tier wechseln",
   "addAnotherPet": "Weiteres Tier hinzufügen",
-  "managePets": "Tiere verwalten"
+  "managePets": "Tiere verwalten",
+  "allergiesLabel": "Allergien",
+  "emergencyTitle": "Notfall-Modus",
+  "emergencySubtitle": "Wichtige Gesundheitsinfos",
+  "lastEvents": "Letzte 5 Ereignisse",
+  "medications": "Medikamente"
 }

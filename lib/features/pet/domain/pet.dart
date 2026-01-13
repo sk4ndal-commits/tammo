@@ -6,6 +6,7 @@ class Pet {
   final String? gender;
   final double? weight;
   final String? photoPath;
+  final String? allergies;
   final String? notes;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -18,6 +19,7 @@ class Pet {
     this.gender,
     this.weight,
     this.photoPath,
+    this.allergies,
     this.notes,
     required this.createdAt,
     required this.updatedAt,
@@ -30,6 +32,7 @@ class Pet {
     String? gender,
     double? weight,
     String? photoPath,
+    String? allergies,
     String? notes,
     DateTime? updatedAt,
   }) {
@@ -41,6 +44,7 @@ class Pet {
       gender: gender ?? this.gender,
       weight: weight ?? this.weight,
       photoPath: photoPath ?? this.photoPath,
+      allergies: allergies ?? this.allergies,
       notes: notes ?? this.notes,
       createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt,

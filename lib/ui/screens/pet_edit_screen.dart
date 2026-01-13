@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 import '../../l10n/app_localizations.dart';
 import '../../features/pet/application/pet_controller.dart';
 import '../../features/pet/domain/pet.dart';
@@ -18,9 +22,11 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
   late TextEditingController _nameController;
   late TextEditingController _notesController;
   late TextEditingController _weightController;
+  late TextEditingController _allergiesController;
   DateTime? _selectedDate;
   String? _selectedGender;
   String? _selectedSpecies;
+  String? _photoPath;
   bool _initialized = false;
 
   @override
@@ -29,6 +35,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
     _nameController = TextEditingController();
     _notesController = TextEditingController();
     _weightController = TextEditingController();
+    _allergiesController = TextEditingController();
   }
 
   @override
@@ -36,6 +43,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
     _nameController.dispose();
     _notesController.dispose();
     _weightController.dispose();
+    _allergiesController.dispose();
     super.dispose();
   }
 
@@ -45,9 +53,28 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
     _selectedSpecies = pet.species;
     _notesController.text = pet.notes ?? '';
     _weightController.text = pet.weight?.toString() ?? '';
+    _allergiesController.text = pet.allergies ?? '';
     _selectedDate = pet.dateOfBirth;
     _selectedGender = pet.gender;
+    _photoPath = pet.photoPath;
     _initialized = true;
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      final appDocDir = await getApplicationDocumentsDirectory();
+      final fileName =
+          'pet_profile_${DateTime.now().millisecondsSinceEpoch}${p.extension(image.path)}';
+      final savedFile =
+          await File(image.path).copy(p.join(appDocDir.path, fileName));
+
+      setState(() {
+        _photoPath = savedFile.path;
+      });
+    }
   }
 
   Future<void> _submit() async {
@@ -58,6 +85,8 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
             dateOfBirth: _selectedDate,
             gender: _selectedGender,
             weight: double.tryParse(_weightController.text),
+            photoPath: _photoPath,
+            allergies: _allergiesController.text,
             notes: _notesController.text,
           );
       if (mounted) {
@@ -76,8 +105,8 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
         title: Text(l10n.editPetTitle),
       ),
       body: petState.when(
-        data: (state) {
-          final pet = state.activePet;
+        data: (controllerState) {
+          final pet = controllerState.activePet;
           if (pet == null) {
             return Center(child: Text(l10n.noPetFound));
           }
@@ -90,6 +119,29 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Center(
+                    child: GestureDetector(
+                      onTap: _pickImage,
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.primaryContainer,
+                        backgroundImage: _photoPath != null
+                            ? FileImage(File(_photoPath!))
+                            : null,
+                        child: _photoPath == null
+                            ? Icon(
+                                Icons.add_a_photo_rounded,
+                                size: 40,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimaryContainer,
+                              )
+                            : null,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
                   TextFormField(
                     controller: _nameController,
                     decoration: InputDecoration(
@@ -177,6 +229,15 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                       border: const OutlineInputBorder(),
                     ),
                     maxLines: 3,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _allergiesController,
+                    decoration: InputDecoration(
+                      labelText: l10n.allergiesLabel,
+                      border: const OutlineInputBorder(),
+                    ),
+                    maxLines: 2,
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(

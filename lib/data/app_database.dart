@@ -15,6 +15,7 @@ class Pets extends Table {
   TextColumn get gender => text().nullable()();
   RealColumn get weight => real().nullable()();
   TextColumn get photoPath => text().nullable()();
+  TextColumn get allergies => text().nullable()();
   TextColumn get notes => text().nullable()();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
@@ -89,7 +90,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration {
@@ -107,6 +108,9 @@ class AppDatabase extends _$AppDatabase {
         }
         if (from < 3) {
           await m.createTable(documents);
+        }
+        if (from < 4) {
+          await m.addColumn(pets, pets.allergies);
         }
       },
     );

@@ -10,6 +10,7 @@ import '../ui/screens/feeding_plan_screen.dart';
 import '../ui/screens/document_list_screen.dart';
 import '../ui/screens/document_upload_screen.dart';
 import '../ui/screens/export_screen.dart';
+import '../ui/screens/emergency_screen.dart';
 import '../features/pet/application/pet_controller.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
@@ -60,6 +61,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/export',
         builder: (context, state) => const ExportScreen(),
+      ),
+      GoRoute(
+        path: '/emergency',
+        builder: (context, state) => const EmergencyScreen(),
       ),
     ],
     redirect: (context, state) {
