@@ -139,40 +139,38 @@ class _TodayMedicationTile extends ConsumerWidget {
               ),
             ),
             subtitle: Text('${schedule.dosage} - ${schedule.frequency}'),
-            trailing: alreadyTaken
-                ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary)
-                : IconButton(
-                    icon: const Icon(Icons.radio_button_unchecked),
-                    onPressed: () async {
-                      final controller = ref.read(medicationControllerProvider.notifier);
-                      await controller.checkIn(
-                        scheduleId: schedule.id!,
-                        plannedTimestamp: DateTime.now(),
-                      );
-                      
-                      if (context.mounted) {
-                        final messenger = ScaffoldMessenger.of(context);
-                        messenger.clearSnackBars();
-                        messenger.showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.medicationConfirmed),
-                            behavior: SnackBarBehavior.floating,
-                            width: 200,
-                            duration: const Duration(seconds: 2),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                            action: SnackBarAction(
-                              label: l10n.undo,
-                              onPressed: () {
-                                // Since we don't have the checkInId easily accessible here without more refactoring
-                                // and the requirements were simplified, we'll keep it simple for now or
-                                // use the ID returned by checkIn.
-                              },
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                  ),
+            trailing: IconButton(
+              icon: Icon(
+                alreadyTaken ? Icons.check_circle : Icons.radio_button_unchecked,
+                color: alreadyTaken ? Theme.of(context).colorScheme.primary : null,
+              ),
+              onPressed: () async {
+                final controller = ref.read(medicationControllerProvider.notifier);
+                if (alreadyTaken) {
+                  await controller.undoCheckIn(todayCheckIn.id!, schedule.id!);
+                } else {
+                  await controller.checkIn(
+                    scheduleId: schedule.id!,
+                    plannedTimestamp: DateTime.now(),
+                  );
+
+                  if (context.mounted) {
+                    final messenger = ScaffoldMessenger.of(context);
+                    messenger.clearSnackBars();
+                    messenger.showSnackBar(
+                      SnackBar(
+                        content: Text(l10n.medicationConfirmed),
+                        behavior: SnackBarBehavior.floating,
+                        width: 200,
+                        duration: const Duration(seconds: 2),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24)),
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
           ),
         );
       },
@@ -217,32 +215,38 @@ class _TodayFeedingTile extends ConsumerWidget {
               ),
             ),
             subtitle: Text(schedule.amount),
-            trailing: alreadyFed
-                ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary)
-                : IconButton(
-                    icon: const Icon(Icons.radio_button_unchecked),
-                    onPressed: () async {
-                      final controller = ref.read(feedingControllerProvider.notifier);
-                      await controller.checkIn(
-                        scheduleId: schedule.id!,
-                        plannedTimestamp: DateTime.now(),
-                      );
-                      
-                      if (context.mounted) {
-                        final messenger = ScaffoldMessenger.of(context);
-                        messenger.clearSnackBars();
-                        messenger.showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.feedingConfirmed),
-                            behavior: SnackBarBehavior.floating,
-                            width: 200,
-                            duration: const Duration(seconds: 2),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-                          ),
-                        );
-                      }
-                    },
-                  ),
+            trailing: IconButton(
+              icon: Icon(
+                alreadyFed ? Icons.check_circle : Icons.radio_button_unchecked,
+                color: alreadyFed ? Theme.of(context).colorScheme.primary : null,
+              ),
+              onPressed: () async {
+                final controller = ref.read(feedingControllerProvider.notifier);
+                if (alreadyFed) {
+                  await controller.undoCheckIn(todayCheckIn.id!, schedule.id!);
+                } else {
+                  await controller.checkIn(
+                    scheduleId: schedule.id!,
+                    plannedTimestamp: DateTime.now(),
+                  );
+
+                  if (context.mounted) {
+                    final messenger = ScaffoldMessenger.of(context);
+                    messenger.clearSnackBars();
+                    messenger.showSnackBar(
+                      SnackBar(
+                        content: Text(l10n.feedingConfirmed),
+                        behavior: SnackBarBehavior.floating,
+                        width: 200,
+                        duration: const Duration(seconds: 2),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24)),
+                      ),
+                    );
+                  }
+                }
+              },
+            ),
           ),
         );
       },
