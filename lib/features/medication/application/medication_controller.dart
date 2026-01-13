@@ -113,7 +113,7 @@ class MedicationController extends StateNotifier<AsyncValue<List<MedicationSched
     await loadSchedules();
   }
 
-  Future<void> checkIn({
+  Future<int> checkIn({
     required int scheduleId,
     required DateTime plannedTimestamp,
     bool isTaken = true,
@@ -127,9 +127,11 @@ class MedicationController extends StateNotifier<AsyncValue<List<MedicationSched
       notes: notes,
     );
 
-    await _ref.read(medicationRepositoryProvider).saveCheckIn(checkIn);
-    // Wir könnten hier den State aktualisieren oder einfach neu laden
-    // Für die Heute-Liste ist es wichtig, dass wir wissen, was erledigt ist.
+    return _ref.read(medicationRepositoryProvider).saveCheckIn(checkIn);
+  }
+
+  Future<void> undoCheckIn(int checkInId) async {
+    await _ref.read(medicationRepositoryProvider).deleteCheckIn(checkInId);
   }
 }
 

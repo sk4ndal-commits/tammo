@@ -6,5 +6,6 @@ abstract class FeedingRepository {
   Future<void> updateFeedingSchedule(FeedingSchedule schedule);
   Future<void> deleteFeedingSchedule(int id);
   Future<List<FeedingCheckIn>> getCheckInsForSchedule(int scheduleId);
-  Future<void> saveCheckIn(FeedingCheckIn checkIn);
+  Future<int> saveCheckIn(FeedingCheckIn checkIn);
+  Future<void> deleteCheckIn(int id);
 }

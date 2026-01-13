@@ -237,4 +237,25 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get noFeedingToday => 'Keine Fütterungen für heute geplant.';
+
+  @override
+  String get todayFocus => 'Heute';
+
+  @override
+  String get allDone => 'Alles erledigt für heute! 🎉';
+
+  @override
+  String get showTimeline => 'Verlauf anzeigen';
+
+  @override
+  String get hideTimeline => 'Verlauf ausblenden';
+
+  @override
+  String get undo => 'Rückgängig';
+
+  @override
+  String get medicationConfirmed => 'Medikament gegeben';
+
+  @override
+  String get feedingConfirmed => 'Fütterung erledigt';
 }

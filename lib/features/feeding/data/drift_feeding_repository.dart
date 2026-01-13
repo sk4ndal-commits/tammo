@@ -60,8 +60,8 @@ class DriftFeedingRepository implements FeedingRepository {
   }
 
   @override
-  Future<void> saveCheckIn(FeedingCheckIn checkIn) async {
-    await _db.into(_db.feedingCheckIns).insert(
+  Future<int> saveCheckIn(FeedingCheckIn checkIn) async {
+    return _db.into(_db.feedingCheckIns).insert(
           db.FeedingCheckInsCompanion.insert(
             scheduleId: checkIn.scheduleId,
             timestamp: Value(checkIn.timestamp),
@@ -69,6 +69,11 @@ class DriftFeedingRepository implements FeedingRepository {
             notes: Value(checkIn.notes),
           ),
         );
+  }
+
+  @override
+  Future<void> deleteCheckIn(int id) async {
+    await (_db.delete(_db.feedingCheckIns)..where((t) => t.id.equals(id))).go();
   }
 
   FeedingSchedule _mapScheduleToEntity(db.FeedingSchedule data) {

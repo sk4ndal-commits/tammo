@@ -64,7 +64,7 @@ class FeedingController extends StateNotifier<AsyncValue<List<FeedingSchedule>>>
     });
   }
 
-  Future<void> checkIn({
+  Future<int?> checkIn({
     required int scheduleId,
     required DateTime plannedTimestamp,
     String? notes,
@@ -76,8 +76,15 @@ class FeedingController extends StateNotifier<AsyncValue<List<FeedingSchedule>>>
       notes: notes,
     );
 
+    final result = await AsyncValue.guard(() async {
+      return _ref.read(feedingRepositoryProvider).saveCheckIn(checkIn);
+    });
+    return result.value;
+  }
+
+  Future<void> undoCheckIn(int checkInId) async {
     await AsyncValue.guard(() async {
-      await _ref.read(feedingRepositoryProvider).saveCheckIn(checkIn);
+      await _ref.read(feedingRepositoryProvider).deleteCheckIn(checkInId);
     });
   }
 }

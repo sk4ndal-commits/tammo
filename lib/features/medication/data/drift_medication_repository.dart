@@ -62,8 +62,8 @@ class DriftMedicationRepository implements MedicationRepository {
   }
 
   @override
-  Future<void> saveCheckIn(domain.MedicationCheckIn checkIn) async {
-    await _db.into(_db.medicationCheckIns).insert(
+  Future<int> saveCheckIn(domain.MedicationCheckIn checkIn) async {
+    return _db.into(_db.medicationCheckIns).insert(
           db.MedicationCheckInsCompanion.insert(
             scheduleId: checkIn.scheduleId,
             timestamp: Value(checkIn.timestamp),
@@ -72,6 +72,11 @@ class DriftMedicationRepository implements MedicationRepository {
             notes: Value(checkIn.notes),
           ),
         );
+  }
+
+  @override
+  Future<void> deleteCheckIn(int id) async {
+    await (_db.delete(_db.medicationCheckIns)..where((t) => t.id.equals(id))).go();
   }
 
   domain.MedicationSchedule _mapScheduleToEntity(db.MedicationSchedule data) {

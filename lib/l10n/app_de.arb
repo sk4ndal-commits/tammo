@@ -78,5 +78,12 @@
   "amountLabel": "Menge *",
   "feedingToday": "Fütterung heute",
   "feedingDone": "Gefüttert",
-  "noFeedingToday": "Keine Fütterungen für heute geplant."
+  "noFeedingToday": "Keine Fütterungen für heute geplant.",
+  "todayFocus": "Heute",
+  "allDone": "Alles erledigt für heute! 🎉",
+  "showTimeline": "Verlauf anzeigen",
+  "hideTimeline": "Verlauf ausblenden",
+  "undo": "Rückgängig",
+  "medicationConfirmed": "Medikament gegeben",
+  "feedingConfirmed": "Fütterung erledigt"
 }

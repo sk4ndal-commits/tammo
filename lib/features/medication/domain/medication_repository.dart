@@ -7,5 +7,6 @@ abstract class MedicationRepository {
   Future<void> deleteSchedule(int id);
   
   Future<List<MedicationCheckIn>> getCheckInsForSchedule(int scheduleId);
-  Future<void> saveCheckIn(MedicationCheckIn checkIn);
+  Future<int> saveCheckIn(MedicationCheckIn checkIn);
+  Future<void> deleteCheckIn(int id);
 }

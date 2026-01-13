@@ -529,6 +529,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No feedings scheduled for today.'**
   String get noFeedingToday;
+
+  /// No description provided for @todayFocus.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get todayFocus;
+
+  /// No description provided for @allDone.
+  ///
+  /// In en, this message translates to:
+  /// **'All done for today! 🎉'**
+  String get allDone;
+
+  /// No description provided for @showTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Timeline'**
+  String get showTimeline;
+
+  /// No description provided for @hideTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide Timeline'**
+  String get hideTimeline;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @medicationConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication given'**
+  String get medicationConfirmed;
+
+  /// No description provided for @feedingConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding done'**
+  String get feedingConfirmed;
 }
 
 class _AppLocalizationsDelegate

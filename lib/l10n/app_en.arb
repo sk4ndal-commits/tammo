@@ -110,5 +110,12 @@
   "amountLabel": "Amount *",
   "feedingToday": "Feeding today",
   "feedingDone": "Fed",
-  "noFeedingToday": "No feedings scheduled for today."
+  "noFeedingToday": "No feedings scheduled for today.",
+  "todayFocus": "Today",
+  "allDone": "All done for today! 🎉",
+  "showTimeline": "Show Timeline",
+  "hideTimeline": "Hide Timeline",
+  "undo": "Undo",
+  "medicationConfirmed": "Medication given",
+  "feedingConfirmed": "Feeding done"
 }
