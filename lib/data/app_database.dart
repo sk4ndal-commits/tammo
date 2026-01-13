@@ -8,8 +8,14 @@ part 'app_database.g.dart';
 
 class Pets extends Table {
   IntColumn get id => integer().autoIncrement()();
+  TextColumn get petId => text().unique()(); // Eindeutige pet_id für Skalierbarkeit
   TextColumn get name => text()();
   TextColumn get species => text()();
+  DateTimeColumn get dateOfBirth => dateTime().nullable()();
+  TextColumn get gender => text().nullable()();
+  RealColumn get weight => real().nullable()();
+  TextColumn get photoPath => text().nullable()();
+  TextColumn get notes => text().nullable()();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();
 }

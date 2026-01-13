@@ -1,0 +1,63 @@
+{
+  "@@locale": "en",
+  "appTitle": "Tammo",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "noPetFound": "No pet found.",
+  "helloPet": "Hello, {name}!",
+  "@helloPet": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "species": "Species: {species}",
+  "@species": {
+    "placeholders": {
+      "species": {
+        "type": "String"
+      }
+    }
+  },
+  "gender": "Gender: {gender}",
+  "@gender": {
+    "placeholders": {
+      "gender": {
+        "type": "String"
+      }
+    }
+  },
+  "weight": "Weight: {weight} kg",
+  "@weight": {
+    "placeholders": {
+      "weight": {
+        "type": "double",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "quickActions": "Quick Actions",
+  "captureSymptom": "Capture symptom",
+  "createPlans": "Create plans",
+  "addDocument": "Add document",
+  "onboardingTitle": "Your Pet",
+  "onboardingSubtitle": "Tell us about your companion.",
+  "onboardingHint": "You can add details later.",
+  "petNameLabel": "Pet's name *",
+  "petNameError": "Please provide a name",
+  "speciesLabel": "Species (e.g. Dog, Cat) *",
+  "speciesError": "Please provide a species",
+  "birthDate": "Date of birth",
+  "genderLabel": "Gender",
+  "genderMale": "Male",
+  "genderFemale": "Female",
+  "weightLabel": "Weight (kg)",
+  "notesLabel": "Notes",
+  "finish": "Finish",
+  "editPetTitle": "Edit Profile",
+  "save": "Save",
+  "timelinePlaceholder": "Timeline",
+  "noEntriesYet": "No entries yet."
+}

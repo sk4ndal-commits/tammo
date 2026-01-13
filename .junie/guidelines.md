@@ -92,6 +92,7 @@ Out of Scope (initial / MVP):
 - Prefer **small, composable widgets** over mega build methods.
 - Keep side effects (IO, navigation, analytics) **out of pure UI** as much as reasonable.
 - Every feature must be testable but don't write tests.
+- Dont write tests and dont run flutter test.
 
 ### Naming
 - Dateien/Ordner: `snake_case`
