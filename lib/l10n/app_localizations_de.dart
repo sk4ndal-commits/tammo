@@ -177,4 +177,64 @@ class AppLocalizationsDe extends AppLocalizations {
   String frequencyCount(int count) {
     return '$count Mal';
   }
+
+  @override
+  String get medicationPlanTitle => 'Medikamentenplan';
+
+  @override
+  String get medicationNameLabel => 'Name des Medikaments *';
+
+  @override
+  String get dosageLabel => 'Dosierung *';
+
+  @override
+  String get frequencyLabelMedication => 'Häufigkeit *';
+
+  @override
+  String get startDateLabel => 'Startdatum';
+
+  @override
+  String get endDateLabel => 'Enddatum (optional)';
+
+  @override
+  String get reminderTimesLabel => 'Erinnerungszeiten';
+
+  @override
+  String get addReminderTime => 'Zeit hinzufügen';
+
+  @override
+  String get createPlan => 'Plan erstellen';
+
+  @override
+  String get medicationToday => 'Heute fällig';
+
+  @override
+  String get markAsTaken => 'Als gegeben markiert';
+
+  @override
+  String get medicationTaken => 'Gegeben';
+
+  @override
+  String get medicationMissed => 'Verpasst';
+
+  @override
+  String get noMedicationToday => 'Keine Medikamente für heute geplant.';
+
+  @override
+  String get feedingPlanTitle => 'Fütterungsplan';
+
+  @override
+  String get foodTypeLabel => 'Futterart *';
+
+  @override
+  String get amountLabel => 'Menge *';
+
+  @override
+  String get feedingToday => 'Fütterung heute';
+
+  @override
+  String get feedingDone => 'Gefüttert';
+
+  @override
+  String get noFeedingToday => 'Keine Fütterungen für heute geplant.';
 }

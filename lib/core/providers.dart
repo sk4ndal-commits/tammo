@@ -4,6 +4,10 @@ import '../features/pet/data/drift_pet_repository.dart';
 import '../features/pet/domain/pet_repository.dart';
 import '../features/event/data/drift_event_repository.dart';
 import '../features/event/domain/event_repository.dart';
+import '../features/medication/data/drift_medication_repository.dart';
+import '../features/medication/domain/medication_repository.dart';
+import '../features/feeding/data/drift_feeding_repository.dart';
+import '../features/feeding/domain/feeding_repository.dart';
 
 final databaseProvider = Provider<AppDatabase>((ref) {
   final db = AppDatabase();
@@ -19,4 +23,14 @@ final petRepositoryProvider = Provider<PetRepository>((ref) {
 final eventRepositoryProvider = Provider<EventRepository>((ref) {
   final db = ref.watch(databaseProvider);
   return DriftEventRepository(db);
+});
+
+final medicationRepositoryProvider = Provider<MedicationRepository>((ref) {
+  final db = ref.watch(databaseProvider);
+  return DriftMedicationRepository(db);
+});
+
+final feedingRepositoryProvider = Provider<FeedingRepository>((ref) {
+  final db = ref.watch(databaseProvider);
+  return DriftFeedingRepository(db);
 });

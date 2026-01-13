@@ -31,12 +31,72 @@ class Events extends Table {
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 }
 
-@DriftDatabase(tables: [Pets, Events])
+class MedicationSchedules extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get petId => text().references(Pets, #petId)();
+  TextColumn get medicationName => text()();
+  TextColumn get dosage => text()();
+  TextColumn get frequency => text()(); // z.B. '1x daily', '2x daily'
+  DateTimeColumn get startDate => dateTime()();
+  DateTimeColumn get endDate => dateTime().nullable()();
+  TextColumn get reminderTimes => text()(); // JSON list of times, e.g. ["08:00", "20:00"]
+  BoolColumn get isActive => boolean().withDefault(const Constant(true))();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+class MedicationCheckIns extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get scheduleId => integer().references(MedicationSchedules, #id)();
+  DateTimeColumn get timestamp => dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get plannedTimestamp => dateTime()();
+  BoolColumn get isTaken => boolean().withDefault(const Constant(true))();
+  TextColumn get notes => text().nullable()();
+}
+
+class FeedingSchedules extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get petId => text().references(Pets, #petId)();
+  TextColumn get foodType => text()(); // z.B. 'Trockenfutter', 'Nassfutter'
+  TextColumn get amount => text()(); // z.B. '50g'
+  TextColumn get reminderTimes => text()(); // JSON list of times, e.g. ["07:00", "19:00"]
+  TextColumn get notes => text().nullable()();
+  BoolColumn get isActive => boolean().withDefault(const Constant(true))();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+class FeedingCheckIns extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get scheduleId => integer().references(FeedingSchedules, #id)();
+  DateTimeColumn get timestamp => dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get plannedTimestamp => dateTime()();
+  TextColumn get notes => text().nullable()();
+}
+
+@DriftDatabase(tables: [Pets, Events, MedicationSchedules, MedicationCheckIns, FeedingSchedules, FeedingCheckIns])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (m) async {
+        await m.createAll();
+      },
+      onUpgrade: (m, from, to) async {
+        if (from < 2) {
+          // Add new tables added in version 2
+          await m.createTable(medicationSchedules);
+          await m.createTable(medicationCheckIns);
+          await m.createTable(feedingSchedules);
+          await m.createTable(feedingCheckIns);
+          await m.createTable(events);
+        }
+      },
+    );
+  }
 }
 
 LazyDatabase _openConnection() {

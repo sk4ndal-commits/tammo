@@ -58,5 +58,25 @@
         "type": "int"
       }
     }
-  }
+  },
+  "medicationPlanTitle": "Medikamentenplan",
+  "medicationNameLabel": "Name des Medikaments *",
+  "dosageLabel": "Dosierung *",
+  "frequencyLabelMedication": "Häufigkeit *",
+  "startDateLabel": "Startdatum",
+  "endDateLabel": "Enddatum (optional)",
+  "reminderTimesLabel": "Erinnerungszeiten",
+  "addReminderTime": "Zeit hinzufügen",
+  "createPlan": "Plan erstellen",
+  "medicationToday": "Heute fällig",
+  "markAsTaken": "Als gegeben markiert",
+  "medicationTaken": "Gegeben",
+  "medicationMissed": "Verpasst",
+  "noMedicationToday": "Keine Medikamente für heute geplant.",
+  "feedingPlanTitle": "Fütterungsplan",
+  "foodTypeLabel": "Futterart *",
+  "amountLabel": "Menge *",
+  "feedingToday": "Fütterung heute",
+  "feedingDone": "Gefüttert",
+  "noFeedingToday": "Keine Fütterungen für heute geplant."
 }

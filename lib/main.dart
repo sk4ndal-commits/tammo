@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 import 'core/router.dart';
 import 'core/theme.dart';
+import 'core/notification_service.dart';
 
 final _logger = Logger('Main');
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
+  // Setup Notifications
+  await NotificationService().init();
+
   // Setup Logging
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) {
@@ -19,12 +22,6 @@ Future<void> main() async {
   });
 
   _logger.info('App starting...');
-
-  // Setup Notifications (minimal)
-  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-  const initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
   runApp(
     const ProviderScope(

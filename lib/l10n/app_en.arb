@@ -90,5 +90,25 @@
         "type": "int"
       }
     }
-  }
+  },
+  "medicationPlanTitle": "Medication Plan",
+  "medicationNameLabel": "Medication name *",
+  "dosageLabel": "Dosage *",
+  "frequencyLabelMedication": "Frequency *",
+  "startDateLabel": "Start date",
+  "endDateLabel": "End date (optional)",
+  "reminderTimesLabel": "Reminder times",
+  "addReminderTime": "Add time",
+  "createPlan": "Create plan",
+  "medicationToday": "Due today",
+  "markAsTaken": "Marked as taken",
+  "medicationTaken": "Taken",
+  "medicationMissed": "Missed",
+  "noMedicationToday": "No medications scheduled for today.",
+  "feedingPlanTitle": "Feeding Plan",
+  "foodTypeLabel": "Food Type *",
+  "amountLabel": "Amount *",
+  "feedingToday": "Feeding today",
+  "feedingDone": "Fed",
+  "noFeedingToday": "No feedings scheduled for today."
 }

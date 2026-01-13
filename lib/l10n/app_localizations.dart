@@ -409,6 +409,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} times'**
   String frequencyCount(int count);
+
+  /// No description provided for @medicationPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication Plan'**
+  String get medicationPlanTitle;
+
+  /// No description provided for @medicationNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication name *'**
+  String get medicationNameLabel;
+
+  /// No description provided for @dosageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Dosage *'**
+  String get dosageLabel;
+
+  /// No description provided for @frequencyLabelMedication.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency *'**
+  String get frequencyLabelMedication;
+
+  /// No description provided for @startDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get startDateLabel;
+
+  /// No description provided for @endDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'End date (optional)'**
+  String get endDateLabel;
+
+  /// No description provided for @reminderTimesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder times'**
+  String get reminderTimesLabel;
+
+  /// No description provided for @addReminderTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Add time'**
+  String get addReminderTime;
+
+  /// No description provided for @createPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Create plan'**
+  String get createPlan;
+
+  /// No description provided for @medicationToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Due today'**
+  String get medicationToday;
+
+  /// No description provided for @markAsTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as taken'**
+  String get markAsTaken;
+
+  /// No description provided for @medicationTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'Taken'**
+  String get medicationTaken;
+
+  /// No description provided for @medicationMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed'**
+  String get medicationMissed;
+
+  /// No description provided for @noMedicationToday.
+  ///
+  /// In en, this message translates to:
+  /// **'No medications scheduled for today.'**
+  String get noMedicationToday;
+
+  /// No description provided for @feedingPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding Plan'**
+  String get feedingPlanTitle;
+
+  /// No description provided for @foodTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Food Type *'**
+  String get foodTypeLabel;
+
+  /// No description provided for @amountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount *'**
+  String get amountLabel;
+
+  /// No description provided for @feedingToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding today'**
+  String get feedingToday;
+
+  /// No description provided for @feedingDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Fed'**
+  String get feedingDone;
+
+  /// No description provided for @noFeedingToday.
+  ///
+  /// In en, this message translates to:
+  /// **'No feedings scheduled for today.'**
+  String get noFeedingToday;
 }
 
 class _AppLocalizationsDelegate

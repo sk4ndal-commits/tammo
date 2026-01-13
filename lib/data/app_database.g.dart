@@ -943,16 +943,1607 @@ class EventsCompanion extends UpdateCompanion<Event> {
   }
 }
 
+class $MedicationSchedulesTable extends MedicationSchedules
+    with TableInfo<$MedicationSchedulesTable, MedicationSchedule> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicationSchedulesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _petIdMeta = const VerificationMeta('petId');
+  @override
+  late final GeneratedColumn<String> petId = GeneratedColumn<String>(
+      'pet_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES pets (pet_id)'));
+  static const VerificationMeta _medicationNameMeta =
+      const VerificationMeta('medicationName');
+  @override
+  late final GeneratedColumn<String> medicationName = GeneratedColumn<String>(
+      'medication_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _dosageMeta = const VerificationMeta('dosage');
+  @override
+  late final GeneratedColumn<String> dosage = GeneratedColumn<String>(
+      'dosage', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _frequencyMeta =
+      const VerificationMeta('frequency');
+  @override
+  late final GeneratedColumn<String> frequency = GeneratedColumn<String>(
+      'frequency', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _startDateMeta =
+      const VerificationMeta('startDate');
+  @override
+  late final GeneratedColumn<DateTime> startDate = GeneratedColumn<DateTime>(
+      'start_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _endDateMeta =
+      const VerificationMeta('endDate');
+  @override
+  late final GeneratedColumn<DateTime> endDate = GeneratedColumn<DateTime>(
+      'end_date', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _reminderTimesMeta =
+      const VerificationMeta('reminderTimes');
+  @override
+  late final GeneratedColumn<String> reminderTimes = GeneratedColumn<String>(
+      'reminder_times', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _isActiveMeta =
+      const VerificationMeta('isActive');
+  @override
+  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
+      'is_active', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_active" IN (0, 1))'),
+      defaultValue: const Constant(true));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        petId,
+        medicationName,
+        dosage,
+        frequency,
+        startDate,
+        endDate,
+        reminderTimes,
+        isActive,
+        createdAt
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'medication_schedules';
+  @override
+  VerificationContext validateIntegrity(Insertable<MedicationSchedule> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('pet_id')) {
+      context.handle(
+          _petIdMeta, petId.isAcceptableOrUnknown(data['pet_id']!, _petIdMeta));
+    } else if (isInserting) {
+      context.missing(_petIdMeta);
+    }
+    if (data.containsKey('medication_name')) {
+      context.handle(
+          _medicationNameMeta,
+          medicationName.isAcceptableOrUnknown(
+              data['medication_name']!, _medicationNameMeta));
+    } else if (isInserting) {
+      context.missing(_medicationNameMeta);
+    }
+    if (data.containsKey('dosage')) {
+      context.handle(_dosageMeta,
+          dosage.isAcceptableOrUnknown(data['dosage']!, _dosageMeta));
+    } else if (isInserting) {
+      context.missing(_dosageMeta);
+    }
+    if (data.containsKey('frequency')) {
+      context.handle(_frequencyMeta,
+          frequency.isAcceptableOrUnknown(data['frequency']!, _frequencyMeta));
+    } else if (isInserting) {
+      context.missing(_frequencyMeta);
+    }
+    if (data.containsKey('start_date')) {
+      context.handle(_startDateMeta,
+          startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta));
+    } else if (isInserting) {
+      context.missing(_startDateMeta);
+    }
+    if (data.containsKey('end_date')) {
+      context.handle(_endDateMeta,
+          endDate.isAcceptableOrUnknown(data['end_date']!, _endDateMeta));
+    }
+    if (data.containsKey('reminder_times')) {
+      context.handle(
+          _reminderTimesMeta,
+          reminderTimes.isAcceptableOrUnknown(
+              data['reminder_times']!, _reminderTimesMeta));
+    } else if (isInserting) {
+      context.missing(_reminderTimesMeta);
+    }
+    if (data.containsKey('is_active')) {
+      context.handle(_isActiveMeta,
+          isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MedicationSchedule map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicationSchedule(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      petId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}pet_id'])!,
+      medicationName: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}medication_name'])!,
+      dosage: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}dosage'])!,
+      frequency: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}frequency'])!,
+      startDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}start_date'])!,
+      endDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}end_date']),
+      reminderTimes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}reminder_times'])!,
+      isActive: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_active'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+    );
+  }
+
+  @override
+  $MedicationSchedulesTable createAlias(String alias) {
+    return $MedicationSchedulesTable(attachedDatabase, alias);
+  }
+}
+
+class MedicationSchedule extends DataClass
+    implements Insertable<MedicationSchedule> {
+  final int id;
+  final String petId;
+  final String medicationName;
+  final String dosage;
+  final String frequency;
+  final DateTime startDate;
+  final DateTime? endDate;
+  final String reminderTimes;
+  final bool isActive;
+  final DateTime createdAt;
+  const MedicationSchedule(
+      {required this.id,
+      required this.petId,
+      required this.medicationName,
+      required this.dosage,
+      required this.frequency,
+      required this.startDate,
+      this.endDate,
+      required this.reminderTimes,
+      required this.isActive,
+      required this.createdAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['pet_id'] = Variable<String>(petId);
+    map['medication_name'] = Variable<String>(medicationName);
+    map['dosage'] = Variable<String>(dosage);
+    map['frequency'] = Variable<String>(frequency);
+    map['start_date'] = Variable<DateTime>(startDate);
+    if (!nullToAbsent || endDate != null) {
+      map['end_date'] = Variable<DateTime>(endDate);
+    }
+    map['reminder_times'] = Variable<String>(reminderTimes);
+    map['is_active'] = Variable<bool>(isActive);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  MedicationSchedulesCompanion toCompanion(bool nullToAbsent) {
+    return MedicationSchedulesCompanion(
+      id: Value(id),
+      petId: Value(petId),
+      medicationName: Value(medicationName),
+      dosage: Value(dosage),
+      frequency: Value(frequency),
+      startDate: Value(startDate),
+      endDate: endDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endDate),
+      reminderTimes: Value(reminderTimes),
+      isActive: Value(isActive),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory MedicationSchedule.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicationSchedule(
+      id: serializer.fromJson<int>(json['id']),
+      petId: serializer.fromJson<String>(json['petId']),
+      medicationName: serializer.fromJson<String>(json['medicationName']),
+      dosage: serializer.fromJson<String>(json['dosage']),
+      frequency: serializer.fromJson<String>(json['frequency']),
+      startDate: serializer.fromJson<DateTime>(json['startDate']),
+      endDate: serializer.fromJson<DateTime?>(json['endDate']),
+      reminderTimes: serializer.fromJson<String>(json['reminderTimes']),
+      isActive: serializer.fromJson<bool>(json['isActive']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'petId': serializer.toJson<String>(petId),
+      'medicationName': serializer.toJson<String>(medicationName),
+      'dosage': serializer.toJson<String>(dosage),
+      'frequency': serializer.toJson<String>(frequency),
+      'startDate': serializer.toJson<DateTime>(startDate),
+      'endDate': serializer.toJson<DateTime?>(endDate),
+      'reminderTimes': serializer.toJson<String>(reminderTimes),
+      'isActive': serializer.toJson<bool>(isActive),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  MedicationSchedule copyWith(
+          {int? id,
+          String? petId,
+          String? medicationName,
+          String? dosage,
+          String? frequency,
+          DateTime? startDate,
+          Value<DateTime?> endDate = const Value.absent(),
+          String? reminderTimes,
+          bool? isActive,
+          DateTime? createdAt}) =>
+      MedicationSchedule(
+        id: id ?? this.id,
+        petId: petId ?? this.petId,
+        medicationName: medicationName ?? this.medicationName,
+        dosage: dosage ?? this.dosage,
+        frequency: frequency ?? this.frequency,
+        startDate: startDate ?? this.startDate,
+        endDate: endDate.present ? endDate.value : this.endDate,
+        reminderTimes: reminderTimes ?? this.reminderTimes,
+        isActive: isActive ?? this.isActive,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  MedicationSchedule copyWithCompanion(MedicationSchedulesCompanion data) {
+    return MedicationSchedule(
+      id: data.id.present ? data.id.value : this.id,
+      petId: data.petId.present ? data.petId.value : this.petId,
+      medicationName: data.medicationName.present
+          ? data.medicationName.value
+          : this.medicationName,
+      dosage: data.dosage.present ? data.dosage.value : this.dosage,
+      frequency: data.frequency.present ? data.frequency.value : this.frequency,
+      startDate: data.startDate.present ? data.startDate.value : this.startDate,
+      endDate: data.endDate.present ? data.endDate.value : this.endDate,
+      reminderTimes: data.reminderTimes.present
+          ? data.reminderTimes.value
+          : this.reminderTimes,
+      isActive: data.isActive.present ? data.isActive.value : this.isActive,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationSchedule(')
+          ..write('id: $id, ')
+          ..write('petId: $petId, ')
+          ..write('medicationName: $medicationName, ')
+          ..write('dosage: $dosage, ')
+          ..write('frequency: $frequency, ')
+          ..write('startDate: $startDate, ')
+          ..write('endDate: $endDate, ')
+          ..write('reminderTimes: $reminderTimes, ')
+          ..write('isActive: $isActive, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, petId, medicationName, dosage, frequency,
+      startDate, endDate, reminderTimes, isActive, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicationSchedule &&
+          other.id == this.id &&
+          other.petId == this.petId &&
+          other.medicationName == this.medicationName &&
+          other.dosage == this.dosage &&
+          other.frequency == this.frequency &&
+          other.startDate == this.startDate &&
+          other.endDate == this.endDate &&
+          other.reminderTimes == this.reminderTimes &&
+          other.isActive == this.isActive &&
+          other.createdAt == this.createdAt);
+}
+
+class MedicationSchedulesCompanion extends UpdateCompanion<MedicationSchedule> {
+  final Value<int> id;
+  final Value<String> petId;
+  final Value<String> medicationName;
+  final Value<String> dosage;
+  final Value<String> frequency;
+  final Value<DateTime> startDate;
+  final Value<DateTime?> endDate;
+  final Value<String> reminderTimes;
+  final Value<bool> isActive;
+  final Value<DateTime> createdAt;
+  const MedicationSchedulesCompanion({
+    this.id = const Value.absent(),
+    this.petId = const Value.absent(),
+    this.medicationName = const Value.absent(),
+    this.dosage = const Value.absent(),
+    this.frequency = const Value.absent(),
+    this.startDate = const Value.absent(),
+    this.endDate = const Value.absent(),
+    this.reminderTimes = const Value.absent(),
+    this.isActive = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  MedicationSchedulesCompanion.insert({
+    this.id = const Value.absent(),
+    required String petId,
+    required String medicationName,
+    required String dosage,
+    required String frequency,
+    required DateTime startDate,
+    this.endDate = const Value.absent(),
+    required String reminderTimes,
+    this.isActive = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  })  : petId = Value(petId),
+        medicationName = Value(medicationName),
+        dosage = Value(dosage),
+        frequency = Value(frequency),
+        startDate = Value(startDate),
+        reminderTimes = Value(reminderTimes);
+  static Insertable<MedicationSchedule> custom({
+    Expression<int>? id,
+    Expression<String>? petId,
+    Expression<String>? medicationName,
+    Expression<String>? dosage,
+    Expression<String>? frequency,
+    Expression<DateTime>? startDate,
+    Expression<DateTime>? endDate,
+    Expression<String>? reminderTimes,
+    Expression<bool>? isActive,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (petId != null) 'pet_id': petId,
+      if (medicationName != null) 'medication_name': medicationName,
+      if (dosage != null) 'dosage': dosage,
+      if (frequency != null) 'frequency': frequency,
+      if (startDate != null) 'start_date': startDate,
+      if (endDate != null) 'end_date': endDate,
+      if (reminderTimes != null) 'reminder_times': reminderTimes,
+      if (isActive != null) 'is_active': isActive,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  MedicationSchedulesCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? petId,
+      Value<String>? medicationName,
+      Value<String>? dosage,
+      Value<String>? frequency,
+      Value<DateTime>? startDate,
+      Value<DateTime?>? endDate,
+      Value<String>? reminderTimes,
+      Value<bool>? isActive,
+      Value<DateTime>? createdAt}) {
+    return MedicationSchedulesCompanion(
+      id: id ?? this.id,
+      petId: petId ?? this.petId,
+      medicationName: medicationName ?? this.medicationName,
+      dosage: dosage ?? this.dosage,
+      frequency: frequency ?? this.frequency,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      reminderTimes: reminderTimes ?? this.reminderTimes,
+      isActive: isActive ?? this.isActive,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (petId.present) {
+      map['pet_id'] = Variable<String>(petId.value);
+    }
+    if (medicationName.present) {
+      map['medication_name'] = Variable<String>(medicationName.value);
+    }
+    if (dosage.present) {
+      map['dosage'] = Variable<String>(dosage.value);
+    }
+    if (frequency.present) {
+      map['frequency'] = Variable<String>(frequency.value);
+    }
+    if (startDate.present) {
+      map['start_date'] = Variable<DateTime>(startDate.value);
+    }
+    if (endDate.present) {
+      map['end_date'] = Variable<DateTime>(endDate.value);
+    }
+    if (reminderTimes.present) {
+      map['reminder_times'] = Variable<String>(reminderTimes.value);
+    }
+    if (isActive.present) {
+      map['is_active'] = Variable<bool>(isActive.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationSchedulesCompanion(')
+          ..write('id: $id, ')
+          ..write('petId: $petId, ')
+          ..write('medicationName: $medicationName, ')
+          ..write('dosage: $dosage, ')
+          ..write('frequency: $frequency, ')
+          ..write('startDate: $startDate, ')
+          ..write('endDate: $endDate, ')
+          ..write('reminderTimes: $reminderTimes, ')
+          ..write('isActive: $isActive, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $MedicationCheckInsTable extends MedicationCheckIns
+    with TableInfo<$MedicationCheckInsTable, MedicationCheckIn> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $MedicationCheckInsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _scheduleIdMeta =
+      const VerificationMeta('scheduleId');
+  @override
+  late final GeneratedColumn<int> scheduleId = GeneratedColumn<int>(
+      'schedule_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES medication_schedules (id)'));
+  static const VerificationMeta _timestampMeta =
+      const VerificationMeta('timestamp');
+  @override
+  late final GeneratedColumn<DateTime> timestamp = GeneratedColumn<DateTime>(
+      'timestamp', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  static const VerificationMeta _plannedTimestampMeta =
+      const VerificationMeta('plannedTimestamp');
+  @override
+  late final GeneratedColumn<DateTime> plannedTimestamp =
+      GeneratedColumn<DateTime>('planned_timestamp', aliasedName, false,
+          type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _isTakenMeta =
+      const VerificationMeta('isTaken');
+  @override
+  late final GeneratedColumn<bool> isTaken = GeneratedColumn<bool>(
+      'is_taken', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_taken" IN (0, 1))'),
+      defaultValue: const Constant(true));
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, scheduleId, timestamp, plannedTimestamp, isTaken, notes];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'medication_check_ins';
+  @override
+  VerificationContext validateIntegrity(Insertable<MedicationCheckIn> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('schedule_id')) {
+      context.handle(
+          _scheduleIdMeta,
+          scheduleId.isAcceptableOrUnknown(
+              data['schedule_id']!, _scheduleIdMeta));
+    } else if (isInserting) {
+      context.missing(_scheduleIdMeta);
+    }
+    if (data.containsKey('timestamp')) {
+      context.handle(_timestampMeta,
+          timestamp.isAcceptableOrUnknown(data['timestamp']!, _timestampMeta));
+    }
+    if (data.containsKey('planned_timestamp')) {
+      context.handle(
+          _plannedTimestampMeta,
+          plannedTimestamp.isAcceptableOrUnknown(
+              data['planned_timestamp']!, _plannedTimestampMeta));
+    } else if (isInserting) {
+      context.missing(_plannedTimestampMeta);
+    }
+    if (data.containsKey('is_taken')) {
+      context.handle(_isTakenMeta,
+          isTaken.isAcceptableOrUnknown(data['is_taken']!, _isTakenMeta));
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  MedicationCheckIn map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return MedicationCheckIn(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      scheduleId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}schedule_id'])!,
+      timestamp: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}timestamp'])!,
+      plannedTimestamp: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}planned_timestamp'])!,
+      isTaken: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_taken'])!,
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
+    );
+  }
+
+  @override
+  $MedicationCheckInsTable createAlias(String alias) {
+    return $MedicationCheckInsTable(attachedDatabase, alias);
+  }
+}
+
+class MedicationCheckIn extends DataClass
+    implements Insertable<MedicationCheckIn> {
+  final int id;
+  final int scheduleId;
+  final DateTime timestamp;
+  final DateTime plannedTimestamp;
+  final bool isTaken;
+  final String? notes;
+  const MedicationCheckIn(
+      {required this.id,
+      required this.scheduleId,
+      required this.timestamp,
+      required this.plannedTimestamp,
+      required this.isTaken,
+      this.notes});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['schedule_id'] = Variable<int>(scheduleId);
+    map['timestamp'] = Variable<DateTime>(timestamp);
+    map['planned_timestamp'] = Variable<DateTime>(plannedTimestamp);
+    map['is_taken'] = Variable<bool>(isTaken);
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    return map;
+  }
+
+  MedicationCheckInsCompanion toCompanion(bool nullToAbsent) {
+    return MedicationCheckInsCompanion(
+      id: Value(id),
+      scheduleId: Value(scheduleId),
+      timestamp: Value(timestamp),
+      plannedTimestamp: Value(plannedTimestamp),
+      isTaken: Value(isTaken),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
+    );
+  }
+
+  factory MedicationCheckIn.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return MedicationCheckIn(
+      id: serializer.fromJson<int>(json['id']),
+      scheduleId: serializer.fromJson<int>(json['scheduleId']),
+      timestamp: serializer.fromJson<DateTime>(json['timestamp']),
+      plannedTimestamp: serializer.fromJson<DateTime>(json['plannedTimestamp']),
+      isTaken: serializer.fromJson<bool>(json['isTaken']),
+      notes: serializer.fromJson<String?>(json['notes']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'scheduleId': serializer.toJson<int>(scheduleId),
+      'timestamp': serializer.toJson<DateTime>(timestamp),
+      'plannedTimestamp': serializer.toJson<DateTime>(plannedTimestamp),
+      'isTaken': serializer.toJson<bool>(isTaken),
+      'notes': serializer.toJson<String?>(notes),
+    };
+  }
+
+  MedicationCheckIn copyWith(
+          {int? id,
+          int? scheduleId,
+          DateTime? timestamp,
+          DateTime? plannedTimestamp,
+          bool? isTaken,
+          Value<String?> notes = const Value.absent()}) =>
+      MedicationCheckIn(
+        id: id ?? this.id,
+        scheduleId: scheduleId ?? this.scheduleId,
+        timestamp: timestamp ?? this.timestamp,
+        plannedTimestamp: plannedTimestamp ?? this.plannedTimestamp,
+        isTaken: isTaken ?? this.isTaken,
+        notes: notes.present ? notes.value : this.notes,
+      );
+  MedicationCheckIn copyWithCompanion(MedicationCheckInsCompanion data) {
+    return MedicationCheckIn(
+      id: data.id.present ? data.id.value : this.id,
+      scheduleId:
+          data.scheduleId.present ? data.scheduleId.value : this.scheduleId,
+      timestamp: data.timestamp.present ? data.timestamp.value : this.timestamp,
+      plannedTimestamp: data.plannedTimestamp.present
+          ? data.plannedTimestamp.value
+          : this.plannedTimestamp,
+      isTaken: data.isTaken.present ? data.isTaken.value : this.isTaken,
+      notes: data.notes.present ? data.notes.value : this.notes,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationCheckIn(')
+          ..write('id: $id, ')
+          ..write('scheduleId: $scheduleId, ')
+          ..write('timestamp: $timestamp, ')
+          ..write('plannedTimestamp: $plannedTimestamp, ')
+          ..write('isTaken: $isTaken, ')
+          ..write('notes: $notes')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, scheduleId, timestamp, plannedTimestamp, isTaken, notes);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is MedicationCheckIn &&
+          other.id == this.id &&
+          other.scheduleId == this.scheduleId &&
+          other.timestamp == this.timestamp &&
+          other.plannedTimestamp == this.plannedTimestamp &&
+          other.isTaken == this.isTaken &&
+          other.notes == this.notes);
+}
+
+class MedicationCheckInsCompanion extends UpdateCompanion<MedicationCheckIn> {
+  final Value<int> id;
+  final Value<int> scheduleId;
+  final Value<DateTime> timestamp;
+  final Value<DateTime> plannedTimestamp;
+  final Value<bool> isTaken;
+  final Value<String?> notes;
+  const MedicationCheckInsCompanion({
+    this.id = const Value.absent(),
+    this.scheduleId = const Value.absent(),
+    this.timestamp = const Value.absent(),
+    this.plannedTimestamp = const Value.absent(),
+    this.isTaken = const Value.absent(),
+    this.notes = const Value.absent(),
+  });
+  MedicationCheckInsCompanion.insert({
+    this.id = const Value.absent(),
+    required int scheduleId,
+    this.timestamp = const Value.absent(),
+    required DateTime plannedTimestamp,
+    this.isTaken = const Value.absent(),
+    this.notes = const Value.absent(),
+  })  : scheduleId = Value(scheduleId),
+        plannedTimestamp = Value(plannedTimestamp);
+  static Insertable<MedicationCheckIn> custom({
+    Expression<int>? id,
+    Expression<int>? scheduleId,
+    Expression<DateTime>? timestamp,
+    Expression<DateTime>? plannedTimestamp,
+    Expression<bool>? isTaken,
+    Expression<String>? notes,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (scheduleId != null) 'schedule_id': scheduleId,
+      if (timestamp != null) 'timestamp': timestamp,
+      if (plannedTimestamp != null) 'planned_timestamp': plannedTimestamp,
+      if (isTaken != null) 'is_taken': isTaken,
+      if (notes != null) 'notes': notes,
+    });
+  }
+
+  MedicationCheckInsCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? scheduleId,
+      Value<DateTime>? timestamp,
+      Value<DateTime>? plannedTimestamp,
+      Value<bool>? isTaken,
+      Value<String?>? notes}) {
+    return MedicationCheckInsCompanion(
+      id: id ?? this.id,
+      scheduleId: scheduleId ?? this.scheduleId,
+      timestamp: timestamp ?? this.timestamp,
+      plannedTimestamp: plannedTimestamp ?? this.plannedTimestamp,
+      isTaken: isTaken ?? this.isTaken,
+      notes: notes ?? this.notes,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (scheduleId.present) {
+      map['schedule_id'] = Variable<int>(scheduleId.value);
+    }
+    if (timestamp.present) {
+      map['timestamp'] = Variable<DateTime>(timestamp.value);
+    }
+    if (plannedTimestamp.present) {
+      map['planned_timestamp'] = Variable<DateTime>(plannedTimestamp.value);
+    }
+    if (isTaken.present) {
+      map['is_taken'] = Variable<bool>(isTaken.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('MedicationCheckInsCompanion(')
+          ..write('id: $id, ')
+          ..write('scheduleId: $scheduleId, ')
+          ..write('timestamp: $timestamp, ')
+          ..write('plannedTimestamp: $plannedTimestamp, ')
+          ..write('isTaken: $isTaken, ')
+          ..write('notes: $notes')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FeedingSchedulesTable extends FeedingSchedules
+    with TableInfo<$FeedingSchedulesTable, FeedingSchedule> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FeedingSchedulesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _petIdMeta = const VerificationMeta('petId');
+  @override
+  late final GeneratedColumn<String> petId = GeneratedColumn<String>(
+      'pet_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES pets (pet_id)'));
+  static const VerificationMeta _foodTypeMeta =
+      const VerificationMeta('foodType');
+  @override
+  late final GeneratedColumn<String> foodType = GeneratedColumn<String>(
+      'food_type', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
+  @override
+  late final GeneratedColumn<String> amount = GeneratedColumn<String>(
+      'amount', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _reminderTimesMeta =
+      const VerificationMeta('reminderTimes');
+  @override
+  late final GeneratedColumn<String> reminderTimes = GeneratedColumn<String>(
+      'reminder_times', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _isActiveMeta =
+      const VerificationMeta('isActive');
+  @override
+  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
+      'is_active', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_active" IN (0, 1))'),
+      defaultValue: const Constant(true));
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, petId, foodType, amount, reminderTimes, notes, isActive, createdAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'feeding_schedules';
+  @override
+  VerificationContext validateIntegrity(Insertable<FeedingSchedule> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('pet_id')) {
+      context.handle(
+          _petIdMeta, petId.isAcceptableOrUnknown(data['pet_id']!, _petIdMeta));
+    } else if (isInserting) {
+      context.missing(_petIdMeta);
+    }
+    if (data.containsKey('food_type')) {
+      context.handle(_foodTypeMeta,
+          foodType.isAcceptableOrUnknown(data['food_type']!, _foodTypeMeta));
+    } else if (isInserting) {
+      context.missing(_foodTypeMeta);
+    }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    if (data.containsKey('reminder_times')) {
+      context.handle(
+          _reminderTimesMeta,
+          reminderTimes.isAcceptableOrUnknown(
+              data['reminder_times']!, _reminderTimesMeta));
+    } else if (isInserting) {
+      context.missing(_reminderTimesMeta);
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+    }
+    if (data.containsKey('is_active')) {
+      context.handle(_isActiveMeta,
+          isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FeedingSchedule map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FeedingSchedule(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      petId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}pet_id'])!,
+      foodType: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}food_type'])!,
+      amount: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}amount'])!,
+      reminderTimes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}reminder_times'])!,
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
+      isActive: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_active'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+    );
+  }
+
+  @override
+  $FeedingSchedulesTable createAlias(String alias) {
+    return $FeedingSchedulesTable(attachedDatabase, alias);
+  }
+}
+
+class FeedingSchedule extends DataClass implements Insertable<FeedingSchedule> {
+  final int id;
+  final String petId;
+  final String foodType;
+  final String amount;
+  final String reminderTimes;
+  final String? notes;
+  final bool isActive;
+  final DateTime createdAt;
+  const FeedingSchedule(
+      {required this.id,
+      required this.petId,
+      required this.foodType,
+      required this.amount,
+      required this.reminderTimes,
+      this.notes,
+      required this.isActive,
+      required this.createdAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['pet_id'] = Variable<String>(petId);
+    map['food_type'] = Variable<String>(foodType);
+    map['amount'] = Variable<String>(amount);
+    map['reminder_times'] = Variable<String>(reminderTimes);
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    map['is_active'] = Variable<bool>(isActive);
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  FeedingSchedulesCompanion toCompanion(bool nullToAbsent) {
+    return FeedingSchedulesCompanion(
+      id: Value(id),
+      petId: Value(petId),
+      foodType: Value(foodType),
+      amount: Value(amount),
+      reminderTimes: Value(reminderTimes),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
+      isActive: Value(isActive),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory FeedingSchedule.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FeedingSchedule(
+      id: serializer.fromJson<int>(json['id']),
+      petId: serializer.fromJson<String>(json['petId']),
+      foodType: serializer.fromJson<String>(json['foodType']),
+      amount: serializer.fromJson<String>(json['amount']),
+      reminderTimes: serializer.fromJson<String>(json['reminderTimes']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      isActive: serializer.fromJson<bool>(json['isActive']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'petId': serializer.toJson<String>(petId),
+      'foodType': serializer.toJson<String>(foodType),
+      'amount': serializer.toJson<String>(amount),
+      'reminderTimes': serializer.toJson<String>(reminderTimes),
+      'notes': serializer.toJson<String?>(notes),
+      'isActive': serializer.toJson<bool>(isActive),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  FeedingSchedule copyWith(
+          {int? id,
+          String? petId,
+          String? foodType,
+          String? amount,
+          String? reminderTimes,
+          Value<String?> notes = const Value.absent(),
+          bool? isActive,
+          DateTime? createdAt}) =>
+      FeedingSchedule(
+        id: id ?? this.id,
+        petId: petId ?? this.petId,
+        foodType: foodType ?? this.foodType,
+        amount: amount ?? this.amount,
+        reminderTimes: reminderTimes ?? this.reminderTimes,
+        notes: notes.present ? notes.value : this.notes,
+        isActive: isActive ?? this.isActive,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  FeedingSchedule copyWithCompanion(FeedingSchedulesCompanion data) {
+    return FeedingSchedule(
+      id: data.id.present ? data.id.value : this.id,
+      petId: data.petId.present ? data.petId.value : this.petId,
+      foodType: data.foodType.present ? data.foodType.value : this.foodType,
+      amount: data.amount.present ? data.amount.value : this.amount,
+      reminderTimes: data.reminderTimes.present
+          ? data.reminderTimes.value
+          : this.reminderTimes,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      isActive: data.isActive.present ? data.isActive.value : this.isActive,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FeedingSchedule(')
+          ..write('id: $id, ')
+          ..write('petId: $petId, ')
+          ..write('foodType: $foodType, ')
+          ..write('amount: $amount, ')
+          ..write('reminderTimes: $reminderTimes, ')
+          ..write('notes: $notes, ')
+          ..write('isActive: $isActive, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id, petId, foodType, amount, reminderTimes, notes, isActive, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FeedingSchedule &&
+          other.id == this.id &&
+          other.petId == this.petId &&
+          other.foodType == this.foodType &&
+          other.amount == this.amount &&
+          other.reminderTimes == this.reminderTimes &&
+          other.notes == this.notes &&
+          other.isActive == this.isActive &&
+          other.createdAt == this.createdAt);
+}
+
+class FeedingSchedulesCompanion extends UpdateCompanion<FeedingSchedule> {
+  final Value<int> id;
+  final Value<String> petId;
+  final Value<String> foodType;
+  final Value<String> amount;
+  final Value<String> reminderTimes;
+  final Value<String?> notes;
+  final Value<bool> isActive;
+  final Value<DateTime> createdAt;
+  const FeedingSchedulesCompanion({
+    this.id = const Value.absent(),
+    this.petId = const Value.absent(),
+    this.foodType = const Value.absent(),
+    this.amount = const Value.absent(),
+    this.reminderTimes = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.isActive = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  FeedingSchedulesCompanion.insert({
+    this.id = const Value.absent(),
+    required String petId,
+    required String foodType,
+    required String amount,
+    required String reminderTimes,
+    this.notes = const Value.absent(),
+    this.isActive = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  })  : petId = Value(petId),
+        foodType = Value(foodType),
+        amount = Value(amount),
+        reminderTimes = Value(reminderTimes);
+  static Insertable<FeedingSchedule> custom({
+    Expression<int>? id,
+    Expression<String>? petId,
+    Expression<String>? foodType,
+    Expression<String>? amount,
+    Expression<String>? reminderTimes,
+    Expression<String>? notes,
+    Expression<bool>? isActive,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (petId != null) 'pet_id': petId,
+      if (foodType != null) 'food_type': foodType,
+      if (amount != null) 'amount': amount,
+      if (reminderTimes != null) 'reminder_times': reminderTimes,
+      if (notes != null) 'notes': notes,
+      if (isActive != null) 'is_active': isActive,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  FeedingSchedulesCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? petId,
+      Value<String>? foodType,
+      Value<String>? amount,
+      Value<String>? reminderTimes,
+      Value<String?>? notes,
+      Value<bool>? isActive,
+      Value<DateTime>? createdAt}) {
+    return FeedingSchedulesCompanion(
+      id: id ?? this.id,
+      petId: petId ?? this.petId,
+      foodType: foodType ?? this.foodType,
+      amount: amount ?? this.amount,
+      reminderTimes: reminderTimes ?? this.reminderTimes,
+      notes: notes ?? this.notes,
+      isActive: isActive ?? this.isActive,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (petId.present) {
+      map['pet_id'] = Variable<String>(petId.value);
+    }
+    if (foodType.present) {
+      map['food_type'] = Variable<String>(foodType.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<String>(amount.value);
+    }
+    if (reminderTimes.present) {
+      map['reminder_times'] = Variable<String>(reminderTimes.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (isActive.present) {
+      map['is_active'] = Variable<bool>(isActive.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FeedingSchedulesCompanion(')
+          ..write('id: $id, ')
+          ..write('petId: $petId, ')
+          ..write('foodType: $foodType, ')
+          ..write('amount: $amount, ')
+          ..write('reminderTimes: $reminderTimes, ')
+          ..write('notes: $notes, ')
+          ..write('isActive: $isActive, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $FeedingCheckInsTable extends FeedingCheckIns
+    with TableInfo<$FeedingCheckInsTable, FeedingCheckIn> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $FeedingCheckInsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _scheduleIdMeta =
+      const VerificationMeta('scheduleId');
+  @override
+  late final GeneratedColumn<int> scheduleId = GeneratedColumn<int>(
+      'schedule_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES feeding_schedules (id)'));
+  static const VerificationMeta _timestampMeta =
+      const VerificationMeta('timestamp');
+  @override
+  late final GeneratedColumn<DateTime> timestamp = GeneratedColumn<DateTime>(
+      'timestamp', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  static const VerificationMeta _plannedTimestampMeta =
+      const VerificationMeta('plannedTimestamp');
+  @override
+  late final GeneratedColumn<DateTime> plannedTimestamp =
+      GeneratedColumn<DateTime>('planned_timestamp', aliasedName, false,
+          type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, scheduleId, timestamp, plannedTimestamp, notes];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'feeding_check_ins';
+  @override
+  VerificationContext validateIntegrity(Insertable<FeedingCheckIn> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('schedule_id')) {
+      context.handle(
+          _scheduleIdMeta,
+          scheduleId.isAcceptableOrUnknown(
+              data['schedule_id']!, _scheduleIdMeta));
+    } else if (isInserting) {
+      context.missing(_scheduleIdMeta);
+    }
+    if (data.containsKey('timestamp')) {
+      context.handle(_timestampMeta,
+          timestamp.isAcceptableOrUnknown(data['timestamp']!, _timestampMeta));
+    }
+    if (data.containsKey('planned_timestamp')) {
+      context.handle(
+          _plannedTimestampMeta,
+          plannedTimestamp.isAcceptableOrUnknown(
+              data['planned_timestamp']!, _plannedTimestampMeta));
+    } else if (isInserting) {
+      context.missing(_plannedTimestampMeta);
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  FeedingCheckIn map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return FeedingCheckIn(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      scheduleId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}schedule_id'])!,
+      timestamp: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}timestamp'])!,
+      plannedTimestamp: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}planned_timestamp'])!,
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
+    );
+  }
+
+  @override
+  $FeedingCheckInsTable createAlias(String alias) {
+    return $FeedingCheckInsTable(attachedDatabase, alias);
+  }
+}
+
+class FeedingCheckIn extends DataClass implements Insertable<FeedingCheckIn> {
+  final int id;
+  final int scheduleId;
+  final DateTime timestamp;
+  final DateTime plannedTimestamp;
+  final String? notes;
+  const FeedingCheckIn(
+      {required this.id,
+      required this.scheduleId,
+      required this.timestamp,
+      required this.plannedTimestamp,
+      this.notes});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['schedule_id'] = Variable<int>(scheduleId);
+    map['timestamp'] = Variable<DateTime>(timestamp);
+    map['planned_timestamp'] = Variable<DateTime>(plannedTimestamp);
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    return map;
+  }
+
+  FeedingCheckInsCompanion toCompanion(bool nullToAbsent) {
+    return FeedingCheckInsCompanion(
+      id: Value(id),
+      scheduleId: Value(scheduleId),
+      timestamp: Value(timestamp),
+      plannedTimestamp: Value(plannedTimestamp),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
+    );
+  }
+
+  factory FeedingCheckIn.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return FeedingCheckIn(
+      id: serializer.fromJson<int>(json['id']),
+      scheduleId: serializer.fromJson<int>(json['scheduleId']),
+      timestamp: serializer.fromJson<DateTime>(json['timestamp']),
+      plannedTimestamp: serializer.fromJson<DateTime>(json['plannedTimestamp']),
+      notes: serializer.fromJson<String?>(json['notes']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'scheduleId': serializer.toJson<int>(scheduleId),
+      'timestamp': serializer.toJson<DateTime>(timestamp),
+      'plannedTimestamp': serializer.toJson<DateTime>(plannedTimestamp),
+      'notes': serializer.toJson<String?>(notes),
+    };
+  }
+
+  FeedingCheckIn copyWith(
+          {int? id,
+          int? scheduleId,
+          DateTime? timestamp,
+          DateTime? plannedTimestamp,
+          Value<String?> notes = const Value.absent()}) =>
+      FeedingCheckIn(
+        id: id ?? this.id,
+        scheduleId: scheduleId ?? this.scheduleId,
+        timestamp: timestamp ?? this.timestamp,
+        plannedTimestamp: plannedTimestamp ?? this.plannedTimestamp,
+        notes: notes.present ? notes.value : this.notes,
+      );
+  FeedingCheckIn copyWithCompanion(FeedingCheckInsCompanion data) {
+    return FeedingCheckIn(
+      id: data.id.present ? data.id.value : this.id,
+      scheduleId:
+          data.scheduleId.present ? data.scheduleId.value : this.scheduleId,
+      timestamp: data.timestamp.present ? data.timestamp.value : this.timestamp,
+      plannedTimestamp: data.plannedTimestamp.present
+          ? data.plannedTimestamp.value
+          : this.plannedTimestamp,
+      notes: data.notes.present ? data.notes.value : this.notes,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FeedingCheckIn(')
+          ..write('id: $id, ')
+          ..write('scheduleId: $scheduleId, ')
+          ..write('timestamp: $timestamp, ')
+          ..write('plannedTimestamp: $plannedTimestamp, ')
+          ..write('notes: $notes')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, scheduleId, timestamp, plannedTimestamp, notes);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is FeedingCheckIn &&
+          other.id == this.id &&
+          other.scheduleId == this.scheduleId &&
+          other.timestamp == this.timestamp &&
+          other.plannedTimestamp == this.plannedTimestamp &&
+          other.notes == this.notes);
+}
+
+class FeedingCheckInsCompanion extends UpdateCompanion<FeedingCheckIn> {
+  final Value<int> id;
+  final Value<int> scheduleId;
+  final Value<DateTime> timestamp;
+  final Value<DateTime> plannedTimestamp;
+  final Value<String?> notes;
+  const FeedingCheckInsCompanion({
+    this.id = const Value.absent(),
+    this.scheduleId = const Value.absent(),
+    this.timestamp = const Value.absent(),
+    this.plannedTimestamp = const Value.absent(),
+    this.notes = const Value.absent(),
+  });
+  FeedingCheckInsCompanion.insert({
+    this.id = const Value.absent(),
+    required int scheduleId,
+    this.timestamp = const Value.absent(),
+    required DateTime plannedTimestamp,
+    this.notes = const Value.absent(),
+  })  : scheduleId = Value(scheduleId),
+        plannedTimestamp = Value(plannedTimestamp);
+  static Insertable<FeedingCheckIn> custom({
+    Expression<int>? id,
+    Expression<int>? scheduleId,
+    Expression<DateTime>? timestamp,
+    Expression<DateTime>? plannedTimestamp,
+    Expression<String>? notes,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (scheduleId != null) 'schedule_id': scheduleId,
+      if (timestamp != null) 'timestamp': timestamp,
+      if (plannedTimestamp != null) 'planned_timestamp': plannedTimestamp,
+      if (notes != null) 'notes': notes,
+    });
+  }
+
+  FeedingCheckInsCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? scheduleId,
+      Value<DateTime>? timestamp,
+      Value<DateTime>? plannedTimestamp,
+      Value<String?>? notes}) {
+    return FeedingCheckInsCompanion(
+      id: id ?? this.id,
+      scheduleId: scheduleId ?? this.scheduleId,
+      timestamp: timestamp ?? this.timestamp,
+      plannedTimestamp: plannedTimestamp ?? this.plannedTimestamp,
+      notes: notes ?? this.notes,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (scheduleId.present) {
+      map['schedule_id'] = Variable<int>(scheduleId.value);
+    }
+    if (timestamp.present) {
+      map['timestamp'] = Variable<DateTime>(timestamp.value);
+    }
+    if (plannedTimestamp.present) {
+      map['planned_timestamp'] = Variable<DateTime>(plannedTimestamp.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('FeedingCheckInsCompanion(')
+          ..write('id: $id, ')
+          ..write('scheduleId: $scheduleId, ')
+          ..write('timestamp: $timestamp, ')
+          ..write('plannedTimestamp: $plannedTimestamp, ')
+          ..write('notes: $notes')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $PetsTable pets = $PetsTable(this);
   late final $EventsTable events = $EventsTable(this);
+  late final $MedicationSchedulesTable medicationSchedules =
+      $MedicationSchedulesTable(this);
+  late final $MedicationCheckInsTable medicationCheckIns =
+      $MedicationCheckInsTable(this);
+  late final $FeedingSchedulesTable feedingSchedules =
+      $FeedingSchedulesTable(this);
+  late final $FeedingCheckInsTable feedingCheckIns =
+      $FeedingCheckInsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [pets, events];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        pets,
+        events,
+        medicationSchedules,
+        medicationCheckIns,
+        feedingSchedules,
+        feedingCheckIns
+      ];
 }
 
 typedef $$PetsTableCreateCompanionBuilder = PetsCompanion Function({
@@ -996,6 +2587,42 @@ final class $$PetsTableReferences
         (f) => f.petId.petId.sqlEquals($_itemColumn<String>('pet_id')!));
 
     final cache = $_typedResult.readTableOrNull(_eventsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$MedicationSchedulesTable,
+      List<MedicationSchedule>> _medicationSchedulesRefsTable(
+          _$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(db.medicationSchedules,
+          aliasName: $_aliasNameGenerator(
+              db.pets.petId, db.medicationSchedules.petId));
+
+  $$MedicationSchedulesTableProcessedTableManager get medicationSchedulesRefs {
+    final manager = $$MedicationSchedulesTableTableManager(
+            $_db, $_db.medicationSchedules)
+        .filter(
+            (f) => f.petId.petId.sqlEquals($_itemColumn<String>('pet_id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_medicationSchedulesRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$FeedingSchedulesTable, List<FeedingSchedule>>
+      _feedingSchedulesRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.feedingSchedules,
+              aliasName: $_aliasNameGenerator(
+                  db.pets.petId, db.feedingSchedules.petId));
+
+  $$FeedingSchedulesTableProcessedTableManager get feedingSchedulesRefs {
+    final manager =
+        $$FeedingSchedulesTableTableManager($_db, $_db.feedingSchedules).filter(
+            (f) => f.petId.petId.sqlEquals($_itemColumn<String>('pet_id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_feedingSchedulesRefsTable($_db));
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: cache));
   }
@@ -1055,6 +2682,48 @@ class $$PetsTableFilterComposer extends Composer<_$AppDatabase, $PetsTable> {
             $$EventsTableFilterComposer(
               $db: $db,
               $table: $db.events,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<bool> medicationSchedulesRefs(
+      Expression<bool> Function($$MedicationSchedulesTableFilterComposer f) f) {
+    final $$MedicationSchedulesTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.petId,
+        referencedTable: $db.medicationSchedules,
+        getReferencedColumn: (t) => t.petId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$MedicationSchedulesTableFilterComposer(
+              $db: $db,
+              $table: $db.medicationSchedules,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<bool> feedingSchedulesRefs(
+      Expression<bool> Function($$FeedingSchedulesTableFilterComposer f) f) {
+    final $$FeedingSchedulesTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.petId,
+        referencedTable: $db.feedingSchedules,
+        getReferencedColumn: (t) => t.petId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$FeedingSchedulesTableFilterComposer(
+              $db: $db,
+              $table: $db.feedingSchedules,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -1168,6 +2837,50 @@ class $$PetsTableAnnotationComposer
             ));
     return f(composer);
   }
+
+  Expression<T> medicationSchedulesRefs<T extends Object>(
+      Expression<T> Function($$MedicationSchedulesTableAnnotationComposer a)
+          f) {
+    final $$MedicationSchedulesTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.petId,
+            referencedTable: $db.medicationSchedules,
+            getReferencedColumn: (t) => t.petId,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$MedicationSchedulesTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.medicationSchedules,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return f(composer);
+  }
+
+  Expression<T> feedingSchedulesRefs<T extends Object>(
+      Expression<T> Function($$FeedingSchedulesTableAnnotationComposer a) f) {
+    final $$FeedingSchedulesTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.petId,
+        referencedTable: $db.feedingSchedules,
+        getReferencedColumn: (t) => t.petId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$FeedingSchedulesTableAnnotationComposer(
+              $db: $db,
+              $table: $db.feedingSchedules,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
 }
 
 class $$PetsTableTableManager extends RootTableManager<
@@ -1181,7 +2894,10 @@ class $$PetsTableTableManager extends RootTableManager<
     $$PetsTableUpdateCompanionBuilder,
     (Pet, $$PetsTableReferences),
     Pet,
-    PrefetchHooks Function({bool eventsRefs})> {
+    PrefetchHooks Function(
+        {bool eventsRefs,
+        bool medicationSchedulesRefs,
+        bool feedingSchedulesRefs})> {
   $$PetsTableTableManager(_$AppDatabase db, $PetsTable table)
       : super(TableManagerState(
           db: db,
@@ -1248,10 +2964,17 @@ class $$PetsTableTableManager extends RootTableManager<
               .map((e) =>
                   (e.readTable(table), $$PetsTableReferences(db, table, e)))
               .toList(),
-          prefetchHooksCallback: ({eventsRefs = false}) {
+          prefetchHooksCallback: (
+              {eventsRefs = false,
+              medicationSchedulesRefs = false,
+              feedingSchedulesRefs = false}) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [if (eventsRefs) db.events],
+              explicitlyWatchedTables: [
+                if (eventsRefs) db.events,
+                if (medicationSchedulesRefs) db.medicationSchedules,
+                if (feedingSchedulesRefs) db.feedingSchedules
+              ],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
                 return [
@@ -1262,6 +2985,31 @@ class $$PetsTableTableManager extends RootTableManager<
                             $$PetsTableReferences._eventsRefsTable(db),
                         managerFromTypedResult: (p0) =>
                             $$PetsTableReferences(db, table, p0).eventsRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.petId == item.petId),
+                        typedResults: items),
+                  if (medicationSchedulesRefs)
+                    await $_getPrefetchedData<Pet, $PetsTable,
+                            MedicationSchedule>(
+                        currentTable: table,
+                        referencedTable: $$PetsTableReferences
+                            ._medicationSchedulesRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$PetsTableReferences(db, table, p0)
+                                .medicationSchedulesRefs,
+                        referencedItemsForCurrentItem: (item,
+                                referencedItems) =>
+                            referencedItems.where((e) => e.petId == item.petId),
+                        typedResults: items),
+                  if (feedingSchedulesRefs)
+                    await $_getPrefetchedData<Pet, $PetsTable, FeedingSchedule>(
+                        currentTable: table,
+                        referencedTable: $$PetsTableReferences
+                            ._feedingSchedulesRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$PetsTableReferences(db, table, p0)
+                                .feedingSchedulesRefs,
                         referencedItemsForCurrentItem: (item,
                                 referencedItems) =>
                             referencedItems.where((e) => e.petId == item.petId),
@@ -1284,7 +3032,10 @@ typedef $$PetsTableProcessedTableManager = ProcessedTableManager<
     $$PetsTableUpdateCompanionBuilder,
     (Pet, $$PetsTableReferences),
     Pet,
-    PrefetchHooks Function({bool eventsRefs})>;
+    PrefetchHooks Function(
+        {bool eventsRefs,
+        bool medicationSchedulesRefs,
+        bool feedingSchedulesRefs})>;
 typedef $$EventsTableCreateCompanionBuilder = EventsCompanion Function({
   Value<int> id,
   required String petId,
@@ -1593,6 +3344,1394 @@ typedef $$EventsTableProcessedTableManager = ProcessedTableManager<
     (Event, $$EventsTableReferences),
     Event,
     PrefetchHooks Function({bool petId})>;
+typedef $$MedicationSchedulesTableCreateCompanionBuilder
+    = MedicationSchedulesCompanion Function({
+  Value<int> id,
+  required String petId,
+  required String medicationName,
+  required String dosage,
+  required String frequency,
+  required DateTime startDate,
+  Value<DateTime?> endDate,
+  required String reminderTimes,
+  Value<bool> isActive,
+  Value<DateTime> createdAt,
+});
+typedef $$MedicationSchedulesTableUpdateCompanionBuilder
+    = MedicationSchedulesCompanion Function({
+  Value<int> id,
+  Value<String> petId,
+  Value<String> medicationName,
+  Value<String> dosage,
+  Value<String> frequency,
+  Value<DateTime> startDate,
+  Value<DateTime?> endDate,
+  Value<String> reminderTimes,
+  Value<bool> isActive,
+  Value<DateTime> createdAt,
+});
+
+final class $$MedicationSchedulesTableReferences extends BaseReferences<
+    _$AppDatabase, $MedicationSchedulesTable, MedicationSchedule> {
+  $$MedicationSchedulesTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $PetsTable _petIdTable(_$AppDatabase db) => db.pets.createAlias(
+      $_aliasNameGenerator(db.medicationSchedules.petId, db.pets.petId));
+
+  $$PetsTableProcessedTableManager get petId {
+    final $_column = $_itemColumn<String>('pet_id')!;
+
+    final manager = $$PetsTableTableManager($_db, $_db.pets)
+        .filter((f) => f.petId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_petIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static MultiTypedResultKey<$MedicationCheckInsTable, List<MedicationCheckIn>>
+      _medicationCheckInsRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.medicationCheckIns,
+              aliasName: $_aliasNameGenerator(
+                  db.medicationSchedules.id, db.medicationCheckIns.scheduleId));
+
+  $$MedicationCheckInsTableProcessedTableManager get medicationCheckInsRefs {
+    final manager =
+        $$MedicationCheckInsTableTableManager($_db, $_db.medicationCheckIns)
+            .filter((f) => f.scheduleId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_medicationCheckInsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
+
+class $$MedicationSchedulesTableFilterComposer
+    extends Composer<_$AppDatabase, $MedicationSchedulesTable> {
+  $$MedicationSchedulesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get medicationName => $composableBuilder(
+      column: $table.medicationName,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get dosage => $composableBuilder(
+      column: $table.dosage, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get frequency => $composableBuilder(
+      column: $table.frequency, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get startDate => $composableBuilder(
+      column: $table.startDate, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get endDate => $composableBuilder(
+      column: $table.endDate, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get reminderTimes => $composableBuilder(
+      column: $table.reminderTimes, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isActive => $composableBuilder(
+      column: $table.isActive, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  $$PetsTableFilterComposer get petId {
+    final $$PetsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.petId,
+        referencedTable: $db.pets,
+        getReferencedColumn: (t) => t.petId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PetsTableFilterComposer(
+              $db: $db,
+              $table: $db.pets,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  Expression<bool> medicationCheckInsRefs(
+      Expression<bool> Function($$MedicationCheckInsTableFilterComposer f) f) {
+    final $$MedicationCheckInsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.medicationCheckIns,
+        getReferencedColumn: (t) => t.scheduleId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$MedicationCheckInsTableFilterComposer(
+              $db: $db,
+              $table: $db.medicationCheckIns,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$MedicationSchedulesTableOrderingComposer
+    extends Composer<_$AppDatabase, $MedicationSchedulesTable> {
+  $$MedicationSchedulesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get medicationName => $composableBuilder(
+      column: $table.medicationName,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get dosage => $composableBuilder(
+      column: $table.dosage, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get frequency => $composableBuilder(
+      column: $table.frequency, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get startDate => $composableBuilder(
+      column: $table.startDate, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get endDate => $composableBuilder(
+      column: $table.endDate, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get reminderTimes => $composableBuilder(
+      column: $table.reminderTimes,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isActive => $composableBuilder(
+      column: $table.isActive, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  $$PetsTableOrderingComposer get petId {
+    final $$PetsTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.petId,
+        referencedTable: $db.pets,
+        getReferencedColumn: (t) => t.petId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PetsTableOrderingComposer(
+              $db: $db,
+              $table: $db.pets,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$MedicationSchedulesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MedicationSchedulesTable> {
+  $$MedicationSchedulesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get medicationName => $composableBuilder(
+      column: $table.medicationName, builder: (column) => column);
+
+  GeneratedColumn<String> get dosage =>
+      $composableBuilder(column: $table.dosage, builder: (column) => column);
+
+  GeneratedColumn<String> get frequency =>
+      $composableBuilder(column: $table.frequency, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startDate =>
+      $composableBuilder(column: $table.startDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get endDate =>
+      $composableBuilder(column: $table.endDate, builder: (column) => column);
+
+  GeneratedColumn<String> get reminderTimes => $composableBuilder(
+      column: $table.reminderTimes, builder: (column) => column);
+
+  GeneratedColumn<bool> get isActive =>
+      $composableBuilder(column: $table.isActive, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$PetsTableAnnotationComposer get petId {
+    final $$PetsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.petId,
+        referencedTable: $db.pets,
+        getReferencedColumn: (t) => t.petId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PetsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.pets,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  Expression<T> medicationCheckInsRefs<T extends Object>(
+      Expression<T> Function($$MedicationCheckInsTableAnnotationComposer a) f) {
+    final $$MedicationCheckInsTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.id,
+            referencedTable: $db.medicationCheckIns,
+            getReferencedColumn: (t) => t.scheduleId,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$MedicationCheckInsTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.medicationCheckIns,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return f(composer);
+  }
+}
+
+class $$MedicationSchedulesTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $MedicationSchedulesTable,
+    MedicationSchedule,
+    $$MedicationSchedulesTableFilterComposer,
+    $$MedicationSchedulesTableOrderingComposer,
+    $$MedicationSchedulesTableAnnotationComposer,
+    $$MedicationSchedulesTableCreateCompanionBuilder,
+    $$MedicationSchedulesTableUpdateCompanionBuilder,
+    (MedicationSchedule, $$MedicationSchedulesTableReferences),
+    MedicationSchedule,
+    PrefetchHooks Function({bool petId, bool medicationCheckInsRefs})> {
+  $$MedicationSchedulesTableTableManager(
+      _$AppDatabase db, $MedicationSchedulesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MedicationSchedulesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MedicationSchedulesTableOrderingComposer(
+                  $db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MedicationSchedulesTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> petId = const Value.absent(),
+            Value<String> medicationName = const Value.absent(),
+            Value<String> dosage = const Value.absent(),
+            Value<String> frequency = const Value.absent(),
+            Value<DateTime> startDate = const Value.absent(),
+            Value<DateTime?> endDate = const Value.absent(),
+            Value<String> reminderTimes = const Value.absent(),
+            Value<bool> isActive = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+          }) =>
+              MedicationSchedulesCompanion(
+            id: id,
+            petId: petId,
+            medicationName: medicationName,
+            dosage: dosage,
+            frequency: frequency,
+            startDate: startDate,
+            endDate: endDate,
+            reminderTimes: reminderTimes,
+            isActive: isActive,
+            createdAt: createdAt,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String petId,
+            required String medicationName,
+            required String dosage,
+            required String frequency,
+            required DateTime startDate,
+            Value<DateTime?> endDate = const Value.absent(),
+            required String reminderTimes,
+            Value<bool> isActive = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+          }) =>
+              MedicationSchedulesCompanion.insert(
+            id: id,
+            petId: petId,
+            medicationName: medicationName,
+            dosage: dosage,
+            frequency: frequency,
+            startDate: startDate,
+            endDate: endDate,
+            reminderTimes: reminderTimes,
+            isActive: isActive,
+            createdAt: createdAt,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$MedicationSchedulesTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: (
+              {petId = false, medicationCheckInsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (medicationCheckInsRefs) db.medicationCheckIns
+              ],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (petId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.petId,
+                    referencedTable:
+                        $$MedicationSchedulesTableReferences._petIdTable(db),
+                    referencedColumn: $$MedicationSchedulesTableReferences
+                        ._petIdTable(db)
+                        .petId,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (medicationCheckInsRefs)
+                    await $_getPrefetchedData<MedicationSchedule,
+                            $MedicationSchedulesTable, MedicationCheckIn>(
+                        currentTable: table,
+                        referencedTable: $$MedicationSchedulesTableReferences
+                            ._medicationCheckInsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$MedicationSchedulesTableReferences(db, table, p0)
+                                .medicationCheckInsRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.scheduleId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$MedicationSchedulesTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $MedicationSchedulesTable,
+    MedicationSchedule,
+    $$MedicationSchedulesTableFilterComposer,
+    $$MedicationSchedulesTableOrderingComposer,
+    $$MedicationSchedulesTableAnnotationComposer,
+    $$MedicationSchedulesTableCreateCompanionBuilder,
+    $$MedicationSchedulesTableUpdateCompanionBuilder,
+    (MedicationSchedule, $$MedicationSchedulesTableReferences),
+    MedicationSchedule,
+    PrefetchHooks Function({bool petId, bool medicationCheckInsRefs})>;
+typedef $$MedicationCheckInsTableCreateCompanionBuilder
+    = MedicationCheckInsCompanion Function({
+  Value<int> id,
+  required int scheduleId,
+  Value<DateTime> timestamp,
+  required DateTime plannedTimestamp,
+  Value<bool> isTaken,
+  Value<String?> notes,
+});
+typedef $$MedicationCheckInsTableUpdateCompanionBuilder
+    = MedicationCheckInsCompanion Function({
+  Value<int> id,
+  Value<int> scheduleId,
+  Value<DateTime> timestamp,
+  Value<DateTime> plannedTimestamp,
+  Value<bool> isTaken,
+  Value<String?> notes,
+});
+
+final class $$MedicationCheckInsTableReferences extends BaseReferences<
+    _$AppDatabase, $MedicationCheckInsTable, MedicationCheckIn> {
+  $$MedicationCheckInsTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $MedicationSchedulesTable _scheduleIdTable(_$AppDatabase db) =>
+      db.medicationSchedules.createAlias($_aliasNameGenerator(
+          db.medicationCheckIns.scheduleId, db.medicationSchedules.id));
+
+  $$MedicationSchedulesTableProcessedTableManager get scheduleId {
+    final $_column = $_itemColumn<int>('schedule_id')!;
+
+    final manager =
+        $$MedicationSchedulesTableTableManager($_db, $_db.medicationSchedules)
+            .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_scheduleIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$MedicationCheckInsTableFilterComposer
+    extends Composer<_$AppDatabase, $MedicationCheckInsTable> {
+  $$MedicationCheckInsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get timestamp => $composableBuilder(
+      column: $table.timestamp, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get plannedTimestamp => $composableBuilder(
+      column: $table.plannedTimestamp,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isTaken => $composableBuilder(
+      column: $table.isTaken, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get notes => $composableBuilder(
+      column: $table.notes, builder: (column) => ColumnFilters(column));
+
+  $$MedicationSchedulesTableFilterComposer get scheduleId {
+    final $$MedicationSchedulesTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.scheduleId,
+        referencedTable: $db.medicationSchedules,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$MedicationSchedulesTableFilterComposer(
+              $db: $db,
+              $table: $db.medicationSchedules,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$MedicationCheckInsTableOrderingComposer
+    extends Composer<_$AppDatabase, $MedicationCheckInsTable> {
+  $$MedicationCheckInsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get timestamp => $composableBuilder(
+      column: $table.timestamp, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get plannedTimestamp => $composableBuilder(
+      column: $table.plannedTimestamp,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isTaken => $composableBuilder(
+      column: $table.isTaken, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+      column: $table.notes, builder: (column) => ColumnOrderings(column));
+
+  $$MedicationSchedulesTableOrderingComposer get scheduleId {
+    final $$MedicationSchedulesTableOrderingComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.scheduleId,
+            referencedTable: $db.medicationSchedules,
+            getReferencedColumn: (t) => t.id,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$MedicationSchedulesTableOrderingComposer(
+                  $db: $db,
+                  $table: $db.medicationSchedules,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return composer;
+  }
+}
+
+class $$MedicationCheckInsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $MedicationCheckInsTable> {
+  $$MedicationCheckInsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get timestamp =>
+      $composableBuilder(column: $table.timestamp, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get plannedTimestamp => $composableBuilder(
+      column: $table.plannedTimestamp, builder: (column) => column);
+
+  GeneratedColumn<bool> get isTaken =>
+      $composableBuilder(column: $table.isTaken, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  $$MedicationSchedulesTableAnnotationComposer get scheduleId {
+    final $$MedicationSchedulesTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.scheduleId,
+            referencedTable: $db.medicationSchedules,
+            getReferencedColumn: (t) => t.id,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$MedicationSchedulesTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.medicationSchedules,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return composer;
+  }
+}
+
+class $$MedicationCheckInsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $MedicationCheckInsTable,
+    MedicationCheckIn,
+    $$MedicationCheckInsTableFilterComposer,
+    $$MedicationCheckInsTableOrderingComposer,
+    $$MedicationCheckInsTableAnnotationComposer,
+    $$MedicationCheckInsTableCreateCompanionBuilder,
+    $$MedicationCheckInsTableUpdateCompanionBuilder,
+    (MedicationCheckIn, $$MedicationCheckInsTableReferences),
+    MedicationCheckIn,
+    PrefetchHooks Function({bool scheduleId})> {
+  $$MedicationCheckInsTableTableManager(
+      _$AppDatabase db, $MedicationCheckInsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$MedicationCheckInsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MedicationCheckInsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MedicationCheckInsTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int> scheduleId = const Value.absent(),
+            Value<DateTime> timestamp = const Value.absent(),
+            Value<DateTime> plannedTimestamp = const Value.absent(),
+            Value<bool> isTaken = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+          }) =>
+              MedicationCheckInsCompanion(
+            id: id,
+            scheduleId: scheduleId,
+            timestamp: timestamp,
+            plannedTimestamp: plannedTimestamp,
+            isTaken: isTaken,
+            notes: notes,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required int scheduleId,
+            Value<DateTime> timestamp = const Value.absent(),
+            required DateTime plannedTimestamp,
+            Value<bool> isTaken = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+          }) =>
+              MedicationCheckInsCompanion.insert(
+            id: id,
+            scheduleId: scheduleId,
+            timestamp: timestamp,
+            plannedTimestamp: plannedTimestamp,
+            isTaken: isTaken,
+            notes: notes,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$MedicationCheckInsTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({scheduleId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (scheduleId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.scheduleId,
+                    referencedTable: $$MedicationCheckInsTableReferences
+                        ._scheduleIdTable(db),
+                    referencedColumn: $$MedicationCheckInsTableReferences
+                        ._scheduleIdTable(db)
+                        .id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$MedicationCheckInsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $MedicationCheckInsTable,
+    MedicationCheckIn,
+    $$MedicationCheckInsTableFilterComposer,
+    $$MedicationCheckInsTableOrderingComposer,
+    $$MedicationCheckInsTableAnnotationComposer,
+    $$MedicationCheckInsTableCreateCompanionBuilder,
+    $$MedicationCheckInsTableUpdateCompanionBuilder,
+    (MedicationCheckIn, $$MedicationCheckInsTableReferences),
+    MedicationCheckIn,
+    PrefetchHooks Function({bool scheduleId})>;
+typedef $$FeedingSchedulesTableCreateCompanionBuilder
+    = FeedingSchedulesCompanion Function({
+  Value<int> id,
+  required String petId,
+  required String foodType,
+  required String amount,
+  required String reminderTimes,
+  Value<String?> notes,
+  Value<bool> isActive,
+  Value<DateTime> createdAt,
+});
+typedef $$FeedingSchedulesTableUpdateCompanionBuilder
+    = FeedingSchedulesCompanion Function({
+  Value<int> id,
+  Value<String> petId,
+  Value<String> foodType,
+  Value<String> amount,
+  Value<String> reminderTimes,
+  Value<String?> notes,
+  Value<bool> isActive,
+  Value<DateTime> createdAt,
+});
+
+final class $$FeedingSchedulesTableReferences extends BaseReferences<
+    _$AppDatabase, $FeedingSchedulesTable, FeedingSchedule> {
+  $$FeedingSchedulesTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $PetsTable _petIdTable(_$AppDatabase db) => db.pets.createAlias(
+      $_aliasNameGenerator(db.feedingSchedules.petId, db.pets.petId));
+
+  $$PetsTableProcessedTableManager get petId {
+    final $_column = $_itemColumn<String>('pet_id')!;
+
+    final manager = $$PetsTableTableManager($_db, $_db.pets)
+        .filter((f) => f.petId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_petIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static MultiTypedResultKey<$FeedingCheckInsTable, List<FeedingCheckIn>>
+      _feedingCheckInsRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.feedingCheckIns,
+              aliasName: $_aliasNameGenerator(
+                  db.feedingSchedules.id, db.feedingCheckIns.scheduleId));
+
+  $$FeedingCheckInsTableProcessedTableManager get feedingCheckInsRefs {
+    final manager =
+        $$FeedingCheckInsTableTableManager($_db, $_db.feedingCheckIns)
+            .filter((f) => f.scheduleId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_feedingCheckInsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
+
+class $$FeedingSchedulesTableFilterComposer
+    extends Composer<_$AppDatabase, $FeedingSchedulesTable> {
+  $$FeedingSchedulesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get foodType => $composableBuilder(
+      column: $table.foodType, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get amount => $composableBuilder(
+      column: $table.amount, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get reminderTimes => $composableBuilder(
+      column: $table.reminderTimes, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get notes => $composableBuilder(
+      column: $table.notes, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<bool> get isActive => $composableBuilder(
+      column: $table.isActive, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  $$PetsTableFilterComposer get petId {
+    final $$PetsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.petId,
+        referencedTable: $db.pets,
+        getReferencedColumn: (t) => t.petId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PetsTableFilterComposer(
+              $db: $db,
+              $table: $db.pets,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  Expression<bool> feedingCheckInsRefs(
+      Expression<bool> Function($$FeedingCheckInsTableFilterComposer f) f) {
+    final $$FeedingCheckInsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.feedingCheckIns,
+        getReferencedColumn: (t) => t.scheduleId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$FeedingCheckInsTableFilterComposer(
+              $db: $db,
+              $table: $db.feedingCheckIns,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$FeedingSchedulesTableOrderingComposer
+    extends Composer<_$AppDatabase, $FeedingSchedulesTable> {
+  $$FeedingSchedulesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get foodType => $composableBuilder(
+      column: $table.foodType, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get amount => $composableBuilder(
+      column: $table.amount, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get reminderTimes => $composableBuilder(
+      column: $table.reminderTimes,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+      column: $table.notes, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<bool> get isActive => $composableBuilder(
+      column: $table.isActive, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  $$PetsTableOrderingComposer get petId {
+    final $$PetsTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.petId,
+        referencedTable: $db.pets,
+        getReferencedColumn: (t) => t.petId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PetsTableOrderingComposer(
+              $db: $db,
+              $table: $db.pets,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$FeedingSchedulesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $FeedingSchedulesTable> {
+  $$FeedingSchedulesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get foodType =>
+      $composableBuilder(column: $table.foodType, builder: (column) => column);
+
+  GeneratedColumn<String> get amount =>
+      $composableBuilder(column: $table.amount, builder: (column) => column);
+
+  GeneratedColumn<String> get reminderTimes => $composableBuilder(
+      column: $table.reminderTimes, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<bool> get isActive =>
+      $composableBuilder(column: $table.isActive, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$PetsTableAnnotationComposer get petId {
+    final $$PetsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.petId,
+        referencedTable: $db.pets,
+        getReferencedColumn: (t) => t.petId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PetsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.pets,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  Expression<T> feedingCheckInsRefs<T extends Object>(
+      Expression<T> Function($$FeedingCheckInsTableAnnotationComposer a) f) {
+    final $$FeedingCheckInsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.feedingCheckIns,
+        getReferencedColumn: (t) => t.scheduleId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$FeedingCheckInsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.feedingCheckIns,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$FeedingSchedulesTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $FeedingSchedulesTable,
+    FeedingSchedule,
+    $$FeedingSchedulesTableFilterComposer,
+    $$FeedingSchedulesTableOrderingComposer,
+    $$FeedingSchedulesTableAnnotationComposer,
+    $$FeedingSchedulesTableCreateCompanionBuilder,
+    $$FeedingSchedulesTableUpdateCompanionBuilder,
+    (FeedingSchedule, $$FeedingSchedulesTableReferences),
+    FeedingSchedule,
+    PrefetchHooks Function({bool petId, bool feedingCheckInsRefs})> {
+  $$FeedingSchedulesTableTableManager(
+      _$AppDatabase db, $FeedingSchedulesTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FeedingSchedulesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FeedingSchedulesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FeedingSchedulesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> petId = const Value.absent(),
+            Value<String> foodType = const Value.absent(),
+            Value<String> amount = const Value.absent(),
+            Value<String> reminderTimes = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<bool> isActive = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+          }) =>
+              FeedingSchedulesCompanion(
+            id: id,
+            petId: petId,
+            foodType: foodType,
+            amount: amount,
+            reminderTimes: reminderTimes,
+            notes: notes,
+            isActive: isActive,
+            createdAt: createdAt,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String petId,
+            required String foodType,
+            required String amount,
+            required String reminderTimes,
+            Value<String?> notes = const Value.absent(),
+            Value<bool> isActive = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+          }) =>
+              FeedingSchedulesCompanion.insert(
+            id: id,
+            petId: petId,
+            foodType: foodType,
+            amount: amount,
+            reminderTimes: reminderTimes,
+            notes: notes,
+            isActive: isActive,
+            createdAt: createdAt,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$FeedingSchedulesTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: (
+              {petId = false, feedingCheckInsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (feedingCheckInsRefs) db.feedingCheckIns
+              ],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (petId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.petId,
+                    referencedTable:
+                        $$FeedingSchedulesTableReferences._petIdTable(db),
+                    referencedColumn:
+                        $$FeedingSchedulesTableReferences._petIdTable(db).petId,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (feedingCheckInsRefs)
+                    await $_getPrefetchedData<FeedingSchedule,
+                            $FeedingSchedulesTable, FeedingCheckIn>(
+                        currentTable: table,
+                        referencedTable: $$FeedingSchedulesTableReferences
+                            ._feedingCheckInsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$FeedingSchedulesTableReferences(db, table, p0)
+                                .feedingCheckInsRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.scheduleId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$FeedingSchedulesTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $FeedingSchedulesTable,
+    FeedingSchedule,
+    $$FeedingSchedulesTableFilterComposer,
+    $$FeedingSchedulesTableOrderingComposer,
+    $$FeedingSchedulesTableAnnotationComposer,
+    $$FeedingSchedulesTableCreateCompanionBuilder,
+    $$FeedingSchedulesTableUpdateCompanionBuilder,
+    (FeedingSchedule, $$FeedingSchedulesTableReferences),
+    FeedingSchedule,
+    PrefetchHooks Function({bool petId, bool feedingCheckInsRefs})>;
+typedef $$FeedingCheckInsTableCreateCompanionBuilder = FeedingCheckInsCompanion
+    Function({
+  Value<int> id,
+  required int scheduleId,
+  Value<DateTime> timestamp,
+  required DateTime plannedTimestamp,
+  Value<String?> notes,
+});
+typedef $$FeedingCheckInsTableUpdateCompanionBuilder = FeedingCheckInsCompanion
+    Function({
+  Value<int> id,
+  Value<int> scheduleId,
+  Value<DateTime> timestamp,
+  Value<DateTime> plannedTimestamp,
+  Value<String?> notes,
+});
+
+final class $$FeedingCheckInsTableReferences extends BaseReferences<
+    _$AppDatabase, $FeedingCheckInsTable, FeedingCheckIn> {
+  $$FeedingCheckInsTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $FeedingSchedulesTable _scheduleIdTable(_$AppDatabase db) =>
+      db.feedingSchedules.createAlias($_aliasNameGenerator(
+          db.feedingCheckIns.scheduleId, db.feedingSchedules.id));
+
+  $$FeedingSchedulesTableProcessedTableManager get scheduleId {
+    final $_column = $_itemColumn<int>('schedule_id')!;
+
+    final manager =
+        $$FeedingSchedulesTableTableManager($_db, $_db.feedingSchedules)
+            .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_scheduleIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$FeedingCheckInsTableFilterComposer
+    extends Composer<_$AppDatabase, $FeedingCheckInsTable> {
+  $$FeedingCheckInsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get timestamp => $composableBuilder(
+      column: $table.timestamp, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get plannedTimestamp => $composableBuilder(
+      column: $table.plannedTimestamp,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get notes => $composableBuilder(
+      column: $table.notes, builder: (column) => ColumnFilters(column));
+
+  $$FeedingSchedulesTableFilterComposer get scheduleId {
+    final $$FeedingSchedulesTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.scheduleId,
+        referencedTable: $db.feedingSchedules,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$FeedingSchedulesTableFilterComposer(
+              $db: $db,
+              $table: $db.feedingSchedules,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$FeedingCheckInsTableOrderingComposer
+    extends Composer<_$AppDatabase, $FeedingCheckInsTable> {
+  $$FeedingCheckInsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get timestamp => $composableBuilder(
+      column: $table.timestamp, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get plannedTimestamp => $composableBuilder(
+      column: $table.plannedTimestamp,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+      column: $table.notes, builder: (column) => ColumnOrderings(column));
+
+  $$FeedingSchedulesTableOrderingComposer get scheduleId {
+    final $$FeedingSchedulesTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.scheduleId,
+        referencedTable: $db.feedingSchedules,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$FeedingSchedulesTableOrderingComposer(
+              $db: $db,
+              $table: $db.feedingSchedules,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$FeedingCheckInsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $FeedingCheckInsTable> {
+  $$FeedingCheckInsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get timestamp =>
+      $composableBuilder(column: $table.timestamp, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get plannedTimestamp => $composableBuilder(
+      column: $table.plannedTimestamp, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  $$FeedingSchedulesTableAnnotationComposer get scheduleId {
+    final $$FeedingSchedulesTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.scheduleId,
+        referencedTable: $db.feedingSchedules,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$FeedingSchedulesTableAnnotationComposer(
+              $db: $db,
+              $table: $db.feedingSchedules,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$FeedingCheckInsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $FeedingCheckInsTable,
+    FeedingCheckIn,
+    $$FeedingCheckInsTableFilterComposer,
+    $$FeedingCheckInsTableOrderingComposer,
+    $$FeedingCheckInsTableAnnotationComposer,
+    $$FeedingCheckInsTableCreateCompanionBuilder,
+    $$FeedingCheckInsTableUpdateCompanionBuilder,
+    (FeedingCheckIn, $$FeedingCheckInsTableReferences),
+    FeedingCheckIn,
+    PrefetchHooks Function({bool scheduleId})> {
+  $$FeedingCheckInsTableTableManager(
+      _$AppDatabase db, $FeedingCheckInsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$FeedingCheckInsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$FeedingCheckInsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$FeedingCheckInsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int> scheduleId = const Value.absent(),
+            Value<DateTime> timestamp = const Value.absent(),
+            Value<DateTime> plannedTimestamp = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+          }) =>
+              FeedingCheckInsCompanion(
+            id: id,
+            scheduleId: scheduleId,
+            timestamp: timestamp,
+            plannedTimestamp: plannedTimestamp,
+            notes: notes,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required int scheduleId,
+            Value<DateTime> timestamp = const Value.absent(),
+            required DateTime plannedTimestamp,
+            Value<String?> notes = const Value.absent(),
+          }) =>
+              FeedingCheckInsCompanion.insert(
+            id: id,
+            scheduleId: scheduleId,
+            timestamp: timestamp,
+            plannedTimestamp: plannedTimestamp,
+            notes: notes,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$FeedingCheckInsTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({scheduleId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (scheduleId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.scheduleId,
+                    referencedTable:
+                        $$FeedingCheckInsTableReferences._scheduleIdTable(db),
+                    referencedColumn: $$FeedingCheckInsTableReferences
+                        ._scheduleIdTable(db)
+                        .id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$FeedingCheckInsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $FeedingCheckInsTable,
+    FeedingCheckIn,
+    $$FeedingCheckInsTableFilterComposer,
+    $$FeedingCheckInsTableOrderingComposer,
+    $$FeedingCheckInsTableAnnotationComposer,
+    $$FeedingCheckInsTableCreateCompanionBuilder,
+    $$FeedingCheckInsTableUpdateCompanionBuilder,
+    (FeedingCheckIn, $$FeedingCheckInsTableReferences),
+    FeedingCheckIn,
+    PrefetchHooks Function({bool scheduleId})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -1600,4 +4739,12 @@ class $AppDatabaseManager {
   $$PetsTableTableManager get pets => $$PetsTableTableManager(_db, _db.pets);
   $$EventsTableTableManager get events =>
       $$EventsTableTableManager(_db, _db.events);
+  $$MedicationSchedulesTableTableManager get medicationSchedules =>
+      $$MedicationSchedulesTableTableManager(_db, _db.medicationSchedules);
+  $$MedicationCheckInsTableTableManager get medicationCheckIns =>
+      $$MedicationCheckInsTableTableManager(_db, _db.medicationCheckIns);
+  $$FeedingSchedulesTableTableManager get feedingSchedules =>
+      $$FeedingSchedulesTableTableManager(_db, _db.feedingSchedules);
+  $$FeedingCheckInsTableTableManager get feedingCheckIns =>
+      $$FeedingCheckInsTableTableManager(_db, _db.feedingCheckIns);
 }
