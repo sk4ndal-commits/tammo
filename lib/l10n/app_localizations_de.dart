@@ -66,10 +66,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String get petNameError => 'Bitte Namen angeben';
 
   @override
-  String get speciesLabel => 'Tierart (z. B. Hund, Katze) *';
+  String get speciesLabel => 'Tierart *';
 
   @override
-  String get speciesError => 'Bitte Tierart angeben';
+  String get speciesError => 'Bitte Tierart auswählen';
+
+  @override
+  String get speciesDog => 'Hund';
+
+  @override
+  String get speciesCat => 'Katze';
+
+  @override
+  String get speciesBird => 'Vogel';
+
+  @override
+  String get speciesRabbit => 'Kaninchen';
+
+  @override
+  String get speciesHamster => 'Hamster';
+
+  @override
+  String get speciesOther => 'Andere';
 
   @override
   String get birthDate => 'Geburtsdatum';

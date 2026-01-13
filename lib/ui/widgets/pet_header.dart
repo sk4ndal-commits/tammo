@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../features/pet/domain/pet.dart';
+import '../../l10n/app_localizations.dart';
 import 'dart:io';
 
 class PetHeader extends StatelessWidget {
@@ -42,7 +43,7 @@ class PetHeader extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  pet.species,
+                  _getSpeciesTranslation(context, pet.species),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(204), // 80% Deckkraft
                   ),
@@ -53,5 +54,25 @@ class PetHeader extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getSpeciesTranslation(BuildContext context, String species) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (species) {
+      case 'Dog':
+        return l10n.speciesDog;
+      case 'Cat':
+        return l10n.speciesCat;
+      case 'Bird':
+        return l10n.speciesBird;
+      case 'Rabbit':
+        return l10n.speciesRabbit;
+      case 'Hamster':
+        return l10n.speciesHamster;
+      case 'Other':
+        return l10n.speciesOther;
+      default:
+        return species;
+    }
   }
 }

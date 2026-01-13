@@ -191,14 +191,50 @@ abstract class AppLocalizations {
   /// No description provided for @speciesLabel.
   ///
   /// In en, this message translates to:
-  /// **'Species (e.g. Dog, Cat) *'**
+  /// **'Species *'**
   String get speciesLabel;
 
   /// No description provided for @speciesError.
   ///
   /// In en, this message translates to:
-  /// **'Please provide a species'**
+  /// **'Please select a species'**
   String get speciesError;
+
+  /// No description provided for @speciesDog.
+  ///
+  /// In en, this message translates to:
+  /// **'Dog'**
+  String get speciesDog;
+
+  /// No description provided for @speciesCat.
+  ///
+  /// In en, this message translates to:
+  /// **'Cat'**
+  String get speciesCat;
+
+  /// No description provided for @speciesBird.
+  ///
+  /// In en, this message translates to:
+  /// **'Bird'**
+  String get speciesBird;
+
+  /// No description provided for @speciesRabbit.
+  ///
+  /// In en, this message translates to:
+  /// **'Rabbit'**
+  String get speciesRabbit;
+
+  /// No description provided for @speciesHamster.
+  ///
+  /// In en, this message translates to:
+  /// **'Hamster'**
+  String get speciesHamster;
+
+  /// No description provided for @speciesOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get speciesOther;
 
   /// No description provided for @birthDate.
   ///

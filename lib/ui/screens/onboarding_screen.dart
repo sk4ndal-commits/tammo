@@ -15,16 +15,15 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _speciesController = TextEditingController();
   final _notesController = TextEditingController();
   final _weightController = TextEditingController();
   DateTime? _selectedDate;
   String? _selectedGender;
+  String? _selectedSpecies;
 
   @override
   void dispose() {
     _nameController.dispose();
-    _speciesController.dispose();
     _notesController.dispose();
     _weightController.dispose();
     super.dispose();
@@ -34,7 +33,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     if (_formKey.currentState?.validate() ?? false) {
       await ref.read(petControllerProvider.notifier).createPet(
             name: _nameController.text,
-            species: _speciesController.text,
+            species: _selectedSpecies ?? '',
             dateOfBirth: _selectedDate,
             gender: _selectedGender,
             weight: double.tryParse(_weightController.text),
@@ -78,14 +77,22 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     (value == null || value.isEmpty) ? l10n.petNameError : null,
               ),
               const SizedBox(height: 16),
-              TextFormField(
-                controller: _speciesController,
+              DropdownButtonFormField<String>(
+                initialValue: _selectedSpecies,
                 decoration: InputDecoration(
                   labelText: l10n.speciesLabel,
                   border: const OutlineInputBorder(),
                 ),
-                validator: (value) =>
-                    (value == null || value.isEmpty) ? l10n.speciesError : null,
+                items: [
+                  DropdownMenuItem(value: 'Dog', child: Text(l10n.speciesDog)),
+                  DropdownMenuItem(value: 'Cat', child: Text(l10n.speciesCat)),
+                  DropdownMenuItem(value: 'Bird', child: Text(l10n.speciesBird)),
+                  DropdownMenuItem(value: 'Rabbit', child: Text(l10n.speciesRabbit)),
+                  DropdownMenuItem(value: 'Hamster', child: Text(l10n.speciesHamster)),
+                  DropdownMenuItem(value: 'Other', child: Text(l10n.speciesOther)),
+                ],
+                onChanged: (value) => setState(() => _selectedSpecies = value),
+                validator: (value) => value == null ? l10n.speciesError : null,
               ),
               const SizedBox(height: 16),
               Row(
