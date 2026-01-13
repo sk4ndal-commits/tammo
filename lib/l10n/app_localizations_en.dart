@@ -206,7 +206,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createPlan => 'Create plan';
 
   @override
-  String get medicationToday => 'Due today';
+  String get medicationToday => 'Medication';
 
   @override
   String get markAsTaken => 'Marked as taken';
@@ -230,7 +230,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get amountLabel => 'Amount *';
 
   @override
-  String get feedingToday => 'Feeding today';
+  String get feedingToday => 'Food';
 
   @override
   String get feedingDone => 'Fed';
@@ -279,4 +279,80 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get later => 'Adjust later';
+
+  @override
+  String get documentsTitle => 'Documents';
+
+  @override
+  String get documentNameLabel => 'Document name *';
+
+  @override
+  String get documentTypeLabel => 'Document type *';
+
+  @override
+  String get documentTypeFinding => 'Finding';
+
+  @override
+  String get documentTypeInvoice => 'Invoice';
+
+  @override
+  String get documentTypeVaccination => 'Vaccination';
+
+  @override
+  String get documentTypeOther => 'Other';
+
+  @override
+  String get documentDateLabel => 'Document date';
+
+  @override
+  String get selectFile => 'Select file';
+
+  @override
+  String get noFileSelected => 'No file selected';
+
+  @override
+  String get tagsLabel => 'Tags (comma separated)';
+
+  @override
+  String get documentUploadSuccess => 'Document uploaded';
+
+  @override
+  String get searchDocuments => 'Search documents...';
+
+  @override
+  String get noDocumentsFound => 'No documents found.';
+
+  @override
+  String get exportTitle => 'Vet Export';
+
+  @override
+  String get exportSubtitle => 'Select the period for the report.';
+
+  @override
+  String get includeSymptoms => 'Include symptoms';
+
+  @override
+  String get includeMedications => 'Include medications';
+
+  @override
+  String get includeDocuments => 'List documents';
+
+  @override
+  String get generatePdf => 'Create PDF Report';
+
+  @override
+  String get exportSuccess => 'Report created';
+
+  @override
+  String get period => 'Period';
+
+  @override
+  String reportTitle(String name) {
+    return 'Health Report for $name';
+  }
+
+  @override
+  String reportPeriod(String start, String end) {
+    return 'Period: $start to $end';
+  }
 }

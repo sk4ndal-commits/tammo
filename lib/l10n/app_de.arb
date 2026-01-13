@@ -68,7 +68,7 @@
   "reminderTimesLabel": "Erinnerungszeiten",
   "addReminderTime": "Zeit hinzufügen",
   "createPlan": "Plan erstellen",
-  "medicationToday": "Heute fällig",
+  "medicationToday": "Medikamente",
   "markAsTaken": "Als gegeben markiert",
   "medicationTaken": "Gegeben",
   "medicationMissed": "Verpasst",
@@ -76,7 +76,7 @@
   "feedingPlanTitle": "Fütterungsplan",
   "foodTypeLabel": "Futterart *",
   "amountLabel": "Menge *",
-  "feedingToday": "Fütterung heute",
+  "feedingToday": "Fütterung",
   "feedingDone": "Gefüttert",
   "noFeedingToday": "Keine Fütterungen für heute geplant.",
   "todayFocus": "Heute",
@@ -92,5 +92,46 @@
   "stepWhen": "Wann?",
   "next": "Weiter",
   "back": "Zurück",
-  "later": "Später anpassen"
+  "later": "Später anpassen",
+  "documentsTitle": "Dokumente",
+  "documentNameLabel": "Name des Dokuments *",
+  "documentTypeLabel": "Dokumenttyp *",
+  "documentTypeFinding": "Befund",
+  "documentTypeInvoice": "Rechnung",
+  "documentTypeVaccination": "Impfung",
+  "documentTypeOther": "Sonstiges",
+  "documentDateLabel": "Datum des Dokuments",
+  "selectFile": "Datei auswählen",
+  "noFileSelected": "Keine Datei ausgewählt",
+  "tagsLabel": "Tags (kommagetrennt)",
+  "documentUploadSuccess": "Dokument hochgeladen",
+  "searchDocuments": "Dokumente suchen...",
+  "noDocumentsFound": "Keine Dokumente gefunden.",
+  "exportTitle": "Tierarzt-Export",
+  "exportSubtitle": "Wähle den Zeitraum für den Bericht.",
+  "includeSymptoms": "Symptome einschließen",
+  "includeMedications": "Medikamente einschließen",
+  "includeDocuments": "Dokumente auflisten",
+  "generatePdf": "PDF Bericht erstellen",
+  "exportSuccess": "Bericht wurde erstellt",
+  "period": "Zeitraum",
+  "reportTitle": "Gesundheitsbericht für {name}",
+  "@reportTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportPeriod": "Zeitraum: {start} bis {end}",
+  "@reportPeriod": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  }
 }

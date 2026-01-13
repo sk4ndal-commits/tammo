@@ -206,7 +206,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get createPlan => 'Plan erstellen';
 
   @override
-  String get medicationToday => 'Heute fällig';
+  String get medicationToday => 'Medikamente';
 
   @override
   String get markAsTaken => 'Als gegeben markiert';
@@ -230,7 +230,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get amountLabel => 'Menge *';
 
   @override
-  String get feedingToday => 'Fütterung heute';
+  String get feedingToday => 'Fütterung';
 
   @override
   String get feedingDone => 'Gefüttert';
@@ -279,4 +279,80 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get later => 'Später anpassen';
+
+  @override
+  String get documentsTitle => 'Dokumente';
+
+  @override
+  String get documentNameLabel => 'Name des Dokuments *';
+
+  @override
+  String get documentTypeLabel => 'Dokumenttyp *';
+
+  @override
+  String get documentTypeFinding => 'Befund';
+
+  @override
+  String get documentTypeInvoice => 'Rechnung';
+
+  @override
+  String get documentTypeVaccination => 'Impfung';
+
+  @override
+  String get documentTypeOther => 'Sonstiges';
+
+  @override
+  String get documentDateLabel => 'Datum des Dokuments';
+
+  @override
+  String get selectFile => 'Datei auswählen';
+
+  @override
+  String get noFileSelected => 'Keine Datei ausgewählt';
+
+  @override
+  String get tagsLabel => 'Tags (kommagetrennt)';
+
+  @override
+  String get documentUploadSuccess => 'Dokument hochgeladen';
+
+  @override
+  String get searchDocuments => 'Dokumente suchen...';
+
+  @override
+  String get noDocumentsFound => 'Keine Dokumente gefunden.';
+
+  @override
+  String get exportTitle => 'Tierarzt-Export';
+
+  @override
+  String get exportSubtitle => 'Wähle den Zeitraum für den Bericht.';
+
+  @override
+  String get includeSymptoms => 'Symptome einschließen';
+
+  @override
+  String get includeMedications => 'Medikamente einschließen';
+
+  @override
+  String get includeDocuments => 'Dokumente auflisten';
+
+  @override
+  String get generatePdf => 'PDF Bericht erstellen';
+
+  @override
+  String get exportSuccess => 'Bericht wurde erstellt';
+
+  @override
+  String get period => 'Zeitraum';
+
+  @override
+  String reportTitle(String name) {
+    return 'Gesundheitsbericht für $name';
+  }
+
+  @override
+  String reportPeriod(String start, String end) {
+    return 'Zeitraum: $start bis $end';
+  }
 }

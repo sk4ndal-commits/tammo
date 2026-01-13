@@ -55,48 +55,68 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           showModalBottomSheet<void>(
             context: context,
             builder: (context) => SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.add_alert_rounded),
-                    title: Text(l10n.captureSymptom),
-                    onTap: () {
-                      context.pop();
-                      context.push('/symptom-log');
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.medication_rounded),
-                    title: Text(l10n.medicationPlanTitle),
-                    onTap: () {
-                      context.pop();
-                      context.push('/medication-plan');
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.restaurant_rounded),
-                    title: Text(l10n.feedingPlanTitle),
-                    onTap: () {
-                      context.pop();
-                      context.push('/feeding-plan');
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.bar_chart_rounded),
-                    title: Text(l10n.statisticsTitle),
-                    onTap: () {
-                      context.pop();
-                      context.push('/statistics');
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.description_rounded),
-                    title: Text(l10n.addDocument),
-                    enabled: false,
-                    onTap: null,
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.add_alert_rounded),
+                      title: Text(l10n.captureSymptom),
+                      onTap: () {
+                        context.pop();
+                        context.push('/symptom-log');
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.medication_rounded),
+                      title: Text(l10n.medicationPlanTitle),
+                      onTap: () {
+                        context.pop();
+                        context.push('/medication-plan');
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.restaurant_rounded),
+                      title: Text(l10n.feedingPlanTitle),
+                      onTap: () {
+                        context.pop();
+                        context.push('/feeding-plan');
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.bar_chart_rounded),
+                      title: Text(l10n.statisticsTitle),
+                      onTap: () {
+                        context.pop();
+                        context.push('/statistics');
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.description_rounded),
+                      title: Text(l10n.addDocument),
+                      onTap: () {
+                        context.pop();
+                        context.push('/document-upload');
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.folder_rounded),
+                      title: Text(l10n.documentsTitle),
+                      onTap: () {
+                        context.pop();
+                        context.push('/documents');
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.picture_as_pdf_rounded),
+                      title: Text(l10n.exportTitle),
+                      onTap: () {
+                        context.pop();
+                        context.push('/export');
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           );

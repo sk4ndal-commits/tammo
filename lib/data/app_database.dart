@@ -72,12 +72,24 @@ class FeedingCheckIns extends Table {
   TextColumn get notes => text().nullable()();
 }
 
-@DriftDatabase(tables: [Pets, Events, MedicationSchedules, MedicationCheckIns, FeedingSchedules, FeedingCheckIns])
+class Documents extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get petId => text().references(Pets, #petId)();
+  TextColumn get name => text()();
+  TextColumn get type => text()(); // z.B. 'Befund', 'Rechnung', 'Impfung'
+  DateTimeColumn get date => dateTime().withDefault(currentDateAndTime)();
+  TextColumn get filePath => text()();
+  TextColumn get tags => text().nullable()(); // Gespeichert als JSON Liste
+  TextColumn get notes => text().nullable()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
+}
+
+@DriftDatabase(tables: [Pets, Events, MedicationSchedules, MedicationCheckIns, FeedingSchedules, FeedingCheckIns, Documents])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration {
@@ -87,12 +99,14 @@ class AppDatabase extends _$AppDatabase {
       },
       onUpgrade: (m, from, to) async {
         if (from < 2) {
-          // Add new tables added in version 2
           await m.createTable(medicationSchedules);
           await m.createTable(medicationCheckIns);
           await m.createTable(feedingSchedules);
           await m.createTable(feedingCheckIns);
           await m.createTable(events);
+        }
+        if (from < 3) {
+          await m.createTable(documents);
         }
       },
     );

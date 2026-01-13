@@ -467,7 +467,7 @@ abstract class AppLocalizations {
   /// No description provided for @medicationToday.
   ///
   /// In en, this message translates to:
-  /// **'Due today'**
+  /// **'Medication'**
   String get medicationToday;
 
   /// No description provided for @markAsTaken.
@@ -515,7 +515,7 @@ abstract class AppLocalizations {
   /// No description provided for @feedingToday.
   ///
   /// In en, this message translates to:
-  /// **'Feeding today'**
+  /// **'Food'**
   String get feedingToday;
 
   /// No description provided for @feedingDone.
@@ -613,6 +613,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Adjust later'**
   String get later;
+
+  /// No description provided for @documentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get documentsTitle;
+
+  /// No description provided for @documentNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Document name *'**
+  String get documentNameLabel;
+
+  /// No description provided for @documentTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Document type *'**
+  String get documentTypeLabel;
+
+  /// No description provided for @documentTypeFinding.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding'**
+  String get documentTypeFinding;
+
+  /// No description provided for @documentTypeInvoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice'**
+  String get documentTypeInvoice;
+
+  /// No description provided for @documentTypeVaccination.
+  ///
+  /// In en, this message translates to:
+  /// **'Vaccination'**
+  String get documentTypeVaccination;
+
+  /// No description provided for @documentTypeOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get documentTypeOther;
+
+  /// No description provided for @documentDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Document date'**
+  String get documentDateLabel;
+
+  /// No description provided for @selectFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Select file'**
+  String get selectFile;
+
+  /// No description provided for @noFileSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No file selected'**
+  String get noFileSelected;
+
+  /// No description provided for @tagsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags (comma separated)'**
+  String get tagsLabel;
+
+  /// No description provided for @documentUploadSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Document uploaded'**
+  String get documentUploadSuccess;
+
+  /// No description provided for @searchDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Search documents...'**
+  String get searchDocuments;
+
+  /// No description provided for @noDocumentsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents found.'**
+  String get noDocumentsFound;
+
+  /// No description provided for @exportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vet Export'**
+  String get exportTitle;
+
+  /// No description provided for @exportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the period for the report.'**
+  String get exportSubtitle;
+
+  /// No description provided for @includeSymptoms.
+  ///
+  /// In en, this message translates to:
+  /// **'Include symptoms'**
+  String get includeSymptoms;
+
+  /// No description provided for @includeMedications.
+  ///
+  /// In en, this message translates to:
+  /// **'Include medications'**
+  String get includeMedications;
+
+  /// No description provided for @includeDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'List documents'**
+  String get includeDocuments;
+
+  /// No description provided for @generatePdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Create PDF Report'**
+  String get generatePdf;
+
+  /// No description provided for @exportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Report created'**
+  String get exportSuccess;
+
+  /// No description provided for @period.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get period;
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Report for {name}'**
+  String reportTitle(String name);
+
+  /// No description provided for @reportPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Period: {start} to {end}'**
+  String reportPeriod(String start, String end);
 }
 
 class _AppLocalizationsDelegate

@@ -100,7 +100,7 @@
   "reminderTimesLabel": "Reminder times",
   "addReminderTime": "Add time",
   "createPlan": "Create plan",
-  "medicationToday": "Due today",
+  "medicationToday": "Medication",
   "markAsTaken": "Marked as taken",
   "medicationTaken": "Taken",
   "medicationMissed": "Missed",
@@ -108,7 +108,7 @@
   "feedingPlanTitle": "Feeding Plan",
   "foodTypeLabel": "Food Type *",
   "amountLabel": "Amount *",
-  "feedingToday": "Feeding today",
+  "feedingToday": "Food",
   "feedingDone": "Fed",
   "noFeedingToday": "No feedings scheduled for today.",
   "todayFocus": "Today",
@@ -124,5 +124,46 @@
   "stepWhen": "When?",
   "next": "Next",
   "back": "Back",
-  "later": "Adjust later"
+  "later": "Adjust later",
+  "documentsTitle": "Documents",
+  "documentNameLabel": "Document name *",
+  "documentTypeLabel": "Document type *",
+  "documentTypeFinding": "Finding",
+  "documentTypeInvoice": "Invoice",
+  "documentTypeVaccination": "Vaccination",
+  "documentTypeOther": "Other",
+  "documentDateLabel": "Document date",
+  "selectFile": "Select file",
+  "noFileSelected": "No file selected",
+  "tagsLabel": "Tags (comma separated)",
+  "documentUploadSuccess": "Document uploaded",
+  "searchDocuments": "Search documents...",
+  "noDocumentsFound": "No documents found.",
+  "exportTitle": "Vet Export",
+  "exportSubtitle": "Select the period for the report.",
+  "includeSymptoms": "Include symptoms",
+  "includeMedications": "Include medications",
+  "includeDocuments": "List documents",
+  "generatePdf": "Create PDF Report",
+  "exportSuccess": "Report created",
+  "period": "Period",
+  "reportTitle": "Health Report for {name}",
+  "@reportTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "reportPeriod": "Period: {start} to {end}",
+  "@reportPeriod": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  }
 }

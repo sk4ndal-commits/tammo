@@ -38,6 +38,10 @@ dependencies:
   logging: ^1.2.0
   timezone: ^0.10.1
   shared_preferences: ^2.5.4
+  file_picker: ^8.1.7
+  pdf: ^3.11.3
+  printing: ^5.14.2
+  share_plus: ^12.0.1
 
 dev_dependencies:
   flutter_test:

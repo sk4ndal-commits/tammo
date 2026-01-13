@@ -8,6 +8,8 @@ import '../features/medication/data/drift_medication_repository.dart';
 import '../features/medication/domain/medication_repository.dart';
 import '../features/feeding/data/drift_feeding_repository.dart';
 import '../features/feeding/domain/feeding_repository.dart';
+import '../features/document/data/drift_document_repository.dart';
+import '../features/document/domain/document_repository.dart';
 
 final databaseProvider = Provider<AppDatabase>((ref) {
   final db = AppDatabase();
@@ -33,4 +35,9 @@ final medicationRepositoryProvider = Provider<MedicationRepository>((ref) {
 final feedingRepositoryProvider = Provider<FeedingRepository>((ref) {
   final db = ref.watch(databaseProvider);
   return DriftFeedingRepository(db);
+});
+
+final documentRepositoryProvider = Provider<DocumentRepository>((ref) {
+  final db = ref.watch(databaseProvider);
+  return DriftDocumentRepository(db);
 });
