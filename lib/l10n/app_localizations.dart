@@ -722,6 +722,12 @@ abstract class AppLocalizations {
   /// **'Include medications'**
   String get includeMedications;
 
+  /// No description provided for @includeAllergies.
+  ///
+  /// In en, this message translates to:
+  /// **'Include allergies'**
+  String get includeAllergies;
+
   /// No description provided for @includeDocuments.
   ///
   /// In en, this message translates to:

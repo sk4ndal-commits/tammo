@@ -335,6 +335,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get includeMedications => 'Medikamente einschließen';
 
   @override
+  String get includeAllergies => 'Allergien einschließen';
+
+  @override
   String get includeDocuments => 'Dokumente auflisten';
 
   @override

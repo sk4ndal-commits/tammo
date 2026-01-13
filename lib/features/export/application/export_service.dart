@@ -21,6 +21,7 @@ class ExportService {
     required DateTime end,
     required bool includeSymptoms,
     required bool includeMedications,
+    required bool includeAllergies,
     required bool includeDocuments,
   }) async {
     final pdf = pw.Document();
@@ -72,6 +73,10 @@ class ExportService {
             pw.Text('Species: ${pet.species}'),
             if (pet.dateOfBirth != null) pw.Text('DOB: ${DateFormat.yMd().format(pet.dateOfBirth!)}'),
             pw.Text('Report Period: ${DateFormat.yMd().format(start)} - ${DateFormat.yMd().format(end)}'),
+            if (includeAllergies && pet.allergies?.isNotEmpty == true) ...[
+              pw.SizedBox(height: 10),
+              pw.Text('Allergies: ${pet.allergies}', style: pw.TextStyle(color: PdfColors.red, fontWeight: pw.FontWeight.bold)),
+            ],
             pw.SizedBox(height: 20),
 
             if (includeSymptoms && events.isNotEmpty) ...[

@@ -111,6 +111,7 @@
   "exportSubtitle": "Wähle den Zeitraum für den Bericht.",
   "includeSymptoms": "Symptome einschließen",
   "includeMedications": "Medikamente einschließen",
+  "includeAllergies": "Allergien einschließen",
   "includeDocuments": "Dokumente auflisten",
   "generatePdf": "PDF Bericht erstellen",
   "exportSuccess": "Bericht wurde erstellt",

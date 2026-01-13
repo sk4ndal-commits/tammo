@@ -143,6 +143,7 @@
   "exportSubtitle": "Select the period for the report.",
   "includeSymptoms": "Include symptoms",
   "includeMedications": "Include medications",
+  "includeAllergies": "Include allergies",
   "includeDocuments": "List documents",
   "generatePdf": "Create PDF Report",
   "exportSuccess": "Report created",

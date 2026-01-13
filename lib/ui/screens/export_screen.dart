@@ -21,6 +21,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
   DateTime _endDate = DateTime.now();
   bool _includeSymptoms = true;
   bool _includeMedications = true;
+  bool _includeAllergies = true;
   bool _includeDocuments = true;
   bool _isGenerating = false;
 
@@ -53,6 +54,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
         end: _endDate,
         includeSymptoms: _includeSymptoms,
         includeMedications: _includeMedications,
+        includeAllergies: _includeAllergies,
         includeDocuments: _includeDocuments,
       );
 
@@ -130,6 +132,11 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               title: Text(l10n.includeMedications),
               value: _includeMedications,
               onChanged: (val) => setState(() => _includeMedications = val),
+            ),
+            SwitchListTile(
+              title: Text(l10n.includeAllergies),
+              value: _includeAllergies,
+              onChanged: (val) => setState(() => _includeAllergies = val),
             ),
             SwitchListTile(
               title: Text(l10n.includeDocuments),
