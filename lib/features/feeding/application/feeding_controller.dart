@@ -8,11 +8,20 @@ class FeedingController extends StateNotifier<AsyncValue<List<FeedingSchedule>>>
   final Ref _ref;
 
   FeedingController(this._ref) : super(const AsyncValue.loading()) {
+    _init();
+  }
+
+  void _init() {
+    _ref.listen(petControllerProvider, (previous, next) {
+      if (next.value?.petId != previous?.value?.petId) {
+        _loadSchedules();
+      }
+    });
     _loadSchedules();
   }
 
   Future<void> _loadSchedules() async {
-    final pet = _ref.watch(petControllerProvider).value;
+    final pet = _ref.read(petControllerProvider).value;
     if (pet == null) {
       state = const AsyncValue.data([]);
       return;
@@ -77,14 +86,19 @@ class FeedingController extends StateNotifier<AsyncValue<List<FeedingSchedule>>>
     );
 
     final result = await AsyncValue.guard(() async {
-      return _ref.read(feedingRepositoryProvider).saveCheckIn(checkIn);
+      final id = await _ref.read(feedingRepositoryProvider).saveCheckIn(checkIn);
+      _ref.invalidate(feedingCheckInsProvider(scheduleId));
+      await _loadSchedules(); // Refresh to update Home Screen
+      return id;
     });
     return result.value;
   }
 
-  Future<void> undoCheckIn(int checkInId) async {
+  Future<void> undoCheckIn(int checkInId, int scheduleId) async {
     await AsyncValue.guard(() async {
       await _ref.read(feedingRepositoryProvider).deleteCheckIn(checkInId);
+      _ref.invalidate(feedingCheckInsProvider(scheduleId));
+      await _loadSchedules(); // Refresh to update Home Screen
     });
   }
 }

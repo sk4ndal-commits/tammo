@@ -261,4 +261,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eventLogged => 'Symptom logged';
+
+  @override
+  String get stepWhat => 'What?';
+
+  @override
+  String get stepHowOften => 'How often?';
+
+  @override
+  String get stepWhen => 'When?';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get later => 'Adjust later';
 }

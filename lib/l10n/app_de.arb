@@ -86,5 +86,11 @@
   "undo": "Rückgängig",
   "medicationConfirmed": "Medikament gegeben",
   "feedingConfirmed": "Fütterung erledigt",
-  "eventLogged": "Symptom erfasst"
+  "eventLogged": "Symptom erfasst",
+  "stepWhat": "Was?",
+  "stepHowOften": "Wie oft?",
+  "stepWhen": "Wann?",
+  "next": "Weiter",
+  "back": "Zurück",
+  "later": "Später anpassen"
 }

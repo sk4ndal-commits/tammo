@@ -32,6 +32,9 @@ class NotificationService {
     required String body,
     required DateTime scheduledDate,
   }) async {
+    final androidPlugin = flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    final bool? hasPermission = await androidPlugin?.requestExactAlarmsPermission();
+
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
@@ -47,8 +50,9 @@ class NotificationService {
         ),
         iOS: DarwinNotificationDetails(),
       ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      androidScheduleMode: (hasPermission ?? false) 
+          ? AndroidScheduleMode.exactAllowWhileIdle 
+          : AndroidScheduleMode.inexactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }
@@ -66,6 +70,9 @@ class NotificationService {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
+    final androidPlugin = flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    final bool? hasPermission = await androidPlugin?.requestExactAlarmsPermission();
+
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
@@ -81,8 +88,9 @@ class NotificationService {
         ),
         iOS: DarwinNotificationDetails(),
       ),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      androidScheduleMode: (hasPermission ?? false) 
+          ? AndroidScheduleMode.exactAllowWhileIdle 
+          : AndroidScheduleMode.inexactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }

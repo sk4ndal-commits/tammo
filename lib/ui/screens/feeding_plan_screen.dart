@@ -13,6 +13,8 @@ class FeedingPlanScreen extends ConsumerStatefulWidget {
 
 class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
   final _formKey = GlobalKey<FormState>();
+  int _currentStep = 0;
+  
   final _foodTypeController = TextEditingController();
   final _amountController = TextEditingController();
   final _notesController = TextEditingController();
@@ -43,26 +45,24 @@ class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
   }
 
   Future<void> _submit() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      if (_reminderTimes.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Bitte mindestens eine Zeit hinzufügen')),
+    if (_reminderTimes.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Bitte mindestens eine Zeit hinzufügen')),
+      );
+      return;
+    }
+
+    await ref.read(feedingControllerProvider.notifier).createFeedingSchedule(
+          foodType: _foodTypeController.text,
+          amount: _amountController.text,
+          reminderTimes: _reminderTimes
+              .map((t) => '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}')
+              .toList(),
+          notes: _notesController.text,
         );
-        return;
-      }
 
-      await ref.read(feedingControllerProvider.notifier).createFeedingSchedule(
-            foodType: _foodTypeController.text,
-            amount: _amountController.text,
-            reminderTimes: _reminderTimes
-                .map((t) => '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}')
-                .toList(),
-            notes: _notesController.text,
-          );
-
-      if (mounted) {
-        context.pop();
-      }
+    if (mounted) {
+      context.pop();
     }
   }
 
@@ -74,70 +74,126 @@ class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
       appBar: AppBar(
         title: Text(l10n.feedingPlanTitle),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextFormField(
-                controller: _foodTypeController,
-                decoration: InputDecoration(
-                  labelText: l10n.foodTypeLabel,
-                  border: const OutlineInputBorder(),
-                  hintText: 'z.B. Nassfutter',
-                ),
-                validator: (value) =>
-                    (value == null || value.isEmpty) ? l10n.foodTypeLabel : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _amountController,
-                decoration: InputDecoration(
-                  labelText: l10n.amountLabel,
-                  border: const OutlineInputBorder(),
-                  hintText: 'z.B. 100g',
-                ),
-                validator: (value) =>
-                    (value == null || value.isEmpty) ? l10n.amountLabel : null,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                l10n.reminderTimesLabel,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 8),
-              Wrap(
-                spacing: 8,
+      body: Form(
+        key: _formKey,
+        child: Stepper(
+          type: StepperType.vertical,
+          currentStep: _currentStep,
+          onStepContinue: () {
+            if (_currentStep < 1) {
+              final isValid = _formKey.currentState?.validate() ?? false;
+              if (isValid) {
+                setState(() => _currentStep++);
+              }
+            } else {
+              _submit();
+            }
+          },
+          onStepCancel: () {
+            if (_currentStep > 0) {
+              setState(() => _currentStep--);
+            } else {
+              context.pop();
+            }
+          },
+          controlsBuilder: (context, controls) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: Row(
                 children: [
-                  ..._reminderTimes.map((time) => Chip(
-                        label: Text(time.format(context)),
-                        onDeleted: () => setState(() => _reminderTimes.remove(time)),
-                      )),
-                  ActionChip(
-                    avatar: const Icon(Icons.add),
-                    label: Text(l10n.addReminderTime),
-                    onPressed: _addTime,
+                  ElevatedButton(
+                    onPressed: controls.onStepContinue,
+                    child: Text(_currentStep == 1 ? l10n.createPlan : l10n.next),
+                  ),
+                  const SizedBox(width: 12),
+                  if (_currentStep > 0)
+                    TextButton(
+                      onPressed: controls.onStepCancel,
+                      child: Text(l10n.back),
+                    )
+                  else
+                    TextButton(
+                      onPressed: () => context.pop(),
+                      child: Text(l10n.delete),
+                    ),
+                ],
+              ),
+            );
+          },
+          steps: [
+            Step(
+              title: Text(l10n.stepWhat),
+              isActive: _currentStep >= 0,
+              state: _currentStep > 0 ? StepState.complete : StepState.indexed,
+              content: Column(
+                children: [
+                  TextFormField(
+                    controller: _foodTypeController,
+                    decoration: InputDecoration(
+                      labelText: l10n.foodTypeLabel,
+                      border: const OutlineInputBorder(),
+                      hintText: 'z.B. Nassfutter',
+                    ),
+                    validator: (value) =>
+                        (_currentStep == 0 && (value == null || value.isEmpty)) ? l10n.foodTypeLabel : null,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _amountController,
+                    decoration: InputDecoration(
+                      labelText: l10n.amountLabel,
+                      border: const OutlineInputBorder(),
+                      hintText: 'z.B. 100g',
+                    ),
+                    validator: (value) =>
+                        (_currentStep == 0 && (value == null || value.isEmpty)) ? l10n.amountLabel : null,
                   ),
                 ],
               ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _notesController,
-                decoration: InputDecoration(
-                  labelText: l10n.notesLabel,
-                  border: const OutlineInputBorder(),
-                ),
-                maxLines: 3,
+            ),
+            Step(
+              title: Text(l10n.stepWhen),
+              isActive: _currentStep >= 1,
+              content: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.reminderTimesLabel,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    children: [
+                      ..._reminderTimes.map((time) => Chip(
+                            label: Text(time.format(context)),
+                            onDeleted: () => setState(() => _reminderTimes.remove(time)),
+                          )),
+                      ActionChip(
+                        avatar: const Icon(Icons.add),
+                        label: Text(l10n.addReminderTime),
+                        onPressed: _addTime,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _notesController,
+                    decoration: InputDecoration(
+                      labelText: l10n.notesLabel,
+                      border: const OutlineInputBorder(),
+                    ),
+                    maxLines: 3,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    l10n.later, // "Später anpassen"
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
               ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: _submit,
-                child: Text(l10n.createPlan),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

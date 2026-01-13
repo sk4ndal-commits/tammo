@@ -127,11 +127,16 @@ class MedicationController extends StateNotifier<AsyncValue<List<MedicationSched
       notes: notes,
     );
 
-    return _ref.read(medicationRepositoryProvider).saveCheckIn(checkIn);
+    final id = await _ref.read(medicationRepositoryProvider).saveCheckIn(checkIn);
+    _ref.invalidate(medicationCheckInsProvider(scheduleId));
+    await loadSchedules(); // Refresh to update Home Screen
+    return id;
   }
 
-  Future<void> undoCheckIn(int checkInId) async {
+  Future<void> undoCheckIn(int checkInId, int scheduleId) async {
     await _ref.read(medicationRepositoryProvider).deleteCheckIn(checkInId);
+    _ref.invalidate(medicationCheckInsProvider(scheduleId));
+    await loadSchedules(); // Refresh to update Home Screen
   }
 }
 

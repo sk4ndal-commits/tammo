@@ -577,6 +577,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Symptom logged'**
   String get eventLogged;
+
+  /// No description provided for @stepWhat.
+  ///
+  /// In en, this message translates to:
+  /// **'What?'**
+  String get stepWhat;
+
+  /// No description provided for @stepHowOften.
+  ///
+  /// In en, this message translates to:
+  /// **'How often?'**
+  String get stepHowOften;
+
+  /// No description provided for @stepWhen.
+  ///
+  /// In en, this message translates to:
+  /// **'When?'**
+  String get stepWhen;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @later.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust later'**
+  String get later;
 }
 
 class _AppLocalizationsDelegate

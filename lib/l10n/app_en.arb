@@ -118,5 +118,11 @@
   "undo": "Undo",
   "medicationConfirmed": "Medication given",
   "feedingConfirmed": "Feeding done",
-  "eventLogged": "Symptom logged"
+  "eventLogged": "Symptom logged",
+  "stepWhat": "What?",
+  "stepHowOften": "How often?",
+  "stepWhen": "When?",
+  "next": "Next",
+  "back": "Back",
+  "later": "Adjust later"
 }
