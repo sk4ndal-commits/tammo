@@ -39,7 +39,10 @@ class HomeScreen extends ConsumerWidget {
                 const SizedBox(height: 16),
                 Text(
                   l10n.quickActions,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Wrap(
@@ -68,7 +71,9 @@ class HomeScreen extends ConsumerWidget {
                 const SizedBox(height: 24),
                 Text(
                   l10n.timelinePlaceholder,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Expanded(

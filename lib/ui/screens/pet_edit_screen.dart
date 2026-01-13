@@ -180,9 +180,6 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: _submit,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
                     child: Text(l10n.save),
                   ),
                 ],

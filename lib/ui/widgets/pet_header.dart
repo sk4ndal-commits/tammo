@@ -45,7 +45,7 @@ class PetHeader extends StatelessWidget {
                 Text(
                   _getSpeciesTranslation(context, pet.species),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(204), // 80% Deckkraft
+                    color: Theme.of(context).colorScheme.onPrimaryContainer.withValues(alpha: 0.8),
                   ),
                 ),
               ],
