@@ -144,6 +144,14 @@
   "switchPet": "Tier wechseln",
   "addAnotherPet": "Weiteres Tier hinzufügen",
   "managePets": "Tiere verwalten",
+  "activePetNow": "Jetzt aktiv: {name}",
+  "@activePetNow": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "allergiesLabel": "Allergien",
   "emergencyTitle": "Notfall-Modus",
   "emergencySubtitle": "Wichtige Gesundheitsinfos",

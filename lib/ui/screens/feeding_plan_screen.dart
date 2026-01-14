@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/pet/application/pet_controller.dart';
 import '../../features/feeding/application/feeding_controller.dart';
 import '../../l10n/app_localizations.dart';
 import '../widgets/toast_utils.dart';
@@ -71,10 +72,28 @@ class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final petName = ref.watch(petControllerProvider).maybeWhen(
+      data: (state) => state.activePet?.name,
+      orElse: () => null,
+    );
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.feedingPlanTitle),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.feedingPlanTitle),
+            if (petName != null)
+              Text(
+                petName,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+          ],
+        ),
       ),
       body: Column(
         children: [

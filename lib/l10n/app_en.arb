@@ -176,6 +176,14 @@
   "switchPet": "Switch pet",
   "addAnotherPet": "Add another pet",
   "managePets": "Manage pets",
+  "activePetNow": "Now active: {name}",
+  "@activePetNow": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "allergiesLabel": "Allergies",
   "emergencyTitle": "Emergency Mode",
   "emergencySubtitle": "Critical health information",

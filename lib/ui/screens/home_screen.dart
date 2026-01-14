@@ -9,6 +9,7 @@ import '../../features/event/application/event_controller.dart';
 import '../../features/event/domain/event.dart';
 import '../../features/medication/application/medication_controller.dart';
 import '../../features/feeding/application/feeding_controller.dart';
+import '../widgets/toast_utils.dart';
 import '../widgets/pet_header.dart';
 import '../widgets/today_section.dart';
 
@@ -45,7 +46,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.appTitle),
+        title: Row(
+          children: [
+            petState.maybeWhen(
+              data: (state) => state.activePet?.photoPath != null
+                  ? CircleAvatar(
+                      radius: 16,
+                      backgroundImage: FileImage(File(state.activePet!.photoPath!)),
+                    )
+                  : const Icon(Icons.pets, size: 20),
+              orElse: () => const Icon(Icons.pets, size: 20),
+            ),
+            const SizedBox(width: 12),
+            Text(petState.maybeWhen(
+              data: (state) => state.activePet?.name ?? l10n.appTitle,
+              orElse: () => l10n.appTitle,
+            )),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.warning_amber_rounded, color: Colors.red),
@@ -105,6 +123,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       onTap: () {
                         ref.read(petControllerProvider.notifier).setActivePet(pet);
                         Navigator.pop(context);
+                        ToastUtils.showSuccessToast(
+                          context, 
+                          l10n.activePetNow(pet.name),
+                        );
                       },
                       trailing: isActive ? const Icon(Icons.check) : null,
                     );
