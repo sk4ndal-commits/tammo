@@ -596,6 +596,24 @@ abstract class AppLocalizations {
   /// **'Plan created'**
   String get planCreated;
 
+  /// No description provided for @planEditHint.
+  ///
+  /// In en, this message translates to:
+  /// **'All details can be adjusted at any time.'**
+  String get planEditHint;
+
+  /// No description provided for @optionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'(optional)'**
+  String get optionalLabel;
+
+  /// No description provided for @requiredLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'* required'**
+  String get requiredLabel;
+
   /// No description provided for @stepWhat.
   ///
   /// In en, this message translates to:

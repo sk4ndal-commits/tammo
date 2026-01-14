@@ -272,6 +272,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get planCreated => 'Plan erstellt';
 
   @override
+  String get planEditHint => 'Alle Details können jederzeit angepasst werden.';
+
+  @override
+  String get optionalLabel => '(optional)';
+
+  @override
+  String get requiredLabel => '* erforderlich';
+
+  @override
   String get stepWhat => 'Was?';
 
   @override
