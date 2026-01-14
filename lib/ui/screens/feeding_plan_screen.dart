@@ -415,31 +415,11 @@ class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
     }
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CheckboxListTile(
-          title: Text(l10n.timeMorning),
-          value: _dayTimes['morning'],
-          onChanged: (v) => setState(() => _dayTimes['morning'] = v ?? false),
-          contentPadding: EdgeInsets.zero,
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-        CheckboxListTile(
-          title: Text(l10n.timeNoon),
-          value: _dayTimes['noon'],
-          onChanged: (v) => setState(() => _dayTimes['noon'] = v ?? false),
-          contentPadding: EdgeInsets.zero,
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-        CheckboxListTile(
-          title: Text(l10n.timeEvening),
-          value: _dayTimes['evening'],
-          onChanged: (v) => setState(() => _dayTimes['evening'] = v ?? false),
-          contentPadding: EdgeInsets.zero,
-          controlAffinity: ListTileControlAffinity.leading,
-        ),
-        const SizedBox(height: 8),
         Wrap(
           spacing: 8,
+          runSpacing: 8,
           children: [
             ..._customTimes.map((time) => Chip(
                   label: Text(time.format(context)),

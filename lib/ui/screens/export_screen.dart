@@ -23,7 +23,25 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
   bool _includeMedications = true;
   bool _includeAllergies = true;
   bool _includeDocuments = true;
+  bool _selectAll = true;
   bool _isGenerating = false;
+
+  void _toggleSelectAll(bool? value) {
+    if (value == null) return;
+    setState(() {
+      _selectAll = value;
+      _includeSymptoms = value;
+      _includeMedications = value;
+      _includeAllergies = value;
+      _includeDocuments = value;
+    });
+  }
+
+  void _updateSelectAllState() {
+    setState(() {
+      _selectAll = _includeSymptoms && _includeMedications && _includeAllergies && _includeDocuments;
+    });
+  }
 
   Future<void> _selectDateRange(BuildContext context) async {
     final DateTimeRange? picked = await showDateRangePicker(
@@ -56,6 +74,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
         includeMedications: _includeMedications,
         includeAllergies: _includeAllergies,
         includeDocuments: _includeDocuments,
+        l10n: l10n,
       );
 
       final directory = await getTemporaryDirectory();
@@ -123,25 +142,44 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               ),
             ),
             const SizedBox(height: 24),
+            CheckboxListTile(
+              title: Text(_selectAll ? l10n.deselectAll : l10n.selectAll),
+              value: _selectAll,
+              onChanged: _toggleSelectAll,
+              controlAffinity: ListTileControlAffinity.leading,
+            ),
+            const Divider(),
             SwitchListTile(
               title: Text(l10n.includeSymptoms),
               value: _includeSymptoms,
-              onChanged: (val) => setState(() => _includeSymptoms = val),
+              onChanged: (val) {
+                setState(() => _includeSymptoms = val);
+                _updateSelectAllState();
+              },
             ),
             SwitchListTile(
               title: Text(l10n.includeMedications),
               value: _includeMedications,
-              onChanged: (val) => setState(() => _includeMedications = val),
+              onChanged: (val) {
+                setState(() => _includeMedications = val);
+                _updateSelectAllState();
+              },
             ),
             SwitchListTile(
               title: Text(l10n.includeAllergies),
               value: _includeAllergies,
-              onChanged: (val) => setState(() => _includeAllergies = val),
+              onChanged: (val) {
+                setState(() => _includeAllergies = val);
+                _updateSelectAllState();
+              },
             ),
             SwitchListTile(
               title: Text(l10n.includeDocuments),
               value: _includeDocuments,
-              onChanged: (val) => setState(() => _includeDocuments = val),
+              onChanged: (val) {
+                setState(() => _includeDocuments = val);
+                _updateSelectAllState();
+              },
             ),
             const SizedBox(height: 40),
             ElevatedButton.icon(

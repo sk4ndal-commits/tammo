@@ -150,24 +150,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          final medicationState = ref.read(medicationControllerProvider);
-          final feedingState = ref.read(feedingControllerProvider);
-          
-          final hasActivePlans = medicationState.maybeWhen(
-            data: (plans) => plans.any((p) => p.isActive),
-            orElse: () => true,
-          ) || feedingState.maybeWhen(
-            data: (plans) => plans.any((p) => p.isActive),
-            orElse: () => true,
-          );
-
           showModalBottomSheet<void>(
             context: context,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
             ),
             builder: (context) => SafeArea(
-              child: Padding(
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -198,27 +187,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     const SizedBox(height: 8),
                     ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: hasActivePlans 
-                            ? Theme.of(context).colorScheme.surfaceContainerHighest
-                            : Theme.of(context).colorScheme.primary,
+                        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+                        child: Icon(Icons.ios_share_rounded, color: Theme.of(context).colorScheme.onTertiaryContainer),
+                      ),
+                      title: Text(l10n.exportTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      onTap: () {
+                        context.pop();
+                        context.push('/export');
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
                         child: Icon(
                           Icons.calendar_month_rounded, 
-                          color: hasActivePlans 
-                              ? Theme.of(context).colorScheme.onSurfaceVariant
-                              : Theme.of(context).colorScheme.onPrimary,
+                          color: Theme.of(context).colorScheme.onTertiaryContainer,
                         ),
                       ),
                       title: Text(
                         l10n.createPlans, 
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: hasActivePlans ? null : Theme.of(context).colorScheme.primary,
                         ),
                       ),
-                      subtitle: hasActivePlans ? null : Text(l10n.onboardingHint), // "Du kannst Details später ergänzen" works as a hint here
                       onTap: () {
                         context.pop();
-                        if (hasActivePlans) {
+                        final medState = ref.read(medicationControllerProvider).valueOrNull ?? [];
+                        final feedState = ref.read(feedingControllerProvider).valueOrNull ?? [];
+                        final hasAnyPlans = medState.isNotEmpty || feedState.isNotEmpty;
+
+                        if (hasAnyPlans) {
                           context.push('/plans');
                         } else {
                           // Show selection dialog
@@ -226,26 +225,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             context: context,
                             builder: (context) => AlertDialog(
                               title: Text(l10n.createPlans),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ListTile(
-                                    leading: const Icon(Icons.medication_rounded),
-                                    title: Text(l10n.medicationPlanTitle),
-                                    onTap: () {
-                                      context.pop();
-                                      context.push('/medication-plan');
-                                    },
-                                  ),
-                                  ListTile(
-                                    leading: const Icon(Icons.restaurant_rounded),
-                                    title: Text(l10n.feedingPlanTitle),
-                                    onTap: () {
-                                      context.pop();
-                                      context.push('/feeding-plan');
-                                    },
-                                  ),
-                                ],
+                              content: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ListTile(
+                                      leading: const Icon(Icons.medication_rounded),
+                                      title: Text(l10n.medicationPlanTitle),
+                                      onTap: () {
+                                        context.pop();
+                                        context.push('/medication-plan');
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: const Icon(Icons.restaurant_rounded),
+                                      title: Text(l10n.feedingPlanTitle),
+                                      onTap: () {
+                                        context.pop();
+                                        context.push('/feeding-plan');
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           );

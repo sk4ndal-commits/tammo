@@ -45,6 +45,7 @@
   "eventDateLabel": "Datum & Uhrzeit",
   "frequencyLabel": "Häufigkeit (pro Tag)",
   "capture": "Erfassen",
+  "addEntry": "Eintrag hinzufügen",
   "delete": "Löschen",
   "statisticsTitle": "Verlaufsübersicht",
   "periodLast7Days": "Letzte 7 Tage",
@@ -159,6 +160,8 @@
       }
     }
   },
+  "selectAll": "Alle auswählen",
+  "deselectAll": "Auswahl aufheben",
   "switchPet": "Tier wechseln",
   "addAnotherPet": "Weiteres Tier hinzufügen",
   "managePets": "Tiere verwalten",

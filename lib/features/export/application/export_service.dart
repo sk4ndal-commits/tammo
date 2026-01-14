@@ -3,6 +3,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 import 'dart:typed_data';
+import '../../../l10n/app_localizations.dart';
 
 import '../../../core/providers.dart';
 import '../../pet/domain/pet.dart';
@@ -23,6 +24,7 @@ class ExportService {
     required bool includeMedications,
     required bool includeAllergies,
     required bool includeDocuments,
+    required AppLocalizations l10n,
   }) async {
     final pdf = pw.Document();
 
@@ -30,7 +32,7 @@ class ExportService {
     List<Event> events = [];
     if (includeSymptoms) {
       events = await _ref.read(eventRepositoryProvider).getEventsForPet(pet.petId);
-      events = events.where((e) => e.timestamp.isAfter(start) && e.timestamp.isBefore(end)).toList();
+      events = events.where((e) => e.timestamp.isAfter(start) && e.timestamp.isBefore(end.add(const Duration(days: 1)))).toList();
       events.sort((a, b) => b.timestamp.compareTo(a.timestamp));
     }
 
@@ -41,7 +43,7 @@ class ExportService {
       for (final schedule in medSchedules) {
         if (schedule.id == null) continue;
         final cis = await _ref.read(medicationRepositoryProvider).getCheckInsForSchedule(schedule.id!);
-        checkIns[schedule.id!] = cis.where((ci) => ci.timestamp.isAfter(start) && ci.timestamp.isBefore(end)).toList();
+        checkIns[schedule.id!] = cis.where((ci) => ci.timestamp.isAfter(start) && ci.timestamp.isBefore(end.add(const Duration(days: 1)))).toList();
       }
     } else {
       medSchedules = [];
@@ -50,82 +52,88 @@ class ExportService {
     List<Document> documents = [];
     if (includeDocuments) {
       documents = await _ref.read(documentRepositoryProvider).getDocumentsForPet(pet.petId);
-      documents = documents.where((d) => d.date.isAfter(start) && d.date.isBefore(end)).toList();
+      documents = documents.where((d) => d.date.isAfter(start) && d.date.isBefore(end.add(const Duration(days: 1)))).toList();
+      documents.sort((a, b) => b.date.compareTo(a.date));
     }
 
     pdf.addPage(
       pw.MultiPage(
         pageFormat: PdfPageFormat.a4,
         build: (pw.Context context) {
+          final dateFormat = DateFormat.yMd();
           return [
             pw.Header(
               level: 0,
               child: pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
-                  pw.Text('Tammo - Health Report', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
+                  pw.Text(l10n.reportTitle(pet.name), style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
                   pw.Text(DateFormat.yMd().format(DateTime.now())),
                 ],
               ),
             ),
             pw.SizedBox(height: 20),
-            pw.Text('Pet: ${pet.name}', style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold)),
-            pw.Text('Species: ${pet.species}'),
-            if (pet.dateOfBirth != null) pw.Text('DOB: ${DateFormat.yMd().format(pet.dateOfBirth!)}'),
-            pw.Text('Report Period: ${DateFormat.yMd().format(start)} - ${DateFormat.yMd().format(end)}'),
+            pw.Text('${l10n.speciesLabel}: ${pet.species}'),
+            if (pet.dateOfBirth != null) pw.Text('${l10n.birthDate}: ${dateFormat.format(pet.dateOfBirth!)}'),
+            if (pet.gender != null) pw.Text('${l10n.genderLabel}: ${pet.gender}'),
+            if (pet.weight != null) pw.Text('${l10n.weightLabel}: ${pet.weight} kg'),
+            pw.SizedBox(height: 10),
+            pw.Text(l10n.reportPeriod(dateFormat.format(start), dateFormat.format(end))),
+            
             if (includeAllergies && pet.allergies?.isNotEmpty == true) ...[
-              pw.SizedBox(height: 10),
-              pw.Text('Allergies: ${pet.allergies}', style: pw.TextStyle(color: PdfColors.red, fontWeight: pw.FontWeight.bold)),
+              pw.SizedBox(height: 20),
+              pw.Header(level: 1, text: l10n.includeAllergies),
+              pw.Text(pet.allergies!, style: pw.TextStyle(color: PdfColors.red, fontWeight: pw.FontWeight.bold)),
             ],
-            pw.SizedBox(height: 20),
 
             if (includeSymptoms && events.isNotEmpty) ...[
-              pw.Header(level: 1, text: 'Symptoms & Events'),
+              pw.SizedBox(height: 20),
+              pw.Header(level: 1, text: l10n.symptomLogTitle),
               pw.TableHelper.fromTextArray(
-                headers: ['Date', 'Type', 'Frequency', 'Notes'],
+                headers: [l10n.eventDateLabel, l10n.eventTypeLabel, l10n.notesLabel],
                 data: events.map((e) => [
-                  DateFormat.yMd().add_Hm().format(e.timestamp),
+                  dateFormat.add_Hm().format(e.timestamp),
                   e.type,
-                  e.frequency.toString(),
                   e.notes ?? '',
                 ]).toList(),
               ),
-              pw.SizedBox(height: 20),
             ],
 
             if (includeMedications && medSchedules.isNotEmpty) ...[
-              pw.Header(level: 1, text: 'Medications'),
+              pw.SizedBox(height: 20),
+              pw.Header(level: 1, text: l10n.medicationPlanTitle),
               ...medSchedules.map((s) {
                 final cis = checkIns[s.id!] ?? [];
-                if (cis.isEmpty) return pw.SizedBox();
                 return pw.Column(
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
-                    pw.Text('${s.medicationName} (${s.dosage})', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    pw.TableHelper.fromTextArray(
-                      headers: ['Date', 'Status', 'Notes'],
-                      data: cis.map((ci) => [
-                        DateFormat.yMd().add_Hm().format(ci.timestamp),
-                        ci.isTaken ? 'Taken' : 'Missed',
-                        ci.notes ?? '',
-                      ]).toList(),
-                    ),
                     pw.SizedBox(height: 10),
+                    pw.Text('${s.medicationName} (${s.dosage}) - ${s.frequency}', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                    if (cis.isNotEmpty)
+                      pw.TableHelper.fromTextArray(
+                        headers: [l10n.eventDateLabel, 'Status', l10n.notesLabel],
+                        data: cis.map((ci) => [
+                          dateFormat.add_Hm().format(ci.timestamp),
+                          ci.isTaken ? l10n.medicationTaken : l10n.medicationMissed,
+                          ci.notes ?? '',
+                        ]).toList(),
+                      )
+                    else
+                      pw.Text(l10n.noEntriesYet, style: pw.TextStyle(fontStyle: pw.FontStyle.italic, fontSize: 10)),
                   ],
                 );
               }),
-              pw.SizedBox(height: 20),
             ],
 
             if (includeDocuments && documents.isNotEmpty) ...[
-              pw.Header(level: 1, text: 'Documents'),
+              pw.SizedBox(height: 20),
+              pw.Header(level: 1, text: l10n.documentsTitle),
               pw.TableHelper.fromTextArray(
-                headers: ['Date', 'Name', 'Type', 'Tags'],
+                headers: [l10n.eventDateLabel, l10n.documentNameLabel, l10n.documentTypeLabel],
                 data: documents.map((d) => [
-                  DateFormat.yMd().format(d.date),
+                  dateFormat.format(d.date),
                   d.name,
                   d.type,
-                  d.tags,
                 ]).toList(),
               ),
             ],

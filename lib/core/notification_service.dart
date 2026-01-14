@@ -23,7 +23,36 @@ class NotificationService {
       iOS: initializationSettingsIOS,
     );
 
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) {
+        // Handle notification tap
+      },
+    );
+
+    // Create Notification Channels for Android
+    final androidPlugin = flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    
+    if (androidPlugin != null) {
+      await androidPlugin.createNotificationChannel(const AndroidNotificationChannel(
+        'medication_reminders',
+        'Medikamenten-Erinnerungen',
+        description: 'Erinnerungen an die Medikamentengabe',
+        importance: Importance.max,
+      ));
+
+      await androidPlugin.createNotificationChannel(const AndroidNotificationChannel(
+        'daily_reminders',
+        'Tägliche Erinnerungen',
+        description: 'Erinnerungen an tägliche Aufgaben',
+        importance: Importance.max,
+      ));
+
+      // Request permissions for Android 13+
+      await androidPlugin.requestNotificationsPermission();
+      // Also request exact alarm permission if needed
+      await androidPlugin.requestExactAlarmsPermission();
+    }
   }
 
   Future<void> scheduleNotification({
@@ -33,7 +62,7 @@ class NotificationService {
     required DateTime scheduledDate,
   }) async {
     final androidPlugin = flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
-    final bool? hasPermission = await androidPlugin?.requestExactAlarmsPermission();
+    final bool hasPermission = (await androidPlugin?.canScheduleExactNotifications()) ?? false;
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
@@ -50,7 +79,7 @@ class NotificationService {
         ),
         iOS: DarwinNotificationDetails(),
       ),
-      androidScheduleMode: (hasPermission ?? false) 
+      androidScheduleMode: hasPermission 
           ? AndroidScheduleMode.exactAllowWhileIdle 
           : AndroidScheduleMode.inexactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time,
@@ -71,7 +100,7 @@ class NotificationService {
     }
 
     final androidPlugin = flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
-    final bool? hasPermission = await androidPlugin?.requestExactAlarmsPermission();
+    final bool hasPermission = (await androidPlugin?.canScheduleExactNotifications()) ?? false;
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
@@ -88,7 +117,7 @@ class NotificationService {
         ),
         iOS: DarwinNotificationDetails(),
       ),
-      androidScheduleMode: (hasPermission ?? false) 
+      androidScheduleMode: hasPermission 
           ? AndroidScheduleMode.exactAllowWhileIdle 
           : AndroidScheduleMode.inexactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time,

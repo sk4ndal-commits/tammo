@@ -18,8 +18,8 @@ class DriftFeedingRepository implements FeedingRepository {
   }
 
   @override
-  Future<void> saveFeedingSchedule(FeedingSchedule schedule) async {
-    await _db.into(_db.feedingSchedules).insert(
+  Future<int> saveFeedingSchedule(FeedingSchedule schedule) async {
+    return _db.into(_db.feedingSchedules).insert(
           db.FeedingSchedulesCompanion.insert(
             petId: schedule.petId,
             foodType: schedule.foodType,

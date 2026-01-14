@@ -156,6 +156,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get capture => 'Capture';
 
   @override
+  String get addEntry => 'Add entry';
+
+  @override
   String get delete => 'Delete';
 
   @override
@@ -431,6 +434,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String reportPeriod(String start, String end) {
     return 'Period: $start to $end';
   }
+
+  @override
+  String get selectAll => 'Select all';
+
+  @override
+  String get deselectAll => 'Deselect all';
 
   @override
   String get switchPet => 'Switch pet';

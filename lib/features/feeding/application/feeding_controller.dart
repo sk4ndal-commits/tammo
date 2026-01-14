@@ -53,26 +53,24 @@ class FeedingController extends StateNotifier<AsyncValue<List<FeedingSchedule>>>
       createdAt: DateTime.now(),
     );
 
-    await AsyncValue.guard(() async {
-      await _ref.read(feedingRepositoryProvider).saveFeedingSchedule(schedule);
+    final id = await _ref.read(feedingRepositoryProvider).saveFeedingSchedule(schedule);
+    
+    // Schedule notifications
+    for (var i = 0; i < reminderTimes.length; i++) {
+      final parts = reminderTimes[i].split(':');
+      final hour = int.parse(parts[0]);
+      final minute = int.parse(parts[1]);
       
-      // Schedule notifications
-      for (final time in reminderTimes) {
-        final parts = time.split(':');
-        final hour = int.parse(parts[0]);
-        final minute = int.parse(parts[1]);
-        
-        await NotificationService().scheduleDailyNotification(
-          id: DateTime.now().millisecondsSinceEpoch % 100000, // Basic unique ID
-          title: 'Fütterung für ${pet.name}',
-          body: '$amount $foodType ist fällig.',
-          hour: hour,
-          minute: minute,
-        );
-      }
-      
-      return _loadSchedules();
-    });
+      await NotificationService().scheduleDailyNotification(
+        id: id * 200 + i,
+        title: 'Fütterung für ${pet.name}',
+        body: '$amount $foodType ist fällig.',
+        hour: hour,
+        minute: minute,
+      );
+    }
+    
+    await _loadSchedules();
   }
 
   Future<int?> checkIn({

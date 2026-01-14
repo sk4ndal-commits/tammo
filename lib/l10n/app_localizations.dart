@@ -368,6 +368,12 @@ abstract class AppLocalizations {
   /// **'Capture'**
   String get capture;
 
+  /// No description provided for @addEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Add entry'**
+  String get addEntry;
+
   /// No description provided for @delete.
   ///
   /// In en, this message translates to:
@@ -907,6 +913,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Period: {start} to {end}'**
   String reportPeriod(String start, String end);
+
+  /// No description provided for @selectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get selectAll;
+
+  /// No description provided for @deselectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Deselect all'**
+  String get deselectAll;
 
   /// No description provided for @switchPet.
   ///

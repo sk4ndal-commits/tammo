@@ -77,6 +77,7 @@
   "eventDateLabel": "Date & Time",
   "frequencyLabel": "Frequency (per day)",
   "capture": "Capture",
+  "addEntry": "Add entry",
   "delete": "Delete",
   "statisticsTitle": "Symptom Overview",
   "periodLast7Days": "Last 7 Days",
@@ -191,6 +192,8 @@
       }
     }
   },
+  "selectAll": "Select all",
+  "deselectAll": "Deselect all",
   "switchPet": "Switch pet",
   "addAnotherPet": "Add another pet",
   "managePets": "Manage pets",
