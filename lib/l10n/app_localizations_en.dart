@@ -387,6 +387,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get managePets => 'Manage pets';
 
   @override
+  String activePetNow(String name) {
+    return 'Now active: $name';
+  }
+
+  @override
   String get allergiesLabel => 'Allergies';
 
   @override

@@ -387,6 +387,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get managePets => 'Tiere verwalten';
 
   @override
+  String activePetNow(String name) {
+    return 'Jetzt aktiv: $name';
+  }
+
+  @override
   String get allergiesLabel => 'Allergien';
 
   @override

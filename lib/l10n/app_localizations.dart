@@ -818,6 +818,12 @@ abstract class AppLocalizations {
   /// **'Manage pets'**
   String get managePets;
 
+  /// No description provided for @activePetNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now active: {name}'**
+  String activePetNow(String name);
+
   /// No description provided for @allergiesLabel.
   ///
   /// In en, this message translates to:
