@@ -191,10 +191,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get frequencyLabelMedication => 'Frequency *';
 
   @override
-  String get startDateLabel => 'Start date';
+  String get startDateLabel => 'Valid from';
 
   @override
-  String get endDateLabel => 'End date (optional)';
+  String get endDateLabel => 'Valid until (optional)';
+
+  @override
+  String get ruleDescription =>
+      'This plan automatically creates daily tasks for today.';
+
+  @override
+  String get planIsRuleHint => 'A plan is a set rule for your daily routine.';
 
   @override
   String get reminderTimesLabel => 'Reminder times';
@@ -281,13 +288,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get requiredLabel => '* required';
 
   @override
-  String get stepWhat => 'What?';
+  String get stepWhat => 'What happens?';
 
   @override
   String get stepHowOften => 'How often?';
 
   @override
-  String get stepWhen => 'When?';
+  String get stepWhen => 'When in the day?';
+
+  @override
+  String get stepStart => 'Starting when?';
+
+  @override
+  String get stepDuration => 'How long?';
+
+  @override
+  String get freqOnceDaily => '1× daily';
+
+  @override
+  String get freqTwiceDaily => '2× daily';
+
+  @override
+  String get freqIndividual => 'individual';
+
+  @override
+  String get timeMorning => 'morning';
+
+  @override
+  String get timeNoon => 'noon';
+
+  @override
+  String get timeEvening => 'evening';
+
+  @override
+  String get addTime => 'Add time';
+
+  @override
+  String get startToday => 'Today';
+
+  @override
+  String get startPickDate => 'Pick date';
+
+  @override
+  String get durationUnlimited => 'unlimited';
+
+  @override
+  String get durationUntil => 'until date';
+
+  @override
+  String get previewTitle => 'Your daily routine';
+
+  @override
+  String get previewToday => 'Today:';
+
+  @override
+  String get previewTomorrow => 'Tomorrow:';
 
   @override
   String get next => 'Next';

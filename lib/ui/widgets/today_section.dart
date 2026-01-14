@@ -60,6 +60,14 @@ class _TodayContent extends ConsumerWidget {
     final List<Widget> completedTasks = [];
 
     for (final schedule in medSchedules) {
+      // Check if rule is valid today
+      final isStarted = schedule.startDate.isBefore(today) || 
+          (schedule.startDate.year == today.year && schedule.startDate.month == today.month && schedule.startDate.day == today.day);
+      final isNotEnded = schedule.endDate == null || schedule.endDate!.isAfter(today) ||
+          (schedule.endDate!.year == today.year && schedule.endDate!.month == today.month && schedule.endDate!.day == today.day);
+
+      if (!isStarted || !isNotEnded) continue;
+
       final checkIns = ref.watch(medicationCheckInsProvider(schedule.id!)).valueOrNull ?? [];
       final alreadyTaken = checkIns.any((ci) =>
           ci.timestamp.year == today.year &&
@@ -74,6 +82,9 @@ class _TodayContent extends ConsumerWidget {
     }
 
     for (final schedule in feedSchedules) {
+      // Feeding schedules currently don't have start/end dates in the model, 
+      // but they are rules that are always active if isActive is true.
+      
       final checkIns = ref.watch(feedingCheckInsProvider(schedule.id!)).valueOrNull ?? [];
       final alreadyFed = checkIns.any((ci) =>
           ci.timestamp.year == today.year &&

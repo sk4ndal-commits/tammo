@@ -437,14 +437,26 @@ abstract class AppLocalizations {
   /// No description provided for @startDateLabel.
   ///
   /// In en, this message translates to:
-  /// **'Start date'**
+  /// **'Valid from'**
   String get startDateLabel;
 
   /// No description provided for @endDateLabel.
   ///
   /// In en, this message translates to:
-  /// **'End date (optional)'**
+  /// **'Valid until (optional)'**
   String get endDateLabel;
+
+  /// No description provided for @ruleDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'This plan automatically creates daily tasks for today.'**
+  String get ruleDescription;
+
+  /// No description provided for @planIsRuleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A plan is a set rule for your daily routine.'**
+  String get planIsRuleHint;
 
   /// No description provided for @reminderTimesLabel.
   ///
@@ -617,7 +629,7 @@ abstract class AppLocalizations {
   /// No description provided for @stepWhat.
   ///
   /// In en, this message translates to:
-  /// **'What?'**
+  /// **'What happens?'**
   String get stepWhat;
 
   /// No description provided for @stepHowOften.
@@ -629,8 +641,104 @@ abstract class AppLocalizations {
   /// No description provided for @stepWhen.
   ///
   /// In en, this message translates to:
-  /// **'When?'**
+  /// **'When in the day?'**
   String get stepWhen;
+
+  /// No description provided for @stepStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting when?'**
+  String get stepStart;
+
+  /// No description provided for @stepDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'How long?'**
+  String get stepDuration;
+
+  /// No description provided for @freqOnceDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'1× daily'**
+  String get freqOnceDaily;
+
+  /// No description provided for @freqTwiceDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'2× daily'**
+  String get freqTwiceDaily;
+
+  /// No description provided for @freqIndividual.
+  ///
+  /// In en, this message translates to:
+  /// **'individual'**
+  String get freqIndividual;
+
+  /// No description provided for @timeMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'morning'**
+  String get timeMorning;
+
+  /// No description provided for @timeNoon.
+  ///
+  /// In en, this message translates to:
+  /// **'noon'**
+  String get timeNoon;
+
+  /// No description provided for @timeEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'evening'**
+  String get timeEvening;
+
+  /// No description provided for @addTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Add time'**
+  String get addTime;
+
+  /// No description provided for @startToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get startToday;
+
+  /// No description provided for @startPickDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick date'**
+  String get startPickDate;
+
+  /// No description provided for @durationUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'unlimited'**
+  String get durationUnlimited;
+
+  /// No description provided for @durationUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'until date'**
+  String get durationUntil;
+
+  /// No description provided for @previewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your daily routine'**
+  String get previewTitle;
+
+  /// No description provided for @previewToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today:'**
+  String get previewToday;
+
+  /// No description provided for @previewTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow:'**
+  String get previewTomorrow;
 
   /// No description provided for @next.
   ///

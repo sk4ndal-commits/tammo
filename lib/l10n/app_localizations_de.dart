@@ -191,10 +191,17 @@ class AppLocalizationsDe extends AppLocalizations {
   String get frequencyLabelMedication => 'Häufigkeit *';
 
   @override
-  String get startDateLabel => 'Startdatum';
+  String get startDateLabel => 'Gültig ab';
 
   @override
-  String get endDateLabel => 'Enddatum (optional)';
+  String get endDateLabel => 'Gültig bis (optional)';
+
+  @override
+  String get ruleDescription =>
+      'Dieser Plan erstellt automatisch tägliche Aufgaben für heute.';
+
+  @override
+  String get planIsRuleHint => 'Ein Plan ist eine feste Regel für den Alltag.';
 
   @override
   String get reminderTimesLabel => 'Erinnerungszeiten';
@@ -281,13 +288,61 @@ class AppLocalizationsDe extends AppLocalizations {
   String get requiredLabel => '* erforderlich';
 
   @override
-  String get stepWhat => 'Was?';
+  String get stepWhat => 'Was passiert?';
 
   @override
   String get stepHowOften => 'Wie oft?';
 
   @override
-  String get stepWhen => 'Wann?';
+  String get stepWhen => 'Wann am Tag?';
+
+  @override
+  String get stepStart => 'Ab wann?';
+
+  @override
+  String get stepDuration => 'Wie lange?';
+
+  @override
+  String get freqOnceDaily => '1× täglich';
+
+  @override
+  String get freqTwiceDaily => '2× täglich';
+
+  @override
+  String get freqIndividual => 'individuell';
+
+  @override
+  String get timeMorning => 'morgens';
+
+  @override
+  String get timeNoon => 'mittags';
+
+  @override
+  String get timeEvening => 'abends';
+
+  @override
+  String get addTime => 'Uhrzeit hinzufügen';
+
+  @override
+  String get startToday => 'Heute';
+
+  @override
+  String get startPickDate => 'Datum wählen';
+
+  @override
+  String get durationUnlimited => 'unbegrenzt';
+
+  @override
+  String get durationUntil => 'bis Datum';
+
+  @override
+  String get previewTitle => 'So sieht dein Alltag aus';
+
+  @override
+  String get previewToday => 'Heute:';
+
+  @override
+  String get previewTomorrow => 'Morgen:';
 
   @override
   String get next => 'Weiter';
