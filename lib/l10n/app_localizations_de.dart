@@ -405,4 +405,30 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get medications => 'Medikamente';
+
+  @override
+  String get appOnboardingWelcomeTitle =>
+      'Alles rund um dein Tier – an einem Ort.';
+
+  @override
+  String get appOnboardingWelcomeSubtitle =>
+      'Gesundheit, Routinen und wichtige Infos übersichtlich gesammelt.';
+
+  @override
+  String get appOnboardingReminderTitle => 'Tammo erinnert dich zuverlässig.';
+
+  @override
+  String get appOnboardingReminderSubtitle =>
+      'Medikamente, Fütterung und wichtige Termine.';
+
+  @override
+  String get appOnboardingOverviewTitle =>
+      'Du behältst jederzeit den Überblick.';
+
+  @override
+  String get appOnboardingOverviewSubtitle =>
+      'Auch wenn es stressig wird – nichts geht verloren.';
+
+  @override
+  String get getStarted => 'Los geht\'s';
 }

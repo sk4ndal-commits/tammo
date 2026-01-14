@@ -5,7 +5,6 @@ import '../../l10n/app_localizations.dart';
 import '../../features/pet/application/pet_controller.dart';
 import '../../features/event/application/event_controller.dart';
 import '../../features/medication/application/medication_controller.dart';
-import '../widgets/pet_header.dart';
 
 class EmergencyScreen extends ConsumerWidget {
   const EmergencyScreen({super.key});

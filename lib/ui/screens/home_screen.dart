@@ -10,7 +10,6 @@ import '../../features/event/domain/event.dart';
 import '../../features/medication/application/medication_controller.dart';
 import '../../features/feeding/application/feeding_controller.dart';
 import '../widgets/toast_utils.dart';
-import '../widgets/pet_header.dart';
 import '../widgets/today_section.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -269,12 +268,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: PetHeader(pet: pet),
-                ),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: TodaySection(),
                 ),
                 const SizedBox(height: 16),

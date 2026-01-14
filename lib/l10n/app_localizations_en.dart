@@ -405,4 +405,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get medications => 'Medications';
+
+  @override
+  String get appOnboardingWelcomeTitle =>
+      'Everything about your pet – in one place.';
+
+  @override
+  String get appOnboardingWelcomeSubtitle =>
+      'Health, routines, and important info collected clearly.';
+
+  @override
+  String get appOnboardingReminderTitle => 'Tammo reminds you reliably.';
+
+  @override
+  String get appOnboardingReminderSubtitle =>
+      'Medication, feeding, and important appointments.';
+
+  @override
+  String get appOnboardingOverviewTitle => 'You stay in control at all times.';
+
+  @override
+  String get appOnboardingOverviewSubtitle =>
+      'Even when things get stressful – nothing gets lost.';
+
+  @override
+  String get getStarted => 'Get Started';
 }

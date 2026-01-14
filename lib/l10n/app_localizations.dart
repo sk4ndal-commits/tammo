@@ -853,6 +853,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Medications'**
   String get medications;
+
+  /// No description provided for @appOnboardingWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything about your pet – in one place.'**
+  String get appOnboardingWelcomeTitle;
+
+  /// No description provided for @appOnboardingWelcomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Health, routines, and important info collected clearly.'**
+  String get appOnboardingWelcomeSubtitle;
+
+  /// No description provided for @appOnboardingReminderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tammo reminds you reliably.'**
+  String get appOnboardingReminderTitle;
+
+  /// No description provided for @appOnboardingReminderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication, feeding, and important appointments.'**
+  String get appOnboardingReminderSubtitle;
+
+  /// No description provided for @appOnboardingOverviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You stay in control at all times.'**
+  String get appOnboardingOverviewTitle;
+
+  /// No description provided for @appOnboardingOverviewSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Even when things get stressful – nothing gets lost.'**
+  String get appOnboardingOverviewSubtitle;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
 }
 
 class _AppLocalizationsDelegate
