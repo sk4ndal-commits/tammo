@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../ui/screens/home_screen.dart';
+import '../ui/screens/app_onboarding_screen.dart';
 import '../ui/screens/onboarding_screen.dart';
 import '../ui/screens/pet_edit_screen.dart';
 import '../ui/screens/symptom_log_screen.dart';
@@ -12,9 +13,11 @@ import '../ui/screens/document_upload_screen.dart';
 import '../ui/screens/export_screen.dart';
 import '../ui/screens/emergency_screen.dart';
 import '../features/pet/application/pet_controller.dart';
+import 'settings_controller.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final petState = ref.watch(petControllerProvider);
+  final onboardingCompleted = ref.watch(settingsControllerProvider);
 
   return GoRouter(
     initialLocation: '/',
@@ -25,6 +28,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           final expandTimeline = state.uri.queryParameters['expandTimeline'] == 'true';
           return HomeScreen(expandTimeline: expandTimeline);
         },
+      ),
+      GoRoute(
+        path: '/app-onboarding',
+        builder: (context, state) => const AppOnboardingScreen(),
       ),
       GoRoute(
         path: '/onboarding',
@@ -70,10 +77,17 @@ final routerProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       if (petState.isLoading) return null;
 
-      final hasPet = petState.value?.activePet != null;
-      final isGoingToOnboarding = state.matchedLocation == '/onboarding';
+      if (!onboardingCompleted) {
+        if (state.matchedLocation != '/app-onboarding') {
+          return '/app-onboarding';
+        }
+        return null;
+      }
 
-      if (!hasPet && !isGoingToOnboarding) {
+      final hasPet = petState.value?.activePet != null;
+      final isOnboardingFlow = state.matchedLocation == '/onboarding' || state.matchedLocation == '/app-onboarding';
+
+      if (!hasPet && !isOnboardingFlow) {
         return '/onboarding';
       }
 

@@ -156,5 +156,12 @@
   "emergencyTitle": "Notfall-Modus",
   "emergencySubtitle": "Wichtige Gesundheitsinfos",
   "lastEvents": "Letzte 5 Ereignisse",
-  "medications": "Medikamente"
+  "medications": "Medikamente",
+  "appOnboardingWelcomeTitle": "Alles rund um dein Tier – an einem Ort.",
+  "appOnboardingWelcomeSubtitle": "Gesundheit, Routinen und wichtige Infos übersichtlich gesammelt.",
+  "appOnboardingReminderTitle": "Tammo erinnert dich zuverlässig.",
+  "appOnboardingReminderSubtitle": "Medikamente, Fütterung und wichtige Termine.",
+  "appOnboardingOverviewTitle": "Du behältst jederzeit den Überblick.",
+  "appOnboardingOverviewSubtitle": "Auch wenn es stressig wird – nichts geht verloren.",
+  "getStarted": "Los geht's"
 }

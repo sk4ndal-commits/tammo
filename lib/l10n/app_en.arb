@@ -188,5 +188,12 @@
   "emergencyTitle": "Emergency Mode",
   "emergencySubtitle": "Critical health information",
   "lastEvents": "Last 5 Events",
-  "medications": "Medications"
+  "medications": "Medications",
+  "appOnboardingWelcomeTitle": "Everything about your pet – in one place.",
+  "appOnboardingWelcomeSubtitle": "Health, routines, and important info collected clearly.",
+  "appOnboardingReminderTitle": "Tammo reminds you reliably.",
+  "appOnboardingReminderSubtitle": "Medication, feeding, and important appointments.",
+  "appOnboardingOverviewTitle": "You stay in control at all times.",
+  "appOnboardingOverviewSubtitle": "Even when things get stressful – nothing gets lost.",
+  "getStarted": "Get Started"
 }
