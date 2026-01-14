@@ -23,42 +23,12 @@ class TodaySection extends ConsumerWidget {
             final activeFeedSchedules = feedSchedules.where((s) => s.isActive).toList();
 
             if (activeMedSchedules.isEmpty && activeFeedSchedules.isEmpty) {
-              return _EmptyTodayState();
+              return _EmptyTodayState(allDone: false);
             }
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.todayFocus,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                ),
-                const SizedBox(height: 12),
-                if (activeMedSchedules.isNotEmpty) ...[
-                  Text(
-                    l10n.medicationToday,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  ...activeMedSchedules.map((s) => _TodayMedicationTile(schedule: s)),
-                  const SizedBox(height: 16),
-                ],
-                if (activeFeedSchedules.isNotEmpty) ...[
-                  Text(
-                    l10n.feedingToday,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  ...activeFeedSchedules.map((s) => _TodayFeedingTile(schedule: s)),
-                ],
-              ],
+            return _TodayContent(
+              medSchedules: activeMedSchedules,
+              feedSchedules: activeFeedSchedules,
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
@@ -71,31 +41,140 @@ class TodaySection extends ConsumerWidget {
   }
 }
 
+class _TodayContent extends ConsumerWidget {
+  final List<MedicationSchedule> medSchedules;
+  final List<FeedingSchedule> feedSchedules;
+
+  const _TodayContent({
+    required this.medSchedules,
+    required this.feedSchedules,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final today = DateTime.now();
+
+    final List<Widget> openTasks = [];
+    final List<Widget> completedTasks = [];
+
+    for (final schedule in medSchedules) {
+      final checkIns = ref.watch(medicationCheckInsProvider(schedule.id!)).valueOrNull ?? [];
+      final alreadyTaken = checkIns.any((ci) =>
+          ci.timestamp.year == today.year &&
+          ci.timestamp.month == today.month &&
+          ci.timestamp.day == today.day);
+
+      if (alreadyTaken) {
+        completedTasks.add(_TodayMedicationTile(schedule: schedule, isCompleted: true));
+      } else {
+        openTasks.add(_TodayMedicationTile(schedule: schedule, isCompleted: false));
+      }
+    }
+
+    for (final schedule in feedSchedules) {
+      final checkIns = ref.watch(feedingCheckInsProvider(schedule.id!)).valueOrNull ?? [];
+      final alreadyFed = checkIns.any((ci) =>
+          ci.timestamp.year == today.year &&
+          ci.timestamp.month == today.month &&
+          ci.timestamp.day == today.day);
+
+      if (alreadyFed) {
+        completedTasks.add(_TodayFeedingTile(schedule: schedule, isCompleted: true));
+      } else {
+        openTasks.add(_TodayFeedingTile(schedule: schedule, isCompleted: false));
+      }
+    }
+
+    if (openTasks.isEmpty && completedTasks.isEmpty) {
+      return _EmptyTodayState(allDone: false);
+    }
+
+    if (openTasks.isEmpty) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _EmptyTodayState(allDone: true),
+          if (completedTasks.isNotEmpty) ...[
+            const SizedBox(height: 24),
+            _SectionHeader(title: l10n.todayFocus), // Or something like "Today's history"
+            ...completedTasks,
+          ],
+        ],
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _SectionHeader(title: l10n.todayFocus, isUrgent: true),
+        ...openTasks,
+        if (completedTasks.isNotEmpty) ...[
+          const SizedBox(height: 24),
+          _SectionHeader(title: l10n.allDone), 
+          ...completedTasks,
+        ],
+      ],
+    );
+  }
+}
+
+class _SectionHeader extends StatelessWidget {
+  final String title;
+  final bool isUrgent;
+
+  const _SectionHeader({required this.title, this.isUrgent = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0, left: 4.0),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: isUrgent ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outline,
+            ),
+      ),
+    );
+  }
+}
+
 class _EmptyTodayState extends StatelessWidget {
+  final bool allDone;
+  const _EmptyTodayState({required this.allDone});
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer.withAlpha(50),
-        borderRadius: BorderRadius.circular(16),
+        color: allDone 
+            ? Theme.of(context).colorScheme.primaryContainer.withAlpha(40)
+            : Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(40),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: allDone 
+              ? Theme.of(context).colorScheme.primary.withAlpha(40)
+              : Theme.of(context).colorScheme.outlineVariant.withAlpha(40),
+        ),
       ),
       child: Column(
         children: [
           Icon(
-            Icons.celebration_rounded,
+            allDone ? Icons.check_circle_rounded : Icons.calendar_today_rounded,
             size: 48,
-            color: Theme.of(context).colorScheme.primary,
+            color: allDone ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outline,
           ),
           const SizedBox(height: 16),
           Text(
-            l10n.allDone,
+            allDone ? l10n.allDone : l10n.noEntriesYet,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: allDone ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outline,
                 ),
           ),
         ],
@@ -106,7 +185,8 @@ class _EmptyTodayState extends StatelessWidget {
 
 class _TodayMedicationTile extends ConsumerWidget {
   final MedicationSchedule schedule;
-  const _TodayMedicationTile({required this.schedule});
+  final bool isCompleted;
+  const _TodayMedicationTile({required this.schedule, required this.isCompleted});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -124,25 +204,38 @@ class _TodayMedicationTile extends ConsumerWidget {
         final alreadyTaken = todayCheckIn != null;
 
         return Card(
-          elevation: alreadyTaken ? 0 : 2,
-          color: alreadyTaken ? Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(100) : null,
+          elevation: alreadyTaken ? 0 : 1,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: alreadyTaken ? BorderSide.none : BorderSide(color: Theme.of(context).colorScheme.outlineVariant, width: 0.5),
+          ),
+          color: alreadyTaken ? Theme.of(context).colorScheme.surfaceContainerLowest : null,
           child: ListTile(
-            leading: Icon(
-              Icons.medication,
-              color: alreadyTaken ? Theme.of(context).colorScheme.primary.withAlpha(150) : Theme.of(context).colorScheme.primary,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            leading: CircleAvatar(
+              backgroundColor: alreadyTaken 
+                  ? Theme.of(context).colorScheme.primary.withAlpha(30)
+                  : Theme.of(context).colorScheme.primaryContainer,
+              child: Icon(
+                Icons.medication_rounded,
+                color: alreadyTaken ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
             ),
             title: Text(
               schedule.medicationName,
               style: TextStyle(
+                fontWeight: alreadyTaken ? FontWeight.normal : FontWeight.bold,
                 decoration: alreadyTaken ? TextDecoration.lineThrough : null,
-                color: alreadyTaken ? Theme.of(context).colorScheme.onSurfaceVariant : null,
+                color: alreadyTaken ? Theme.of(context).colorScheme.outline : null,
               ),
             ),
-            subtitle: Text('${schedule.dosage} - ${schedule.frequency}'),
+            subtitle: Text('${schedule.dosage} • ${schedule.frequency}'),
             trailing: IconButton(
               icon: Icon(
-                alreadyTaken ? Icons.check_circle : Icons.radio_button_unchecked,
-                color: alreadyTaken ? Theme.of(context).colorScheme.primary : null,
+                alreadyTaken ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
+                color: alreadyTaken ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary,
+                size: 28,
               ),
               onPressed: () async {
                 final controller = ref.read(medicationControllerProvider.notifier);
@@ -155,16 +248,11 @@ class _TodayMedicationTile extends ConsumerWidget {
                   );
 
                   if (context.mounted) {
-                    final messenger = ScaffoldMessenger.of(context);
-                    messenger.clearSnackBars();
-                    messenger.showSnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(l10n.medicationConfirmed),
                         behavior: SnackBarBehavior.floating,
-                        width: 200,
                         duration: const Duration(seconds: 2),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24)),
                       ),
                     );
                   }
@@ -174,7 +262,7 @@ class _TodayMedicationTile extends ConsumerWidget {
           ),
         );
       },
-      loading: () => const SizedBox(height: 72, child: Center(child: CircularProgressIndicator())),
+      loading: () => const SizedBox(height: 72),
       error: (_, __) => const Icon(Icons.error),
     );
   }
@@ -182,7 +270,8 @@ class _TodayMedicationTile extends ConsumerWidget {
 
 class _TodayFeedingTile extends ConsumerWidget {
   final FeedingSchedule schedule;
-  const _TodayFeedingTile({required this.schedule});
+  final bool isCompleted;
+  const _TodayFeedingTile({required this.schedule, required this.isCompleted});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -200,25 +289,38 @@ class _TodayFeedingTile extends ConsumerWidget {
         final alreadyFed = todayCheckIn != null;
 
         return Card(
-          elevation: alreadyFed ? 0 : 2,
-          color: alreadyFed ? Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(100) : null,
+          elevation: alreadyFed ? 0 : 1,
+          margin: const EdgeInsets.symmetric(vertical: 6),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: alreadyFed ? BorderSide.none : BorderSide(color: Theme.of(context).colorScheme.outlineVariant, width: 0.5),
+          ),
+          color: alreadyFed ? Theme.of(context).colorScheme.surfaceContainerLowest : null,
           child: ListTile(
-            leading: Icon(
-              Icons.restaurant,
-              color: alreadyFed ? Theme.of(context).colorScheme.primary.withAlpha(150) : Theme.of(context).colorScheme.primary,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            leading: CircleAvatar(
+              backgroundColor: alreadyFed 
+                  ? Theme.of(context).colorScheme.primary.withAlpha(30)
+                  : Theme.of(context).colorScheme.primaryContainer,
+              child: Icon(
+                Icons.restaurant_rounded,
+                color: alreadyFed ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
             ),
             title: Text(
               schedule.foodType,
               style: TextStyle(
+                fontWeight: alreadyFed ? FontWeight.normal : FontWeight.bold,
                 decoration: alreadyFed ? TextDecoration.lineThrough : null,
-                color: alreadyFed ? Theme.of(context).colorScheme.onSurfaceVariant : null,
+                color: alreadyFed ? Theme.of(context).colorScheme.outline : null,
               ),
             ),
             subtitle: Text(schedule.amount),
             trailing: IconButton(
               icon: Icon(
-                alreadyFed ? Icons.check_circle : Icons.radio_button_unchecked,
-                color: alreadyFed ? Theme.of(context).colorScheme.primary : null,
+                alreadyFed ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
+                color: alreadyFed ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.primary,
+                size: 28,
               ),
               onPressed: () async {
                 final controller = ref.read(feedingControllerProvider.notifier);
@@ -231,16 +333,11 @@ class _TodayFeedingTile extends ConsumerWidget {
                   );
 
                   if (context.mounted) {
-                    final messenger = ScaffoldMessenger.of(context);
-                    messenger.clearSnackBars();
-                    messenger.showSnackBar(
+                    ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(l10n.feedingConfirmed),
                         behavior: SnackBarBehavior.floating,
-                        width: 200,
                         duration: const Duration(seconds: 2),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24)),
                       ),
                     );
                   }
@@ -250,7 +347,7 @@ class _TodayFeedingTile extends ConsumerWidget {
           ),
         );
       },
-      loading: () => const SizedBox(height: 72, child: Center(child: CircularProgressIndicator())),
+      loading: () => const SizedBox(height: 72),
       error: (_, __) => const Icon(Icons.error),
     );
   }

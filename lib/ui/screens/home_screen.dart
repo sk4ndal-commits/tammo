@@ -7,6 +7,8 @@ import '../../l10n/app_localizations.dart';
 import '../../features/pet/application/pet_controller.dart';
 import '../../features/event/application/event_controller.dart';
 import '../../features/event/domain/event.dart';
+import '../../features/medication/application/medication_controller.dart';
+import '../../features/feeding/application/feeding_controller.dart';
 import '../widgets/pet_header.dart';
 import '../widgets/today_section.dart';
 
@@ -127,67 +129,102 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          final medicationState = ref.read(medicationControllerProvider);
+          final feedingState = ref.read(feedingControllerProvider);
+          
+          final hasActivePlans = medicationState.maybeWhen(
+            data: (plans) => plans.any((p) => p.isActive),
+            orElse: () => true,
+          ) || feedingState.maybeWhen(
+            data: (plans) => plans.any((p) => p.isActive),
+            orElse: () => true,
+          );
+
           showModalBottomSheet<void>(
             context: context,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
             builder: (context) => SafeArea(
-              child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ListTile(
-                      leading: const Icon(Icons.add_alert_rounded),
-                      title: Text(l10n.captureSymptom),
+                      leading: CircleAvatar(
+                        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                        child: Icon(Icons.add_alert_rounded, color: Theme.of(context).colorScheme.onPrimaryContainer),
+                      ),
+                      title: Text(l10n.captureSymptom, style: const TextStyle(fontWeight: FontWeight.bold)),
                       onTap: () {
                         context.pop();
                         context.push('/symptom-log');
                       },
                     ),
+                    const SizedBox(height: 8),
                     ListTile(
-                      leading: const Icon(Icons.medication_rounded),
-                      title: Text(l10n.medicationPlanTitle),
-                      onTap: () {
-                        context.pop();
-                        context.push('/medication-plan');
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.restaurant_rounded),
-                      title: Text(l10n.feedingPlanTitle),
-                      onTap: () {
-                        context.pop();
-                        context.push('/feeding-plan');
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.bar_chart_rounded),
-                      title: Text(l10n.statisticsTitle),
-                      onTap: () {
-                        context.pop();
-                        context.push('/statistics');
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.description_rounded),
-                      title: Text(l10n.addDocument),
+                      leading: CircleAvatar(
+                        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                        child: Icon(Icons.description_rounded, color: Theme.of(context).colorScheme.onSecondaryContainer),
+                      ),
+                      title: Text(l10n.addDocument, style: const TextStyle(fontWeight: FontWeight.bold)),
                       onTap: () {
                         context.pop();
                         context.push('/document-upload');
                       },
                     ),
+                    const SizedBox(height: 8),
                     ListTile(
-                      leading: const Icon(Icons.folder_rounded),
-                      title: Text(l10n.documentsTitle),
+                      leading: CircleAvatar(
+                        backgroundColor: hasActivePlans 
+                            ? Theme.of(context).colorScheme.surfaceContainerHighest
+                            : Theme.of(context).colorScheme.primary,
+                        child: Icon(
+                          Icons.calendar_month_rounded, 
+                          color: hasActivePlans 
+                              ? Theme.of(context).colorScheme.onSurfaceVariant
+                              : Theme.of(context).colorScheme.onPrimary,
+                        ),
+                      ),
+                      title: Text(
+                        l10n.createPlans, 
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: hasActivePlans ? null : Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      subtitle: hasActivePlans ? null : Text(l10n.onboardingHint), // "Du kannst Details später ergänzen" works as a hint here
                       onTap: () {
                         context.pop();
-                        context.push('/documents');
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.picture_as_pdf_rounded),
-                      title: Text(l10n.exportTitle),
-                      onTap: () {
-                        context.pop();
-                        context.push('/export');
+                        // Zeige Dialog zur Auswahl des Plantyps
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text(l10n.createPlans),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ListTile(
+                                  leading: const Icon(Icons.medication_rounded),
+                                  title: Text(l10n.medicationPlanTitle),
+                                  onTap: () {
+                                    context.pop();
+                                    context.push('/medication-plan');
+                                  },
+                                ),
+                                ListTile(
+                                  leading: const Icon(Icons.restaurant_rounded),
+                                  title: Text(l10n.feedingPlanTitle),
+                                  onTap: () {
+                                    context.pop();
+                                    context.push('/feeding-plan');
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ],
@@ -197,7 +234,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           );
         },
         icon: const Icon(Icons.add_rounded),
-        label: Text(l10n.capture), // "Erfassen" in German, fits well as a general action label
+        label: Text(l10n.capture),
       ),
       body: petState.when(
         data: (state) {
@@ -206,52 +243,61 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             return Center(child: Text(l10n.noPetFound));
           }
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                PetHeader(pet: pet),
-                const SizedBox(height: 24),
-                const TodaySection(),
-                const SizedBox(height: 24),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: PetHeader(pet: pet),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  child: TodaySection(),
+                ),
+                const SizedBox(height: 16),
                 const Divider(),
                 Theme(
                   data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
                   child: ExpansionTile(
                     title: Text(
                       l10n.timelinePlaceholder,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.outline,
                       ),
                     ),
-                    initiallyExpanded: _showTimeline,
+                    initiallyExpanded: false,
                     onExpansionChanged: (expanded) => setState(() => _showTimeline = expanded),
                     children: [
-                      eventState.when(
-                        data: (events) {
-                          if (events.isEmpty) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 32.0),
-                              child: Center(child: Text(l10n.noEntriesYet)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: eventState.when(
+                          data: (events) {
+                            if (events.isEmpty) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 32.0),
+                                child: Center(child: Text(l10n.noEntriesYet)),
+                              );
+                            }
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: events.length,
+                              itemBuilder: (context, index) {
+                                final event = events[index];
+                                return _EventTile(event: event);
+                              },
                             );
-                          }
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: events.length,
-                            itemBuilder: (context, index) {
-                              final event = events[index];
-                              return _EventTile(event: event);
-                            },
-                          );
-                        },
-                        loading: () => const Center(child: CircularProgressIndicator()),
-                        error: (err, stack) => Center(child: Text('Error: $err')),
+                          },
+                          loading: () => const Center(child: CircularProgressIndicator()),
+                          error: (err, stack) => Center(child: Text('Error: $err')),
+                        ),
                       ),
                     ],
                   ),
                 ),
+                const SizedBox(height: 80), // Space for FAB
               ],
             ),
           );
