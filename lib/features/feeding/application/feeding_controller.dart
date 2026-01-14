@@ -103,6 +103,47 @@ class FeedingController extends StateNotifier<AsyncValue<List<FeedingSchedule>>>
       await _loadSchedules(); // Refresh to update Home Screen
     });
   }
+
+  Future<void> deleteFeedingSchedule(int id) async {
+    // Cancel notifications (best effort)
+    for (var i = 0; i < 10; i++) {
+      await NotificationService().cancelNotification(id * 200 + i);
+    }
+    await _ref.read(feedingRepositoryProvider).deleteFeedingSchedule(id);
+    await _loadSchedules();
+  }
+
+  Future<void> updateFeedingSchedule(FeedingSchedule schedule) async {
+    // Re-schedule notifications
+    final pet = _ref.read(petControllerProvider).value?.activePet;
+    if (pet != null) {
+      // Cancel old ones first (best effort)
+      for (var i = 0; i < 10; i++) {
+        await NotificationService().cancelNotification(schedule.id! * 200 + i);
+      }
+
+      if (schedule.isActive) {
+        for (var i = 0; i < schedule.reminderTimes.length; i++) {
+          final parts = schedule.reminderTimes[i].split(':');
+          await NotificationService().scheduleDailyNotification(
+            id: schedule.id! * 200 + i,
+            title: 'Fütterung für ${pet.name}',
+            body: '${schedule.amount} ${schedule.foodType}',
+            hour: int.parse(parts[0]),
+            minute: int.parse(parts[1]),
+          );
+        }
+      }
+    }
+
+    await _ref.read(feedingRepositoryProvider).updateFeedingSchedule(schedule);
+    await _loadSchedules();
+  }
+
+  Future<void> toggleActive(FeedingSchedule schedule) async {
+    final updated = schedule.copyWith(isActive: !schedule.isActive);
+    await updateFeedingSchedule(updated);
+  }
 }
 
 final feedingControllerProvider =

@@ -18,6 +18,28 @@ class FeedingSchedule {
     this.isActive = true,
     required this.createdAt,
   });
+
+  FeedingSchedule copyWith({
+    int? id,
+    String? petId,
+    String? foodType,
+    String? amount,
+    List<String>? reminderTimes,
+    String? notes,
+    bool? isActive,
+    DateTime? createdAt,
+  }) {
+    return FeedingSchedule(
+      id: id ?? this.id,
+      petId: petId ?? this.petId,
+      foodType: foodType ?? this.foodType,
+      amount: amount ?? this.amount,
+      reminderTimes: reminderTimes ?? this.reminderTimes,
+      notes: notes ?? this.notes,
+      isActive: isActive ?? this.isActive,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }
 
 class FeedingCheckIn {

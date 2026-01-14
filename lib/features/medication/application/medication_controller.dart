@@ -86,18 +86,16 @@ class MedicationController extends StateNotifier<AsyncValue<List<MedicationSched
     await loadSchedules();
   }
 
-  Future<void> toggleActive(MedicationSchedule schedule) async {
-    final updated = schedule.copyWith(isActive: !schedule.isActive);
-    
-    if (!updated.isActive) {
-      // Benachrichtigungen stornieren
-      for (var i = 0; i < schedule.reminderTimes.length; i++) {
+  Future<void> updateSchedule(MedicationSchedule schedule) async {
+    // Re-schedule notifications
+    final pet = _ref.read(petControllerProvider).value?.activePet;
+    if (pet != null) {
+      // Cancel old ones first (best effort)
+      for (var i = 0; i < 10; i++) {
         await NotificationService().cancelNotification(schedule.id! * 100 + i);
       }
-    } else {
-      // Benachrichtigungen wieder planen
-      final pet = _ref.read(petControllerProvider).value?.activePet;
-      if (pet != null) {
+
+      if (schedule.isActive) {
         for (var i = 0; i < schedule.reminderTimes.length; i++) {
           final timeParts = schedule.reminderTimes[i].split(':');
           await NotificationService().scheduleDailyNotification(
@@ -111,8 +109,13 @@ class MedicationController extends StateNotifier<AsyncValue<List<MedicationSched
       }
     }
 
-    await _ref.read(medicationRepositoryProvider).updateSchedule(updated);
+    await _ref.read(medicationRepositoryProvider).updateSchedule(schedule);
     await loadSchedules();
+  }
+
+  Future<void> toggleActive(MedicationSchedule schedule) async {
+    final updated = schedule.copyWith(isActive: !schedule.isActive);
+    await updateSchedule(updated);
   }
 
   Future<int> checkIn({

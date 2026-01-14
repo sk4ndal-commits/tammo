@@ -4,11 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../features/pet/application/pet_controller.dart';
 import '../../features/medication/application/medication_controller.dart';
+import '../../features/medication/domain/medication.dart';
 import '../../l10n/app_localizations.dart';
 import '../widgets/toast_utils.dart';
 
 class MedicationPlanScreen extends ConsumerStatefulWidget {
-  const MedicationPlanScreen({super.key});
+  final MedicationSchedule? schedule;
+  const MedicationPlanScreen({super.key, this.schedule});
 
   @override
   ConsumerState<MedicationPlanScreen> createState() => _MedicationPlanScreenState();
@@ -17,8 +19,8 @@ class MedicationPlanScreen extends ConsumerStatefulWidget {
 class _MedicationPlanScreenState extends ConsumerState<MedicationPlanScreen> {
   final _formKey = GlobalKey<FormState>();
   
-  final _nameController = TextEditingController();
-  final _dosageController = TextEditingController();
+  late final TextEditingController _nameController;
+  late final TextEditingController _dosageController;
   
   String _frequency = '1x'; // '1x', '2x', 'individual'
   final Map<String, bool> _dayTimes = {
@@ -33,6 +35,55 @@ class _MedicationPlanScreenState extends ConsumerState<MedicationPlanScreen> {
   
   DateTime? _endDate;
   bool _isUnlimited = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.schedule?.medicationName);
+    _dosageController = TextEditingController(text: widget.schedule?.dosage);
+    
+    if (widget.schedule != null) {
+      final s = widget.schedule!;
+      _startDate = s.startDate;
+      _isStartDateToday = _isToday(_startDate);
+      _endDate = s.endDate;
+      _isUnlimited = s.endDate == null;
+      
+      // Try to map frequency and times back
+      if (s.frequency.contains('1×') || s.frequency.contains('1x')) {
+        _frequency = '1x';
+      } else if (s.frequency.contains('2×') || s.frequency.contains('2x')) {
+        _frequency = '2x';
+      } else {
+        _frequency = 'individual';
+      }
+      
+      // Reset dayTimes for mapping
+      _dayTimes['morning'] = false;
+      _dayTimes['noon'] = false;
+      _dayTimes['evening'] = false;
+      
+      for (final timeStr in s.reminderTimes) {
+        final parts = timeStr.split(':');
+        final hour = int.parse(parts[0]);
+        final minute = int.parse(parts[1]);
+        final tod = TimeOfDay(hour: hour, minute: minute);
+        
+        if (hour == 8 && minute == 0) {
+          _dayTimes['morning'] = true;
+        } else if (hour == 12 && minute == 0) {
+          _dayTimes['noon'] = true;
+        } else if (hour == 18 && minute == 0) {
+          _dayTimes['evening'] = true;
+        } else if (hour == 20 && minute == 0 && _frequency == '2x') {
+          // 2x evening is 20:00 by default in our logic
+          _dayTimes['evening'] = true;
+        } else {
+          _customTimes.add(tod);
+        }
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -136,18 +187,34 @@ class _MedicationPlanScreenState extends ConsumerState<MedicationPlanScreen> {
     final l10n = AppLocalizations.of(context)!;
     String freqText = _frequency == '1x' ? l10n.freqOnceDaily : (_frequency == '2x' ? l10n.freqTwiceDaily : l10n.freqIndividual);
 
-    await ref.read(medicationControllerProvider.notifier).createSchedule(
-      medicationName: _nameController.text,
-      dosage: _dosageController.text,
-      frequency: freqText,
-      startDate: _startDate,
-      endDate: _isUnlimited ? null : _endDate,
-      reminderTimes: reminderTimeStrings,
-    );
+    if (widget.schedule != null) {
+      final updated = widget.schedule!.copyWith(
+        medicationName: _nameController.text,
+        dosage: _dosageController.text,
+        frequency: freqText,
+        startDate: _startDate,
+        endDate: _isUnlimited ? null : _endDate,
+        reminderTimes: reminderTimeStrings,
+      );
+      await ref.read(medicationControllerProvider.notifier).updateSchedule(updated);
+      if (mounted) {
+        ToastUtils.showSuccessToast(context, l10n.petUpdated); // Using petUpdated as generic success or we add more
+        context.pop();
+      }
+    } else {
+      await ref.read(medicationControllerProvider.notifier).createSchedule(
+        medicationName: _nameController.text,
+        dosage: _dosageController.text,
+        frequency: freqText,
+        startDate: _startDate,
+        endDate: _isUnlimited ? null : _endDate,
+        reminderTimes: reminderTimeStrings,
+      );
 
-    if (mounted) {
-      ToastUtils.showSuccessToast(context, l10n.planCreated);
-      context.pop();
+      if (mounted) {
+        ToastUtils.showSuccessToast(context, l10n.planCreated);
+        context.pop();
+      }
     }
   }
 
@@ -165,7 +232,7 @@ class _MedicationPlanScreenState extends ConsumerState<MedicationPlanScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(l10n.medicationPlanTitle),
+            Text(widget.schedule != null ? l10n.editPetTitle : l10n.medicationPlanTitle),
             if (petName != null)
               Text(
                 petName,
@@ -176,6 +243,12 @@ class _MedicationPlanScreenState extends ConsumerState<MedicationPlanScreen> {
               ),
           ],
         ),
+        actions: widget.schedule != null ? [
+          IconButton(
+            icon: const Icon(Icons.delete_outline_rounded, color: Colors.red),
+            onPressed: () => _confirmDelete(),
+          )
+        ] : null,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -240,7 +313,7 @@ class _MedicationPlanScreenState extends ConsumerState<MedicationPlanScreen> {
                         minimumSize: const Size.fromHeight(56),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
-                      child: Text(l10n.createPlan, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      child: Text(widget.schedule != null ? l10n.save : l10n.createPlan, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     ),
                     const SizedBox(height: 40),
                   ],
@@ -249,6 +322,30 @@ class _MedicationPlanScreenState extends ConsumerState<MedicationPlanScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _confirmDelete() {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.delete),
+        content: Text('${l10n.delete}?'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.back)),
+          TextButton(
+            onPressed: () async {
+              await ref.read(medicationControllerProvider.notifier).deleteSchedule(widget.schedule!.id!);
+              if (mounted) {
+                Navigator.pop(context); // Dialog
+                context.pop(); // Screen
+              }
+            }, 
+            child: Text(l10n.delete, style: const TextStyle(color: Colors.red)),
+          ),
+        ],
       ),
     );
   }

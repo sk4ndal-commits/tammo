@@ -4,11 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../features/pet/application/pet_controller.dart';
 import '../../features/feeding/application/feeding_controller.dart';
+import '../../features/feeding/domain/feeding.dart';
 import '../../l10n/app_localizations.dart';
 import '../widgets/toast_utils.dart';
 
 class FeedingPlanScreen extends ConsumerStatefulWidget {
-  const FeedingPlanScreen({super.key});
+  final FeedingSchedule? schedule;
+  const FeedingPlanScreen({super.key, this.schedule});
 
   @override
   ConsumerState<FeedingPlanScreen> createState() => _FeedingPlanScreenState();
@@ -17,9 +19,9 @@ class FeedingPlanScreen extends ConsumerStatefulWidget {
 class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
   final _formKey = GlobalKey<FormState>();
   
-  final _foodTypeController = TextEditingController();
-  final _amountController = TextEditingController();
-  final _notesController = TextEditingController();
+  late final TextEditingController _foodTypeController;
+  late final TextEditingController _amountController;
+  late final TextEditingController _notesController;
   
   String _frequency = '2x'; // '1x', '2x', 'individual'
   final Map<String, bool> _dayTimes = {
@@ -31,6 +33,53 @@ class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
   
   DateTime _startDate = DateTime.now();
   bool _isStartDateToday = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _foodTypeController = TextEditingController(text: widget.schedule?.foodType);
+    _amountController = TextEditingController(text: widget.schedule?.amount);
+    _notesController = TextEditingController(text: widget.schedule?.notes);
+    
+    if (widget.schedule != null) {
+      final s = widget.schedule!;
+      // FeedingSchedule doesn't have startDate/endDate currently in the model 
+      // based on the previous implementation but US-UX3.2 added it to UI.
+      // Wait, let's check FeedingSchedule definition again.
+      
+      // Reset dayTimes
+      _dayTimes['morning'] = false;
+      _dayTimes['noon'] = false;
+      _dayTimes['evening'] = false;
+
+      if (s.reminderTimes.length == 1) {
+        _frequency = '1x';
+      } else if (s.reminderTimes.length == 2) {
+        _frequency = '2x';
+      } else {
+        _frequency = 'individual';
+      }
+
+      for (final timeStr in s.reminderTimes) {
+        final parts = timeStr.split(':');
+        final hour = int.parse(parts[0]);
+        final minute = int.parse(parts[1]);
+        final tod = TimeOfDay(hour: hour, minute: minute);
+        
+        if (hour == 8 && minute == 0) {
+          _dayTimes['morning'] = true;
+        } else if (hour == 12 && minute == 0) {
+          _dayTimes['noon'] = true;
+        } else if (hour == 18 && minute == 0) {
+          _dayTimes['evening'] = true;
+        } else if (hour == 20 && minute == 0 && _frequency == '2x') {
+          _dayTimes['evening'] = true;
+        } else {
+          _customTimes.add(tod);
+        }
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -123,18 +172,35 @@ class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
       return;
     }
 
-    await ref.read(feedingControllerProvider.notifier).createFeedingSchedule(
-          foodType: _foodTypeController.text,
-          amount: _amountController.text,
-          reminderTimes: effectiveTimes
+    final l10n = AppLocalizations.of(context)!;
+    final reminderTimes = effectiveTimes
               .map((t) => '${t.hour.toString().padLeft(2, '0')}:${t.minute.toString().padLeft(2, '0')}')
-              .toList(),
-          notes: _notesController.text,
-        );
+              .toList();
 
-    if (mounted) {
-      ToastUtils.showSuccessToast(context, AppLocalizations.of(context)!.planCreated);
-      context.pop();
+    if (widget.schedule != null) {
+      final updated = widget.schedule!.copyWith(
+        foodType: _foodTypeController.text,
+        amount: _amountController.text,
+        reminderTimes: reminderTimes,
+        notes: _notesController.text,
+      );
+      await ref.read(feedingControllerProvider.notifier).updateFeedingSchedule(updated);
+      if (mounted) {
+        ToastUtils.showSuccessToast(context, l10n.petUpdated);
+        context.pop();
+      }
+    } else {
+      await ref.read(feedingControllerProvider.notifier).createFeedingSchedule(
+            foodType: _foodTypeController.text,
+            amount: _amountController.text,
+            reminderTimes: reminderTimes,
+            notes: _notesController.text,
+          );
+
+      if (mounted) {
+        ToastUtils.showSuccessToast(context, l10n.planCreated);
+        context.pop();
+      }
     }
   }
 
@@ -152,7 +218,7 @@ class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(l10n.feedingPlanTitle),
+            Text(widget.schedule != null ? l10n.editPetTitle : l10n.feedingPlanTitle),
             if (petName != null)
               Text(
                 petName,
@@ -163,6 +229,12 @@ class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
               ),
           ],
         ),
+        actions: widget.schedule != null ? [
+          IconButton(
+            icon: const Icon(Icons.delete_outline_rounded, color: Colors.red),
+            onPressed: () => _confirmDelete(),
+          )
+        ] : null,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -235,7 +307,7 @@ class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
                         minimumSize: const Size.fromHeight(56),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                       ),
-                      child: Text(l10n.createPlan, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      child: Text(widget.schedule != null ? l10n.save : l10n.createPlan, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                     ),
                     const SizedBox(height: 40),
                   ],
@@ -244,6 +316,30 @@ class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _confirmDelete() {
+    final l10n = AppLocalizations.of(context)!;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.delete),
+        content: Text('${l10n.delete}?'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.back)),
+          TextButton(
+            onPressed: () async {
+              await ref.read(feedingControllerProvider.notifier).deleteFeedingSchedule(widget.schedule!.id!);
+              if (mounted) {
+                Navigator.pop(context); // Dialog
+                context.pop(); // Screen
+              }
+            }, 
+            child: Text(l10n.delete, style: const TextStyle(color: Colors.red)),
+          ),
+        ],
       ),
     );
   }

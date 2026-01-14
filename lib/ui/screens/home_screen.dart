@@ -218,34 +218,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       subtitle: hasActivePlans ? null : Text(l10n.onboardingHint), // "Du kannst Details später ergänzen" works as a hint here
                       onTap: () {
                         context.pop();
-                        // Zeige Dialog zur Auswahl des Plantyps
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text(l10n.createPlans),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ListTile(
-                                  leading: const Icon(Icons.medication_rounded),
-                                  title: Text(l10n.medicationPlanTitle),
-                                  onTap: () {
-                                    context.pop();
-                                    context.push('/medication-plan');
-                                  },
-                                ),
-                                ListTile(
-                                  leading: const Icon(Icons.restaurant_rounded),
-                                  title: Text(l10n.feedingPlanTitle),
-                                  onTap: () {
-                                    context.pop();
-                                    context.push('/feeding-plan');
-                                  },
-                                ),
-                              ],
+                        if (hasActivePlans) {
+                          context.push('/plans');
+                        } else {
+                          // Show selection dialog
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text(l10n.createPlans),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTile(
+                                    leading: const Icon(Icons.medication_rounded),
+                                    title: Text(l10n.medicationPlanTitle),
+                                    onTap: () {
+                                      context.pop();
+                                      context.push('/medication-plan');
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(Icons.restaurant_rounded),
+                                    title: Text(l10n.feedingPlanTitle),
+                                    onTap: () {
+                                      context.pop();
+                                      context.push('/feeding-plan');
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       },
                     ),
                   ],

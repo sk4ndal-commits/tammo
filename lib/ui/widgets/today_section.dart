@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../l10n/app_localizations.dart';
 import '../../features/medication/application/medication_controller.dart';
 import '../../features/medication/domain/medication.dart';
@@ -74,10 +75,18 @@ class _TodayContent extends ConsumerWidget {
           ci.timestamp.month == today.month &&
           ci.timestamp.day == today.day);
 
-      if (alreadyTaken) {
-        completedTasks.add(_TodayMedicationTile(schedule: schedule, isCompleted: true));
+            if (alreadyTaken) {
+        completedTasks.add(_TodayMedicationTile(
+          schedule: schedule, 
+          isCompleted: true,
+          plannedTime: _getPlannedTimeForSchedule(schedule, today, checkIns),
+        ));
       } else {
-        openTasks.add(_TodayMedicationTile(schedule: schedule, isCompleted: false));
+        openTasks.add(_TodayMedicationTile(
+          schedule: schedule, 
+          isCompleted: false,
+          plannedTime: _getPlannedTimeForSchedule(schedule, today, checkIns),
+        ));
       }
     }
 
@@ -92,9 +101,17 @@ class _TodayContent extends ConsumerWidget {
           ci.timestamp.day == today.day);
 
       if (alreadyFed) {
-        completedTasks.add(_TodayFeedingTile(schedule: schedule, isCompleted: true));
+        completedTasks.add(_TodayFeedingTile(
+          schedule: schedule, 
+          isCompleted: true,
+          plannedTime: _getPlannedTimeForFeeding(schedule, today, checkIns),
+        ));
       } else {
-        openTasks.add(_TodayFeedingTile(schedule: schedule, isCompleted: false));
+        openTasks.add(_TodayFeedingTile(
+          schedule: schedule, 
+          isCompleted: false,
+          plannedTime: _getPlannedTimeForFeeding(schedule, today, checkIns),
+        ));
       }
     }
 
@@ -119,7 +136,17 @@ class _TodayContent extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _SectionHeader(title: l10n.todayFocus, isUrgent: true),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _SectionHeader(title: l10n.todayFocus, isUrgent: true),
+            TextButton.icon(
+              onPressed: () => context.push('/plans'),
+              icon: const Icon(Icons.settings_outlined, size: 18),
+              label: Text(l10n.managePets, style: const TextStyle(fontSize: 12)), // "Verwalten" would be better, but l10n.managePets is "Tiere verwalten"
+            ),
+          ],
+        ),
         ...openTasks,
         if (completedTasks.isNotEmpty) ...[
           const SizedBox(height: 24),
@@ -128,6 +155,24 @@ class _TodayContent extends ConsumerWidget {
         ],
       ],
     );
+  }
+
+  String _getPlannedTimeForSchedule(MedicationSchedule schedule, DateTime today, List<MedicationCheckIn> checkIns) {
+    if (schedule.reminderTimes.isEmpty) return '';
+    // If it's 1x or 2x, they have standard times.
+    // If it's multiple, we might want to show the NEXT one, but for now let's just show the first/main one or "Multiple"
+    if (schedule.reminderTimes.length == 1) return schedule.reminderTimes.first;
+    
+    // Find first one not yet checked in today?
+    // Actually, US just says "see the due time". If there are multiple due times, which one?
+    // For now, let's just list them or show the next one.
+    return schedule.reminderTimes.join(', ');
+  }
+
+  String _getPlannedTimeForFeeding(FeedingSchedule schedule, DateTime today, List<FeedingCheckIn> checkIns) {
+    if (schedule.reminderTimes.isEmpty) return '';
+    if (schedule.reminderTimes.length == 1) return schedule.reminderTimes.first;
+    return schedule.reminderTimes.join(', ');
   }
 }
 
@@ -159,38 +204,50 @@ class _EmptyTodayState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
-      decoration: BoxDecoration(
-        color: allDone 
-            ? Theme.of(context).colorScheme.primaryContainer.withAlpha(40)
-            : Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(40),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: allDone 
-              ? Theme.of(context).colorScheme.primary.withAlpha(40)
-              : Theme.of(context).colorScheme.outlineVariant.withAlpha(40),
-        ),
-      ),
-      child: Column(
-        children: [
-          Icon(
-            allDone ? Icons.check_circle_rounded : Icons.calendar_today_rounded,
-            size: 48,
-            color: allDone ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outline,
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
+          decoration: BoxDecoration(
+            color: allDone 
+                ? Theme.of(context).colorScheme.primaryContainer.withAlpha(40)
+                : Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(40),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: allDone 
+                  ? Theme.of(context).colorScheme.primary.withAlpha(40)
+                  : Theme.of(context).colorScheme.outlineVariant.withAlpha(40),
+            ),
           ),
-          const SizedBox(height: 16),
-          Text(
-            allDone ? l10n.allDone : l10n.noEntriesYet,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: allDone ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outline,
-                ),
+          child: Column(
+            children: [
+              Icon(
+                allDone ? Icons.check_circle_rounded : Icons.calendar_today_rounded,
+                size: 48,
+                color: allDone ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outline,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                allDone ? l10n.allDone : l10n.noEntriesYet,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: allDone ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outline,
+                    ),
+              ),
+            ],
+          ),
+        ),
+        if (!allDone) ...[
+          const SizedBox(height: 12),
+          TextButton.icon(
+            onPressed: () => GoRouter.of(context).push('/plans'),
+            icon: const Icon(Icons.add_rounded),
+            label: Text(l10n.createPlans),
           ),
         ],
-      ),
+      ],
     );
   }
 }
@@ -198,7 +255,12 @@ class _EmptyTodayState extends StatelessWidget {
 class _TodayMedicationTile extends ConsumerWidget {
   final MedicationSchedule schedule;
   final bool isCompleted;
-  const _TodayMedicationTile({required this.schedule, required this.isCompleted});
+  final String plannedTime;
+  const _TodayMedicationTile({
+    required this.schedule, 
+    required this.isCompleted,
+    required this.plannedTime,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -242,7 +304,29 @@ class _TodayMedicationTile extends ConsumerWidget {
                 color: alreadyTaken ? Theme.of(context).colorScheme.outline : null,
               ),
             ),
-            subtitle: Text('${schedule.dosage} • ${schedule.frequency}'),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('${schedule.dosage} • ${schedule.frequency}'),
+                if (plannedTime.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.access_time_rounded, size: 14, color: alreadyTaken ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.primary),
+                        const SizedBox(width: 4),
+                        Text(
+                          plannedTime,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: alreadyTaken ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.primary,
+                            fontWeight: alreadyTaken ? FontWeight.normal : FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
             trailing: IconButton(
               icon: Icon(
                 alreadyTaken ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
@@ -277,7 +361,12 @@ class _TodayMedicationTile extends ConsumerWidget {
 class _TodayFeedingTile extends ConsumerWidget {
   final FeedingSchedule schedule;
   final bool isCompleted;
-  const _TodayFeedingTile({required this.schedule, required this.isCompleted});
+  final String plannedTime;
+  const _TodayFeedingTile({
+    required this.schedule, 
+    required this.isCompleted,
+    required this.plannedTime,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -321,7 +410,29 @@ class _TodayFeedingTile extends ConsumerWidget {
                 color: alreadyFed ? Theme.of(context).colorScheme.outline : null,
               ),
             ),
-            subtitle: Text(schedule.amount),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(schedule.amount),
+                if (plannedTime.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.access_time_rounded, size: 14, color: alreadyFed ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.primary),
+                        const SizedBox(width: 4),
+                        Text(
+                          plannedTime,
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: alreadyFed ? Theme.of(context).colorScheme.outline : Theme.of(context).colorScheme.primary,
+                            fontWeight: alreadyFed ? FontWeight.normal : FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
             trailing: IconButton(
               icon: Icon(
                 alreadyFed ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
