@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import '../../l10n/app_localizations.dart';
 import '../../features/medication/application/medication_controller.dart';
+import '../../l10n/app_localizations.dart';
+import '../widgets/toast_utils.dart';
 
 class MedicationPlanScreen extends ConsumerStatefulWidget {
   const MedicationPlanScreen({super.key});
@@ -79,6 +80,7 @@ class _MedicationPlanScreenState extends ConsumerState<MedicationPlanScreen> {
     );
 
     if (mounted) {
+      ToastUtils.showSuccessToast(context, AppLocalizations.of(context)!.planCreated);
       context.pop();
     }
   }

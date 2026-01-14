@@ -5,6 +5,7 @@ import '../../features/medication/application/medication_controller.dart';
 import '../../features/medication/domain/medication.dart';
 import '../../features/feeding/application/feeding_controller.dart';
 import '../../features/feeding/domain/feeding.dart';
+import '../widgets/toast_utils.dart';
 
 class TodaySection extends ConsumerWidget {
   const TodaySection({super.key});
@@ -248,13 +249,7 @@ class _TodayMedicationTile extends ConsumerWidget {
                   );
 
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(l10n.medicationConfirmed),
-                        behavior: SnackBarBehavior.floating,
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
+                    ToastUtils.showSuccessToast(context, l10n.medicationConfirmed);
                   }
                 }
               },
@@ -333,13 +328,7 @@ class _TodayFeedingTile extends ConsumerWidget {
                   );
 
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(l10n.feedingConfirmed),
-                        behavior: SnackBarBehavior.floating,
-                        duration: const Duration(seconds: 2),
-                      ),
-                    );
+                    ToastUtils.showSuccessToast(context, l10n.feedingConfirmed);
                   }
                 }
               },

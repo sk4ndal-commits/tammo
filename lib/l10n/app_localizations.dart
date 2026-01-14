@@ -578,6 +578,24 @@ abstract class AppLocalizations {
   /// **'Symptom logged'**
   String get eventLogged;
 
+  /// No description provided for @petCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile created'**
+  String get petCreated;
+
+  /// No description provided for @petUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated'**
+  String get petUpdated;
+
+  /// No description provided for @planCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan created'**
+  String get planCreated;
+
   /// No description provided for @stepWhat.
   ///
   /// In en, this message translates to:

@@ -263,6 +263,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get eventLogged => 'Symptom logged';
 
   @override
+  String get petCreated => 'Profile created';
+
+  @override
+  String get petUpdated => 'Profile updated';
+
+  @override
+  String get planCreated => 'Plan created';
+
+  @override
   String get stepWhat => 'What?';
 
   @override

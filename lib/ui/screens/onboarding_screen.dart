@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import '../widgets/toast_utils.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -64,6 +65,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             notes: _notesController.text,
           );
       if (mounted) {
+        ToastUtils.showSuccessToast(context, AppLocalizations.of(context)!.petCreated);
         context.go('/');
       }
     }

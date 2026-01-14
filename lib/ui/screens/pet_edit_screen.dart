@@ -6,9 +6,10 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import '../../features/pet/domain/pet.dart';
 import '../../l10n/app_localizations.dart';
 import '../../features/pet/application/pet_controller.dart';
-import '../../features/pet/domain/pet.dart';
+import '../widgets/toast_utils.dart';
 
 class PetEditScreen extends ConsumerStatefulWidget {
   const PetEditScreen({super.key});
@@ -90,6 +91,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
             notes: _notesController.text,
           );
       if (mounted) {
+        ToastUtils.showSuccessToast(context, AppLocalizations.of(context)!.petUpdated);
         context.pop();
       }
     }

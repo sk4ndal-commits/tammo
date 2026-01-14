@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../l10n/app_localizations.dart';
 import '../../features/feeding/application/feeding_controller.dart';
+import '../../l10n/app_localizations.dart';
+import '../widgets/toast_utils.dart';
 
 class FeedingPlanScreen extends ConsumerStatefulWidget {
   const FeedingPlanScreen({super.key});
@@ -62,6 +63,7 @@ class _FeedingPlanScreenState extends ConsumerState<FeedingPlanScreen> {
         );
 
     if (mounted) {
+      ToastUtils.showSuccessToast(context, AppLocalizations.of(context)!.planCreated);
       context.pop();
     }
   }

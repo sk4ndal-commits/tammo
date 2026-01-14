@@ -4,8 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import '../../l10n/app_localizations.dart';
 import '../../features/document/application/document_controller.dart';
+import '../../l10n/app_localizations.dart';
+import '../widgets/toast_utils.dart';
 
 class DocumentUploadScreen extends ConsumerStatefulWidget {
   const DocumentUploadScreen({super.key});
@@ -84,15 +85,7 @@ class _DocumentUploadScreenState extends ConsumerState<DocumentUploadScreen> {
           );
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.documentUploadSuccess),
-            behavior: SnackBarBehavior.floating,
-            width: 200,
-            duration: const Duration(seconds: 2),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-          ),
-        );
+        ToastUtils.showSuccessToast(context, AppLocalizations.of(context)!.documentUploadSuccess);
         context.pop();
       }
     }

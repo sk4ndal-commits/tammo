@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../l10n/app_localizations.dart';
 import '../../features/event/application/event_controller.dart';
-import '../../features/event/application/event_preferences_controller.dart';
+import '../widgets/toast_utils.dart';
 
 class SymptomLogScreen extends ConsumerStatefulWidget {
   const SymptomLogScreen({super.key});
@@ -27,16 +27,11 @@ class _SymptomLogScreenState extends ConsumerState<SymptomLogScreen> {
   }
 
   void _onTypeSelected(String type) {
+    if (_selectedType == type) return;
     setState(() {
       _selectedType = type;
-      
-      // Load preferences for this type
-      final prefs = ref.read(eventPreferencesProvider);
-      final lastFreq = prefs.lastFrequencies[type] ?? 1;
-      final lastNote = prefs.lastNotes[type] ?? '';
-      
-      _frequencyController.text = lastFreq.toString();
-      _notesController.text = lastNote;
+      // Reset frequency to default when type changes to avoid confusion from previous entries
+      _frequencyController.text = '1';
     });
   }
 
@@ -44,45 +39,28 @@ class _SymptomLogScreenState extends ConsumerState<SymptomLogScreen> {
     if (_selectedType == null) {
       final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.eventTypeError)),
+        SnackBar(
+          content: Text(l10n.eventTypeError),
+          behavior: SnackBarBehavior.floating,
+        ),
       );
       return;
     }
 
-    if (_formKey.currentState?.validate() ?? false) {
-      final frequency = int.tryParse(_frequencyController.text) ?? 1;
-      final notes = _notesController.text;
+    final frequency = int.tryParse(_frequencyController.text) ?? 1;
+    final notes = _notesController.text;
 
-      await ref.read(eventControllerProvider.notifier).addEvent(
-            type: _selectedType!,
-            timestamp: _selectedDateTime,
-            frequency: frequency,
-            notes: notes,
-          );
-
-      // Save preferences
-      await ref.read(eventPreferencesProvider.notifier).saveLastValues(
-            type: _selectedType!,
-            frequency: frequency,
-            notes: notes,
-          );
-
-      if (mounted) {
-        final l10n = AppLocalizations.of(context)!;
-        final messenger = ScaffoldMessenger.of(context);
-
-        Navigator.of(context).pop();
-
-        messenger.showSnackBar(
-          SnackBar(
-            content: Text(l10n.eventLogged),
-            behavior: SnackBarBehavior.floating,
-            width: 200,
-            duration: const Duration(seconds: 2),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-          ),
+    await ref.read(eventControllerProvider.notifier).addEvent(
+          type: _selectedType!,
+          timestamp: _selectedDateTime,
+          frequency: frequency,
+          notes: notes,
         );
-      }
+
+    if (mounted) {
+      final l10n = AppLocalizations.of(context)!;
+      Navigator.of(context).pop();
+      ToastUtils.showSuccessToast(context, l10n.eventLogged);
     }
   }
 
@@ -116,7 +94,7 @@ class _SymptomLogScreenState extends ConsumerState<SymptomLogScreen> {
                       physics: const NeverScrollableScrollPhysics(),
                       mainAxisSpacing: 12,
                       crossAxisSpacing: 12,
-                      childAspectRatio: 1.5,
+                      childAspectRatio: 1.3,
                       children: [
                         _SymptomTypeCard(
                           type: 'Vomiting',
@@ -156,6 +134,8 @@ class _SymptomLogScreenState extends ConsumerState<SymptomLogScreen> {
                       ],
                     ),
                     const SizedBox(height: 24),
+                    const Divider(),
+                    const SizedBox(height: 8),
                     ListTile(
                       contentPadding: EdgeInsets.zero,
                       title: Text(l10n.eventDateLabel),
@@ -194,8 +174,30 @@ class _SymptomLogScreenState extends ConsumerState<SymptomLogScreen> {
                         labelText: l10n.frequencyLabel,
                         border: const OutlineInputBorder(),
                         prefixIcon: const Icon(Icons.repeat),
+                        suffixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.remove_circle_outline),
+                              onPressed: () {
+                                final val = int.tryParse(_frequencyController.text) ?? 1;
+                                if (val > 1) {
+                                  _frequencyController.text = (val - 1).toString();
+                                }
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.add_circle_outline),
+                              onPressed: () {
+                                final val = int.tryParse(_frequencyController.text) ?? 1;
+                                _frequencyController.text = (val + 1).toString();
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                       keyboardType: TextInputType.number,
+                      readOnly: true,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
@@ -218,8 +220,15 @@ class _SymptomLogScreenState extends ConsumerState<SymptomLogScreen> {
               onPressed: _submit,
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(56),
+                backgroundColor: theme.colorScheme.primary,
+                foregroundColor: theme.colorScheme.onPrimary,
+                elevation: 2,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               ),
-              child: Text(l10n.capture),
+              child: Text(
+                l10n.save,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],
@@ -254,26 +263,26 @@ class _SymptomTypeCard extends StatelessWidget {
           ? colorScheme.primaryContainer 
           : colorScheme.surfaceContainerHighest.withAlpha(128),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         side: isSelected 
-            ? BorderSide(color: colorScheme.primary, width: 2) 
+            ? BorderSide(color: colorScheme.primary, width: 2.5) 
             : BorderSide.none,
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
-              size: 32,
+              size: 40,
               color: isSelected ? colorScheme.onPrimaryContainer : colorScheme.onSurfaceVariant,
             ),
             const SizedBox(height: 8),
             Text(
               label,
-              style: theme.textTheme.bodyMedium?.copyWith(
+              style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 color: isSelected ? colorScheme.onPrimaryContainer : colorScheme.onSurfaceVariant,
               ),
