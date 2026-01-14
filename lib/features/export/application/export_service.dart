@@ -8,6 +8,7 @@ import '../../../ui/widgets/localization_helpers.dart';
 
 import '../../../core/providers.dart';
 import '../domain/report_data.dart';
+import '../../event/application/narrative_engine.dart';
 import '../../pet/domain/pet.dart';
 import '../../event/domain/event.dart';
 import '../../medication/domain/medication.dart';
@@ -65,11 +66,24 @@ class ExportService {
       documents.sort((a, b) => b.date.compareTo(a.date));
     }
 
+    // Detect phases
+    final allEvents = await _ref.read(eventRepositoryProvider).getEventsForPet(pet.petId);
+    final allMedSchedules = await _ref.read(medicationRepositoryProvider).getSchedulesForPet(pet.petId);
+    final phases = NarrativeEngine.detectPhases(
+      events: allEvents,
+      medicationSchedules: allMedSchedules,
+    ).where((p) => 
+        (p.startDate.isAfter(start) && p.startDate.isBefore(end.add(const Duration(days: 1)))) ||
+        (p.endDate != null && p.endDate!.isAfter(start) && p.endDate!.isBefore(end.add(const Duration(days: 1)))) ||
+        (p.endDate == null && p.startDate.isBefore(end))
+    ).toList();
+
     return ReportData(
       pet: pet,
       startDate: start,
       endDate: end,
       events: events,
+      phases: phases,
       medSchedules: medSchedules,
       medicationCheckIns: checkIns,
       documents: documents,
@@ -121,16 +135,85 @@ class ExportService {
             if (data.includeSymptoms && data.events.isNotEmpty) ...[
               pw.SizedBox(height: 20),
               pw.Header(level: 1, text: l10n.symptomLogTitle),
-              pw.TableHelper.fromTextArray(
-                headers: [l10n.eventDateLabel, l10n.eventTypeLabel, l10n.notesLabel],
-                data: data.events
-                    .map((e) => [
-                          dateFormat.add_Hm().format(e.timestamp),
-                          LocalizationHelpers.translateEventTypeWithL10n(l10n, e.type),
-                          e.notes ?? '',
-                        ])
-                    .toList(),
-              ),
+              
+              if (data.phases.isNotEmpty) ...[
+                ...data.phases.map((phase) {
+                  return pw.Column(
+                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                    children: [
+                      pw.SizedBox(height: 10),
+                      pw.Container(
+                        padding: const pw.EdgeInsets.all(8),
+                        decoration: const pw.BoxDecoration(
+                          color: PdfColors.grey200,
+                          borderRadius: pw.BorderRadius.all(pw.Radius.circular(4)),
+                        ),
+                        child: pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: [
+                            pw.Row(
+                              mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                              children: [
+                                pw.Text(
+                                  l10n.phaseTitle(LocalizationHelpers.translateEventTypeWithL10n(l10n, phase.dominantTopic)),
+                                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+                                ),
+                                pw.Text(
+                                  '${dateFormat.format(phase.startDate)} - ${phase.endDate != null ? dateFormat.format(phase.endDate!) : l10n.phaseOngoing}',
+                                  style: const pw.TextStyle(fontSize: 10),
+                                ),
+                              ],
+                            ),
+                            pw.Text(
+                              l10n.phaseSummary(phase.events.length, phase.planIdsStarted.length + phase.planIdsEnded.length),
+                              style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700),
+                            ),
+                          ],
+                        ),
+                      ),
+                      pw.TableHelper.fromTextArray(
+                        headers: [l10n.eventDateLabel, l10n.eventTypeLabel, l10n.notesLabel],
+                        data: phase.events
+                            .map((e) => [
+                                  dateFormat.add_Hm().format(e.timestamp),
+                                  LocalizationHelpers.translateEventTypeWithL10n(l10n, e.type),
+                                  e.notes ?? '',
+                                ])
+                            .toList(),
+                      ),
+                      pw.SizedBox(height: 5),
+                    ],
+                  );
+                }),
+                
+                // Individual events that are NOT in a phase
+                if (data.events.where((e) => !data.phases.any((p) => p.events.any((pe) => pe.id == e.id))).isNotEmpty) ...[
+                  pw.SizedBox(height: 10),
+                  pw.Text(l10n.lastEvents, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+                  pw.TableHelper.fromTextArray(
+                    headers: [l10n.eventDateLabel, l10n.eventTypeLabel, l10n.notesLabel],
+                    data: data.events
+                        .where((e) => !data.phases.any((p) => p.events.any((pe) => pe.id == e.id)))
+                        .map((e) => [
+                              dateFormat.add_Hm().format(e.timestamp),
+                              LocalizationHelpers.translateEventTypeWithL10n(l10n, e.type),
+                              e.notes ?? '',
+                            ])
+                        .toList(),
+                  ),
+                ],
+              ] else ...[
+                pw.TableHelper.fromTextArray(
+                  headers: [l10n.eventDateLabel, l10n.eventTypeLabel, l10n.notesLabel],
+                  data: data.events
+                      .map((e) => [
+                            dateFormat.add_Hm().format(e.timestamp),
+                            LocalizationHelpers.translateEventTypeWithL10n(l10n, e.type),
+                            e.notes ?? '',
+                          ])
+                      .toList(),
+                ),
+              ],
             ],
             if (data.includeMedications && data.medSchedules.isNotEmpty) ...[
               pw.SizedBox(height: 20),

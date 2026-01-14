@@ -1021,6 +1021,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get Started'**
   String get getStarted;
+
+  /// No description provided for @phaseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase: {topic}'**
+  String phaseTitle(String topic);
+
+  /// No description provided for @phaseOngoing.
+  ///
+  /// In en, this message translates to:
+  /// **'ongoing'**
+  String get phaseOngoing;
+
+  /// No description provided for @phaseSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{eventCount} entries • {planCount} plans'**
+  String phaseSummary(int eventCount, int planCount);
+
+  /// No description provided for @phaseResolved.
+  ///
+  /// In en, this message translates to:
+  /// **'back to normal'**
+  String get phaseResolved;
+
+  /// No description provided for @ongoingPhase.
+  ///
+  /// In en, this message translates to:
+  /// **'Ongoing Phase'**
+  String get ongoingPhase;
+
+  /// No description provided for @lastResolvedPhase.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Completed'**
+  String get lastResolvedPhase;
 }
 
 class _AppLocalizationsDelegate

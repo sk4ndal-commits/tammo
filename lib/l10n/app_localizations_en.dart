@@ -494,4 +494,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get getStarted => 'Get Started';
+
+  @override
+  String phaseTitle(String topic) {
+    return 'Phase: $topic';
+  }
+
+  @override
+  String get phaseOngoing => 'ongoing';
+
+  @override
+  String phaseSummary(int eventCount, int planCount) {
+    return '$eventCount entries • $planCount plans';
+  }
+
+  @override
+  String get phaseResolved => 'back to normal';
+
+  @override
+  String get ongoingPhase => 'Ongoing Phase';
+
+  @override
+  String get lastResolvedPhase => 'Last Completed';
 }

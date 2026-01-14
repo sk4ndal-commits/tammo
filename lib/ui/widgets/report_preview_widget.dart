@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'localization_helpers.dart';
+import 'care_phase_tile.dart';
 import '../../features/export/domain/report_data.dart';
 import '../../l10n/app_localizations.dart';
 
@@ -65,15 +66,45 @@ class ReportPreviewWidget extends StatelessWidget {
         if (data.includeSymptoms && data.events.isNotEmpty) ...[
           const SizedBox(height: 24),
           _buildSectionTitle(l10n.symptomLogTitle, theme),
-          ...data.events.map((e) => Card(
-            margin: const EdgeInsets.only(bottom: 8),
-            child: ListTile(
-              title: Text(LocalizationHelpers.translateEventType(context, e.type)),
-              subtitle: Text(dateTimeFormat.format(e.timestamp)),
-              trailing: e.notes != null ? const Icon(Icons.notes) : null,
-              dense: true,
-            ),
-          )),
+          
+          if (data.phases.isNotEmpty) ...[
+            ...data.phases.map((phase) => CarePhaseTile(
+              phase: phase,
+              eventTileBuilder: (e) => Card(
+                margin: const EdgeInsets.only(bottom: 8),
+                child: ListTile(
+                  title: Text(LocalizationHelpers.translateEventType(context, e.type)),
+                  subtitle: Text(dateTimeFormat.format(e.timestamp)),
+                  trailing: e.notes != null ? const Icon(Icons.notes) : null,
+                  dense: true,
+                ),
+              ),
+            )),
+            if (data.events.where((e) => !data.phases.any((p) => p.events.any((pe) => pe.id == e.id))).isNotEmpty) ...[
+               const SizedBox(height: 16),
+               Text(l10n.lastEvents, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold)),
+               const SizedBox(height: 8),
+               ...data.events.where((e) => !data.phases.any((p) => p.events.any((pe) => pe.id == e.id))).map((e) => Card(
+                margin: const EdgeInsets.only(bottom: 8),
+                child: ListTile(
+                  title: Text(LocalizationHelpers.translateEventType(context, e.type)),
+                  subtitle: Text(dateTimeFormat.format(e.timestamp)),
+                  trailing: e.notes != null ? const Icon(Icons.notes) : null,
+                  dense: true,
+                ),
+              )),
+            ],
+          ] else ...[
+            ...data.events.map((e) => Card(
+              margin: const EdgeInsets.only(bottom: 8),
+              child: ListTile(
+                title: Text(LocalizationHelpers.translateEventType(context, e.type)),
+                subtitle: Text(dateTimeFormat.format(e.timestamp)),
+                trailing: e.notes != null ? const Icon(Icons.notes) : null,
+                dense: true,
+              ),
+            )),
+          ],
         ],
 
         // Medications

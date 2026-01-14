@@ -216,5 +216,28 @@
   "appOnboardingReminderSubtitle": "Medication, feeding, and important appointments.",
   "appOnboardingOverviewTitle": "You stay in control at all times.",
   "appOnboardingOverviewSubtitle": "Even when things get stressful – nothing gets lost.",
-  "getStarted": "Get Started"
+  "getStarted": "Get Started",
+  "phaseTitle": "Phase: {topic}",
+  "@phaseTitle": {
+    "placeholders": {
+      "topic": {
+        "type": "String"
+      }
+    }
+  },
+  "phaseOngoing": "ongoing",
+  "phaseSummary": "{eventCount} entries • {planCount} plans",
+  "@phaseSummary": {
+    "placeholders": {
+      "eventCount": {
+        "type": "int"
+      },
+      "planCount": {
+        "type": "int"
+      }
+    }
+  },
+  "phaseResolved": "back to normal",
+  "ongoingPhase": "Ongoing Phase",
+  "lastResolvedPhase": "Last Completed"
 }

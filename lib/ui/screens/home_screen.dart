@@ -6,12 +6,14 @@ import 'package:intl/intl.dart';
 import '../../l10n/app_localizations.dart';
 import '../../features/pet/application/pet_controller.dart';
 import '../../features/event/application/event_controller.dart';
+import '../../features/event/application/narrative_engine.dart';
 import '../../features/event/domain/event.dart';
 import '../../features/medication/application/medication_controller.dart';
 import '../../features/feeding/application/feeding_controller.dart';
 import '../widgets/localization_helpers.dart';
 import '../widgets/toast_utils.dart';
 import '../widgets/today_section.dart';
+import '../widgets/care_phase_tile.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   final bool expandTimeline;
@@ -303,14 +305,35 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 child: Center(child: Text(l10n.noEntriesYet)),
                               );
                             }
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: events.length,
-                              itemBuilder: (context, index) {
-                                final event = events[index];
-                                return _EventTile(event: event);
-                              },
+
+                            final medicationSchedules = ref.watch(medicationControllerProvider).valueOrNull ?? [];
+                            final phases = NarrativeEngine.detectPhases(
+                              events: events,
+                              medicationSchedules: medicationSchedules,
+                            );
+
+                            final phaseEventIds = phases.expand((p) => p.events.map((e) => e.id)).toSet();
+                            final individualEvents = events.where((e) => !phaseEventIds.contains(e.id)).toList();
+
+                            return Column(
+                              children: [
+                                if (phases.isNotEmpty) ...[
+                                  ...phases.map((phase) => CarePhaseTile(
+                                        phase: phase,
+                                        eventTileBuilder: (event) => _EventTile(event: event),
+                                      )),
+                                  if (individualEvents.isNotEmpty) const Divider(height: 32),
+                                ],
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: individualEvents.length,
+                                  itemBuilder: (context, index) {
+                                    final event = individualEvents[index];
+                                    return _EventTile(event: event);
+                                  },
+                                ),
+                              ],
                             );
                           },
                           loading: () => const Center(child: CircularProgressIndicator()),

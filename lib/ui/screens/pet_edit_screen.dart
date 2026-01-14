@@ -155,7 +155,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
-                    initialValue: _selectedSpecies,
+                    initialValue: _selectedSpecies?.toLowerCase(),
                     decoration: InputDecoration(
                       labelText: l10n.speciesLabel,
                       border: const OutlineInputBorder(),
@@ -197,7 +197,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
-                    initialValue: _selectedGender,
+                    initialValue: _selectedGender?.toLowerCase(),
                     decoration: InputDecoration(
                       labelText: l10n.genderLabel,
                       border: const OutlineInputBorder(),

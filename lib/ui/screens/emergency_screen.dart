@@ -4,7 +4,10 @@ import 'package:intl/intl.dart';
 import '../../l10n/app_localizations.dart';
 import '../../features/pet/application/pet_controller.dart';
 import '../../features/event/application/event_controller.dart';
+import '../../features/event/application/narrative_engine.dart';
+import '../../features/event/domain/care_narrative.dart';
 import '../../features/medication/application/medication_controller.dart';
+import '../widgets/localization_helpers.dart';
 
 class EmergencyScreen extends ConsumerWidget {
   const EmergencyScreen({super.key});
@@ -75,6 +78,49 @@ class EmergencyScreen extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
+
+                // Care Narratives Section (New Priority)
+                eventState.when(
+                  data: (events) {
+                    final medSchedules = medState.valueOrNull ?? [];
+                    final phases = NarrativeEngine.detectPhases(
+                      events: events,
+                      medicationSchedules: medSchedules,
+                    );
+                    
+                    final ongoingPhase = phases.where((p) => p.endDate == null).firstOrNull;
+                    final lastResolvedPhase = phases.where((p) => p.endDate != null).firstOrNull;
+
+                    if (ongoingPhase == null && lastResolvedPhase == null) {
+                      return const SizedBox.shrink();
+                    }
+
+                    return Column(
+                      children: [
+                        if (ongoingPhase != null) ...[
+                          _EmergencyCard(
+                            title: l10n.ongoingPhase.toUpperCase(),
+                            icon: Icons.running_with_errors_rounded,
+                            color: Colors.orange.shade900,
+                            content: _buildPhaseContent(context, ongoingPhase, theme, l10n),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                        if (lastResolvedPhase != null) ...[
+                          _EmergencyCard(
+                            title: l10n.lastResolvedPhase.toUpperCase(),
+                            icon: Icons.check_circle_outline_rounded,
+                            color: Colors.green.shade900,
+                            content: _buildPhaseContent(context, lastResolvedPhase, theme, l10n),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      ],
+                    );
+                  },
+                  loading: () => const SizedBox.shrink(),
+                  error: (_, __) => const SizedBox.shrink(),
+                ),
 
                 // Medications Section (Priority 2)
                 medState.when(
@@ -201,19 +247,29 @@ class EmergencyScreen extends ConsumerWidget {
   }
 
   String _getTranslatedType(BuildContext context, String type) {
-    final l10n = AppLocalizations.of(context)!;
-    switch (type.toLowerCase()) {
-      case 'vomiting':
-        return l10n.eventTypeVomiting;
-      case 'diarrhea':
-        return l10n.eventTypeDiarrhea;
-      case 'appetite':
-        return l10n.eventTypeAppetite;
-      case 'behavior':
-        return l10n.eventTypeBehavior;
-      default:
-        return l10n.eventTypeOther;
-    }
+    return LocalizationHelpers.translateEventType(context, type);
+  }
+
+  Widget _buildPhaseContent(BuildContext context, CarePhase phase, ThemeData theme, AppLocalizations l10n) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.phaseTitle(LocalizationHelpers.translateEventType(context, phase.dominantTopic)),
+          style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          '${DateFormat.yMd().format(phase.startDate)} - ${phase.endDate != null ? DateFormat.yMd().format(phase.endDate!) : l10n.phaseOngoing}',
+          style: theme.textTheme.titleMedium?.copyWith(color: Colors.grey.shade800),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          l10n.phaseSummary(phase.events.length, phase.planIdsStarted.length + phase.planIdsEnded.length),
+          style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade700),
+        ),
+      ],
+    );
   }
 }
 

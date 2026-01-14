@@ -1,5 +1,6 @@
 import '../../pet/domain/pet.dart';
 import '../../event/domain/event.dart';
+import '../../event/domain/care_narrative.dart';
 import '../../medication/domain/medication.dart';
 import '../../document/domain/document.dart';
 
@@ -8,6 +9,7 @@ class ReportData {
   final DateTime startDate;
   final DateTime endDate;
   final List<Event> events;
+  final List<CarePhase> phases;
   final List<MedicationSchedule> medSchedules;
   final Map<int, List<MedicationCheckIn>> medicationCheckIns;
   final List<Document> documents;
@@ -21,6 +23,7 @@ class ReportData {
     required this.startDate,
     required this.endDate,
     required this.events,
+    required this.phases,
     required this.medSchedules,
     required this.medicationCheckIns,
     required this.documents,
