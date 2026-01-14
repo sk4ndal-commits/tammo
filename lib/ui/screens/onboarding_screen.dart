@@ -9,6 +9,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import '../widgets/toast_utils.dart';
+import '../widgets/localization_helpers.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -122,7 +123,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                initialValue: _selectedSpecies?.toLowerCase(),
+                initialValue: LocalizationHelpers.normalizeSpecies(_selectedSpecies),
                 decoration: InputDecoration(
                   labelText: l10n.speciesLabel,
                   border: const OutlineInputBorder(),
@@ -164,7 +165,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                initialValue: _selectedGender?.toLowerCase(),
+                initialValue: LocalizationHelpers.normalizeGender(_selectedGender),
                 decoration: InputDecoration(
                   labelText: l10n.genderLabel,
                   border: const OutlineInputBorder(),

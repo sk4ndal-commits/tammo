@@ -10,6 +10,7 @@ import '../../features/pet/domain/pet.dart';
 import '../../l10n/app_localizations.dart';
 import '../../features/pet/application/pet_controller.dart';
 import '../widgets/toast_utils.dart';
+import '../widgets/localization_helpers.dart';
 
 class PetEditScreen extends ConsumerStatefulWidget {
   const PetEditScreen({super.key});
@@ -51,12 +52,12 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
   void _initializeFields(Pet pet) {
     if (_initialized) return;
     _nameController.text = pet.name;
-    _selectedSpecies = pet.species;
+    _selectedSpecies = LocalizationHelpers.normalizeSpecies(pet.species);
     _notesController.text = pet.notes ?? '';
     _weightController.text = pet.weight?.toString() ?? '';
     _allergiesController.text = pet.allergies ?? '';
     _selectedDate = pet.dateOfBirth;
-    _selectedGender = pet.gender;
+    _selectedGender = LocalizationHelpers.normalizeGender(pet.gender);
     _photoPath = pet.photoPath;
     _initialized = true;
   }
@@ -155,7 +156,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
-                    initialValue: _selectedSpecies?.toLowerCase(),
+                    initialValue: LocalizationHelpers.normalizeSpecies(_selectedSpecies),
                     decoration: InputDecoration(
                       labelText: l10n.speciesLabel,
                       border: const OutlineInputBorder(),
@@ -197,7 +198,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
-                    initialValue: _selectedGender?.toLowerCase(),
+                    initialValue: LocalizationHelpers.normalizeGender(_selectedGender),
                     decoration: InputDecoration(
                       labelText: l10n.genderLabel,
                       border: const OutlineInputBorder(),

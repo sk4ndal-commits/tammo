@@ -83,4 +83,40 @@ class LocalizationHelpers {
         return l10n.documentTypeOther;
     }
   }
+
+  static String normalizeGender(String? gender) {
+    if (gender == null) return '';
+    switch (gender.toLowerCase()) {
+      case 'male':
+      case 'männlich':
+        return 'male';
+      case 'female':
+      case 'weiblich':
+        return 'female';
+      default:
+        return gender.toLowerCase();
+    }
+  }
+
+  static String normalizeSpecies(String? species) {
+    if (species == null) return '';
+    switch (species.toLowerCase()) {
+      case 'dog':
+      case 'hund':
+        return 'dog';
+      case 'cat':
+      case 'katze':
+        return 'cat';
+      case 'bird':
+      case 'vogel':
+        return 'bird';
+      case 'rabbit':
+      case 'kaninchen':
+        return 'rabbit';
+      case 'hamster':
+        return 'hamster';
+      default:
+        return 'other';
+    }
+  }
 }
