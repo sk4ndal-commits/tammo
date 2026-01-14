@@ -448,7 +448,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addAnotherPet => 'Add another pet';
 
   @override
-  String get managePets => 'Manage pets';
+  String get managePets => 'My Pets';
 
   @override
   String activePetNow(String name) {

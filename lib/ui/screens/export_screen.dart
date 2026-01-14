@@ -8,6 +8,8 @@ import 'package:path_provider/path_provider.dart';
 import '../../l10n/app_localizations.dart';
 import '../../features/pet/application/pet_controller.dart';
 import '../../features/export/application/export_service.dart';
+import '../../features/export/domain/report_data.dart';
+import '../widgets/report_preview_widget.dart';
 
 class ExportScreen extends ConsumerStatefulWidget {
   const ExportScreen({super.key});
@@ -24,7 +26,9 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
   bool _includeAllergies = true;
   bool _includeDocuments = true;
   bool _selectAll = true;
-  bool _isGenerating = false;
+  bool _isLoading = false;
+  bool _isGeneratingPdf = false;
+  ReportData? _previewData;
 
   void _toggleSelectAll(bool? value) {
     if (value == null) return;
@@ -34,12 +38,14 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
       _includeMedications = value;
       _includeAllergies = value;
       _includeDocuments = value;
+      _previewData = null;
     });
   }
 
   void _updateSelectAllState() {
     setState(() {
       _selectAll = _includeSymptoms && _includeMedications && _includeAllergies && _includeDocuments;
+      _previewData = null;
     });
   }
 
@@ -54,42 +60,69 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
       setState(() {
         _startDate = picked.start;
         _endDate = picked.end;
+        _previewData = null;
       });
     }
   }
 
-  Future<void> _generateReport() async {
+  Future<void> _fetchPreviewData() async {
     final pet = ref.read(petControllerProvider).value?.activePet;
     if (pet == null) return;
 
-    setState(() => _isGenerating = true);
+    setState(() => _isLoading = true);
+
+    try {
+      final data = await ref.read(exportServiceProvider).fetchReportData(
+            pet: pet,
+            start: _startDate,
+            end: _endDate,
+            includeSymptoms: _includeSymptoms,
+            includeMedications: _includeMedications,
+            includeAllergies: _includeAllergies,
+            includeDocuments: _includeDocuments,
+          );
+      setState(() {
+        _previewData = data;
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _generatePdf() async {
+    if (_previewData == null) return;
+
+    setState(() => _isGeneratingPdf = true);
 
     final l10n = AppLocalizations.of(context)!;
     try {
       final pdfBytes = await ref.read(exportServiceProvider).generatePdf(
-        pet: pet,
-        start: _startDate,
-        end: _endDate,
-        includeSymptoms: _includeSymptoms,
-        includeMedications: _includeMedications,
-        includeAllergies: _includeAllergies,
-        includeDocuments: _includeDocuments,
-        l10n: l10n,
-      );
+            data: _previewData!,
+            l10n: l10n,
+          );
 
       final directory = await getTemporaryDirectory();
-      final filePath = '${directory.path}/tammo_report_${pet.name}_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf';
+      final filePath =
+          '${directory.path}/tammo_report_${_previewData!.pet.name}_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf';
       final file = File(filePath);
       await file.writeAsBytes(pdfBytes);
 
       if (mounted) {
         await Share.shareXFiles(
           [XFile(filePath)],
-          subject: l10n.reportTitle(pet.name),
+          subject: l10n.reportTitle(_previewData!.pet.name),
         );
-        
+
         if (!mounted) return;
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(l10n.exportSuccess),
@@ -108,7 +141,7 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
       }
     } finally {
       if (mounted) {
-        setState(() => _isGenerating = false);
+        setState(() => _isGeneratingPdf = false);
       }
     }
   }
@@ -136,12 +169,13 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
               child: ListTile(
                 leading: const Icon(Icons.calendar_today),
                 title: Text(l10n.period),
-                subtitle: Text('${DateFormat.yMd().format(_startDate)} - ${DateFormat.yMd().format(_endDate)}'),
+                subtitle: Text(
+                    '${DateFormat.yMd().format(_startDate)} - ${DateFormat.yMd().format(_endDate)}'),
                 trailing: const Icon(Icons.edit),
                 onTap: () => _selectDateRange(context),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             CheckboxListTile(
               title: Text(_selectAll ? l10n.deselectAll : l10n.selectAll),
               value: _selectAll,
@@ -181,17 +215,37 @@ class _ExportScreenState extends ConsumerState<ExportScreen> {
                 _updateSelectAllState();
               },
             ),
-            const SizedBox(height: 40),
-            ElevatedButton.icon(
-              onPressed: _isGenerating ? null : _generateReport,
-              icon: _isGenerating 
-                  ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                  : const Icon(Icons.picture_as_pdf),
-              label: Text(l10n.generatePdf),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: _isLoading ? null : _fetchPreviewData,
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
+              child: _isLoading
+                  ? const SizedBox(
+                      width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                  : Text(l10n.showTimeline), // Using an existing key "Show Timeline"
             ),
+            if (_previewData != null) ...[
+              const SizedBox(height: 32),
+              const Divider(),
+              const SizedBox(height: 16),
+              ReportPreviewWidget(data: _previewData!),
+              const SizedBox(height: 32),
+              ElevatedButton.icon(
+                onPressed: _isGeneratingPdf ? null : _generatePdf,
+                icon: _isGeneratingPdf
+                    ? const SizedBox(
+                        width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
+                    : const Icon(Icons.picture_as_pdf),
+                label: Text(l10n.generatePdf),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primaryContainer,
+                  foregroundColor: theme.colorScheme.onPrimaryContainer,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+              ),
+            ],
           ],
         ),
       ),

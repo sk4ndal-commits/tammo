@@ -161,12 +161,12 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                       border: const OutlineInputBorder(),
                     ),
                     items: [
-                      DropdownMenuItem(value: 'Dog', child: Text(l10n.speciesDog)),
-                      DropdownMenuItem(value: 'Cat', child: Text(l10n.speciesCat)),
-                      DropdownMenuItem(value: 'Bird', child: Text(l10n.speciesBird)),
-                      DropdownMenuItem(value: 'Rabbit', child: Text(l10n.speciesRabbit)),
-                      DropdownMenuItem(value: 'Hamster', child: Text(l10n.speciesHamster)),
-                      DropdownMenuItem(value: 'Other', child: Text(l10n.speciesOther)),
+                      DropdownMenuItem(value: 'dog', child: Text(l10n.speciesDog)),
+                      DropdownMenuItem(value: 'cat', child: Text(l10n.speciesCat)),
+                      DropdownMenuItem(value: 'bird', child: Text(l10n.speciesBird)),
+                      DropdownMenuItem(value: 'rabbit', child: Text(l10n.speciesRabbit)),
+                      DropdownMenuItem(value: 'hamster', child: Text(l10n.speciesHamster)),
+                      DropdownMenuItem(value: 'other', child: Text(l10n.speciesOther)),
                     ],
                     onChanged: (value) => setState(() => _selectedSpecies = value),
                     validator: (value) => value == null ? l10n.speciesError : null,
@@ -204,11 +204,11 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                     ),
                     items: [
                       DropdownMenuItem(
-                        value: 'Männlich',
+                        value: 'male',
                         child: Text(l10n.genderMale),
                       ),
                       DropdownMenuItem(
-                        value: 'Weiblich',
+                        value: 'female',
                         child: Text(l10n.genderFemale),
                       ),
                     ],

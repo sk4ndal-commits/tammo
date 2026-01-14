@@ -9,6 +9,7 @@ import '../../features/event/application/event_controller.dart';
 import '../../features/event/domain/event.dart';
 import '../../features/medication/application/medication_controller.dart';
 import '../../features/feeding/application/feeding_controller.dart';
+import '../widgets/localization_helpers.dart';
 import '../widgets/toast_utils.dart';
 import '../widgets/today_section.dart';
 
@@ -118,7 +119,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
-                      subtitle: Text(pet.species),
+                      subtitle: Text(LocalizationHelpers.translateSpecies(context, pet.species)),
                       onTap: () {
                         ref.read(petControllerProvider.notifier).setActivePet(pet);
                         Navigator.pop(context);
@@ -163,8 +164,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   children: [
                     ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                        child: Icon(Icons.add_alert_rounded, color: Theme.of(context).colorScheme.onPrimaryContainer),
+                        backgroundColor: Theme.of(context).colorScheme.errorContainer,
+                        child: Icon(Icons.add_alert_rounded, color: Theme.of(context).colorScheme.onErrorContainer),
                       ),
                       title: Text(l10n.captureSymptom, style: const TextStyle(fontWeight: FontWeight.bold)),
                       onTap: () {
@@ -199,10 +200,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     const SizedBox(height: 8),
                     ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: Theme.of(context).colorScheme.tertiaryContainer,
+                        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                         child: Icon(
                           Icons.calendar_month_rounded, 
-                          color: Theme.of(context).colorScheme.onTertiaryContainer,
+                          color: Theme.of(context).colorScheme.onPrimaryContainer,
                         ),
                       ),
                       title: Text(
@@ -377,13 +378,6 @@ class _EventTile extends StatelessWidget {
   }
 
   String _getTranslatedType(BuildContext context, String type) {
-    final l10n = AppLocalizations.of(context)!;
-    switch (type) {
-      case 'Vomiting': return l10n.eventTypeVomiting;
-      case 'Diarrhea': return l10n.eventTypeDiarrhea;
-      case 'Appetite': return l10n.eventTypeAppetite;
-      case 'Behavior': return l10n.eventTypeBehavior;
-      default: return l10n.eventTypeOther;
-    }
+    return LocalizationHelpers.translateEventType(context, type);
   }
 }

@@ -196,7 +196,7 @@
   "deselectAll": "Deselect all",
   "switchPet": "Switch pet",
   "addAnotherPet": "Add another pet",
-  "managePets": "Manage pets",
+  "managePets": "My Pets",
   "activePetNow": "Now active: {name}",
   "@activePetNow": {
     "placeholders": {

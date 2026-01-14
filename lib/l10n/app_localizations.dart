@@ -941,7 +941,7 @@ abstract class AppLocalizations {
   /// No description provided for @managePets.
   ///
   /// In en, this message translates to:
-  /// **'Manage pets'**
+  /// **'My Pets'**
   String get managePets;
 
   /// No description provided for @activePetNow.

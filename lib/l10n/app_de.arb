@@ -164,7 +164,7 @@
   "deselectAll": "Auswahl aufheben",
   "switchPet": "Tier wechseln",
   "addAnotherPet": "Weiteres Tier hinzufügen",
-  "managePets": "Tiere verwalten",
+  "managePets": "Meine Tiere",
   "activePetNow": "Jetzt aktiv: {name}",
   "@activePetNow": {
     "placeholders": {
