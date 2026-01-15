@@ -271,5 +271,75 @@
   },
   "phaseResolved": "back to normal",
   "ongoingPhase": "Ongoing Phase",
-  "lastResolvedPhase": "Last Completed"
+  "lastResolvedPhase": "Last Completed",
+  "householdTitle": "Household & Members",
+  "householdSubtitle": "Complete tasks together",
+  "householdLoginRequired": "Sign in to create or join a household.",
+  "householdNoHousehold": "You haven't joined a household yet.",
+  "householdNoHouseholdHint": "Create a new household or accept an invitation.",
+  "householdCreate": "Create Household",
+  "householdEdit": "Edit Household",
+  "householdName": "Household Name",
+  "householdNameHint": "e.g. Smith Family",
+  "householdCreated": "Household created successfully",
+  "householdMembers": "Members",
+  "householdMemberCount": "{count} members",
+  "@householdMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "householdInvite": "Invite",
+  "householdInviteSent": "Invitation sent",
+  "householdInvitePending": "Invitation pending",
+  "householdInviteRevoked": "Invitation revoked",
+  "householdPendingInvitations": "Pending Invitations",
+  "householdInvitationFrom": "Invitation received",
+  "householdInvitationRole": "Role: {role}",
+  "@householdInvitationRole": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "householdAccept": "Accept",
+  "householdJoined": "You joined the household",
+  "householdRole": "Role",
+  "householdRoleOwner": "Owner",
+  "householdRoleAdmin": "Admin",
+  "householdRoleCaregiver": "Caregiver",
+  "householdChangeRole": "Change Role",
+  "householdRemove": "Remove",
+  "householdRemoveConfirm": "Do you really want to remove {name} from the household?",
+  "@householdRemoveConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "householdMemberRemoved": "Member removed",
+  "householdYou": "(You)",
+  "completedBy": "completed by {name}",
+  "@completedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "completedByAt": "completed by {name} at {time}",
+  "@completedByAt": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }

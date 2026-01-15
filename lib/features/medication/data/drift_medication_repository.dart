@@ -69,6 +69,8 @@ class DriftMedicationRepository implements MedicationRepository {
             timestamp: Value(checkIn.timestamp),
             plannedTimestamp: checkIn.plannedTimestamp,
             isTaken: Value(checkIn.isTaken),
+            completedBy: Value(checkIn.completedBy),
+            completedByName: Value(checkIn.completedByName),
             notes: Value(checkIn.notes),
           ),
         );
@@ -101,6 +103,8 @@ class DriftMedicationRepository implements MedicationRepository {
       timestamp: data.timestamp,
       plannedTimestamp: data.plannedTimestamp,
       isTaken: data.isTaken,
+      completedBy: data.completedBy,
+      completedByName: data.completedByName,
       notes: data.notes,
     );
   }

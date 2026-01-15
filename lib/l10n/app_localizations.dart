@@ -1165,6 +1165,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last Completed'**
   String get lastResolvedPhase;
+
+  /// No description provided for @householdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Household & Members'**
+  String get householdTitle;
+
+  /// No description provided for @householdSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete tasks together'**
+  String get householdSubtitle;
+
+  /// No description provided for @householdLoginRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to create or join a household.'**
+  String get householdLoginRequired;
+
+  /// No description provided for @householdNoHousehold.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t joined a household yet.'**
+  String get householdNoHousehold;
+
+  /// No description provided for @householdNoHouseholdHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new household or accept an invitation.'**
+  String get householdNoHouseholdHint;
+
+  /// No description provided for @householdCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Household'**
+  String get householdCreate;
+
+  /// No description provided for @householdEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Household'**
+  String get householdEdit;
+
+  /// No description provided for @householdName.
+  ///
+  /// In en, this message translates to:
+  /// **'Household Name'**
+  String get householdName;
+
+  /// No description provided for @householdNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Smith Family'**
+  String get householdNameHint;
+
+  /// No description provided for @householdCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Household created successfully'**
+  String get householdCreated;
+
+  /// No description provided for @householdMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get householdMembers;
+
+  /// No description provided for @householdMemberCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} members'**
+  String householdMemberCount(int count);
+
+  /// No description provided for @householdInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get householdInvite;
+
+  /// No description provided for @householdInviteSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation sent'**
+  String get householdInviteSent;
+
+  /// No description provided for @householdInvitePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation pending'**
+  String get householdInvitePending;
+
+  /// No description provided for @householdInviteRevoked.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation revoked'**
+  String get householdInviteRevoked;
+
+  /// No description provided for @householdPendingInvitations.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Invitations'**
+  String get householdPendingInvitations;
+
+  /// No description provided for @householdInvitationFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation received'**
+  String get householdInvitationFrom;
+
+  /// No description provided for @householdInvitationRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Role: {role}'**
+  String householdInvitationRole(String role);
+
+  /// No description provided for @householdAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get householdAccept;
+
+  /// No description provided for @householdJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'You joined the household'**
+  String get householdJoined;
+
+  /// No description provided for @householdRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get householdRole;
+
+  /// No description provided for @householdRoleOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get householdRoleOwner;
+
+  /// No description provided for @householdRoleAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get householdRoleAdmin;
+
+  /// No description provided for @householdRoleCaregiver.
+  ///
+  /// In en, this message translates to:
+  /// **'Caregiver'**
+  String get householdRoleCaregiver;
+
+  /// No description provided for @householdChangeRole.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Role'**
+  String get householdChangeRole;
+
+  /// No description provided for @householdRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get householdRemove;
+
+  /// No description provided for @householdRemoveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you really want to remove {name} from the household?'**
+  String householdRemoveConfirm(String name);
+
+  /// No description provided for @householdMemberRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Member removed'**
+  String get householdMemberRemoved;
+
+  /// No description provided for @householdYou.
+  ///
+  /// In en, this message translates to:
+  /// **'(You)'**
+  String get householdYou;
+
+  /// No description provided for @completedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'completed by {name}'**
+  String completedBy(String name);
+
+  /// No description provided for @completedByAt.
+  ///
+  /// In en, this message translates to:
+  /// **'completed by {name} at {time}'**
+  String completedByAt(String name, String time);
 }
 
 class _AppLocalizationsDelegate

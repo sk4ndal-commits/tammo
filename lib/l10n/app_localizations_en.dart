@@ -575,4 +575,111 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lastResolvedPhase => 'Last Completed';
+
+  @override
+  String get householdTitle => 'Household & Members';
+
+  @override
+  String get householdSubtitle => 'Complete tasks together';
+
+  @override
+  String get householdLoginRequired => 'Sign in to create or join a household.';
+
+  @override
+  String get householdNoHousehold => 'You haven\'t joined a household yet.';
+
+  @override
+  String get householdNoHouseholdHint =>
+      'Create a new household or accept an invitation.';
+
+  @override
+  String get householdCreate => 'Create Household';
+
+  @override
+  String get householdEdit => 'Edit Household';
+
+  @override
+  String get householdName => 'Household Name';
+
+  @override
+  String get householdNameHint => 'e.g. Smith Family';
+
+  @override
+  String get householdCreated => 'Household created successfully';
+
+  @override
+  String get householdMembers => 'Members';
+
+  @override
+  String householdMemberCount(int count) {
+    return '$count members';
+  }
+
+  @override
+  String get householdInvite => 'Invite';
+
+  @override
+  String get householdInviteSent => 'Invitation sent';
+
+  @override
+  String get householdInvitePending => 'Invitation pending';
+
+  @override
+  String get householdInviteRevoked => 'Invitation revoked';
+
+  @override
+  String get householdPendingInvitations => 'Pending Invitations';
+
+  @override
+  String get householdInvitationFrom => 'Invitation received';
+
+  @override
+  String householdInvitationRole(String role) {
+    return 'Role: $role';
+  }
+
+  @override
+  String get householdAccept => 'Accept';
+
+  @override
+  String get householdJoined => 'You joined the household';
+
+  @override
+  String get householdRole => 'Role';
+
+  @override
+  String get householdRoleOwner => 'Owner';
+
+  @override
+  String get householdRoleAdmin => 'Admin';
+
+  @override
+  String get householdRoleCaregiver => 'Caregiver';
+
+  @override
+  String get householdChangeRole => 'Change Role';
+
+  @override
+  String get householdRemove => 'Remove';
+
+  @override
+  String householdRemoveConfirm(String name) {
+    return 'Do you really want to remove $name from the household?';
+  }
+
+  @override
+  String get householdMemberRemoved => 'Member removed';
+
+  @override
+  String get householdYou => '(You)';
+
+  @override
+  String completedBy(String name) {
+    return 'completed by $name';
+  }
+
+  @override
+  String completedByAt(String name, String time) {
+    return 'completed by $name at $time';
+  }
 }

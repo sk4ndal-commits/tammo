@@ -76,12 +76,16 @@ class FeedingController extends StateNotifier<AsyncValue<List<FeedingSchedule>>>
   Future<int?> checkIn({
     required int scheduleId,
     required DateTime plannedTimestamp,
+    String? completedBy,
+    String? completedByName,
     String? notes,
   }) async {
     final checkIn = FeedingCheckIn(
       scheduleId: scheduleId,
       timestamp: DateTime.now(),
       plannedTimestamp: plannedTimestamp,
+      completedBy: completedBy,
+      completedByName: completedByName,
       notes: notes,
     );
 

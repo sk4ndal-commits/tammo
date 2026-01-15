@@ -66,6 +66,8 @@ class DriftFeedingRepository implements FeedingRepository {
             scheduleId: checkIn.scheduleId,
             timestamp: Value(checkIn.timestamp),
             plannedTimestamp: checkIn.plannedTimestamp,
+            completedBy: Value(checkIn.completedBy),
+            completedByName: Value(checkIn.completedByName),
             notes: Value(checkIn.notes),
           ),
         );
@@ -95,6 +97,8 @@ class DriftFeedingRepository implements FeedingRepository {
       scheduleId: data.scheduleId,
       timestamp: data.timestamp,
       plannedTimestamp: data.plannedTimestamp,
+      completedBy: data.completedBy,
+      completedByName: data.completedByName,
       notes: data.notes,
     );
   }

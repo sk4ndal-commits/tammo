@@ -56,6 +56,8 @@ class MedicationCheckIn {
   final DateTime timestamp;
   final DateTime plannedTimestamp;
   final bool isTaken;
+  final String? completedBy; // user_id oder eindeutiger Identifier
+  final String? completedByName; // Anzeigename für UI ("Alex", "Maria")
   final String? notes;
 
   MedicationCheckIn({
@@ -64,6 +66,30 @@ class MedicationCheckIn {
     required this.timestamp,
     required this.plannedTimestamp,
     this.isTaken = true,
+    this.completedBy,
+    this.completedByName,
     this.notes,
   });
+
+  MedicationCheckIn copyWith({
+    int? id,
+    int? scheduleId,
+    DateTime? timestamp,
+    DateTime? plannedTimestamp,
+    bool? isTaken,
+    String? completedBy,
+    String? completedByName,
+    String? notes,
+  }) {
+    return MedicationCheckIn(
+      id: id ?? this.id,
+      scheduleId: scheduleId ?? this.scheduleId,
+      timestamp: timestamp ?? this.timestamp,
+      plannedTimestamp: plannedTimestamp ?? this.plannedTimestamp,
+      isTaken: isTaken ?? this.isTaken,
+      completedBy: completedBy ?? this.completedBy,
+      completedByName: completedByName ?? this.completedByName,
+      notes: notes ?? this.notes,
+    );
+  }
 }

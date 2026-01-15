@@ -576,4 +576,113 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get lastResolvedPhase => 'Zuletzt abgeschlossen';
+
+  @override
+  String get householdTitle => 'Haushalt & Mitglieder';
+
+  @override
+  String get householdSubtitle => 'Aufgaben gemeinsam erledigen';
+
+  @override
+  String get householdLoginRequired =>
+      'Melde dich an, um einen Haushalt zu erstellen oder beizutreten.';
+
+  @override
+  String get householdNoHousehold =>
+      'Du bist noch keinem Haushalt beigetreten.';
+
+  @override
+  String get householdNoHouseholdHint =>
+      'Erstelle einen neuen Haushalt oder nimm eine Einladung an.';
+
+  @override
+  String get householdCreate => 'Haushalt erstellen';
+
+  @override
+  String get householdEdit => 'Haushalt bearbeiten';
+
+  @override
+  String get householdName => 'Name des Haushalts';
+
+  @override
+  String get householdNameHint => 'z.B. Familie Müller';
+
+  @override
+  String get householdCreated => 'Haushalt erfolgreich erstellt';
+
+  @override
+  String get householdMembers => 'Mitglieder';
+
+  @override
+  String householdMemberCount(int count) {
+    return '$count Mitglieder';
+  }
+
+  @override
+  String get householdInvite => 'Einladen';
+
+  @override
+  String get householdInviteSent => 'Einladung wurde gesendet';
+
+  @override
+  String get householdInvitePending => 'Einladung ausstehend';
+
+  @override
+  String get householdInviteRevoked => 'Einladung widerrufen';
+
+  @override
+  String get householdPendingInvitations => 'Offene Einladungen';
+
+  @override
+  String get householdInvitationFrom => 'Einladung erhalten';
+
+  @override
+  String householdInvitationRole(String role) {
+    return 'Rolle: $role';
+  }
+
+  @override
+  String get householdAccept => 'Annehmen';
+
+  @override
+  String get householdJoined => 'Du bist dem Haushalt beigetreten';
+
+  @override
+  String get householdRole => 'Rolle';
+
+  @override
+  String get householdRoleOwner => 'Besitzer';
+
+  @override
+  String get householdRoleAdmin => 'Administrator';
+
+  @override
+  String get householdRoleCaregiver => 'Betreuer';
+
+  @override
+  String get householdChangeRole => 'Rolle ändern';
+
+  @override
+  String get householdRemove => 'Entfernen';
+
+  @override
+  String householdRemoveConfirm(String name) {
+    return 'Möchtest du $name wirklich aus dem Haushalt entfernen?';
+  }
+
+  @override
+  String get householdMemberRemoved => 'Mitglied wurde entfernt';
+
+  @override
+  String get householdYou => '(Du)';
+
+  @override
+  String completedBy(String name) {
+    return 'erledigt von $name';
+  }
+
+  @override
+  String completedByAt(String name, String time) {
+    return 'erledigt von $name um $time';
+  }
 }

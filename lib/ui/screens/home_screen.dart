@@ -195,6 +195,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   context.push('/backup');
                 },
               ),
+              ListTile(
+                leading: const Icon(Icons.people),
+                title: Text(l10n.householdTitle),
+                subtitle: Text(
+                  l10n.householdSubtitle,
+                  style: const TextStyle(fontSize: 12),
+                ),
+                onTap: () {
+                  context.pop();
+                  context.push('/household');
+                },
+              ),
               const Divider(),
               ListTile(
                 leading: const Icon(Icons.add_rounded),

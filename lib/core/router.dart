@@ -14,6 +14,7 @@ import '../ui/screens/document_upload_screen.dart';
 import '../ui/screens/export_screen.dart';
 import '../ui/screens/emergency_screen.dart';
 import '../ui/screens/backup_screen.dart';
+import '../ui/screens/household_screen.dart';
 import '../features/pet/application/pet_controller.dart';
 import 'settings_controller.dart';
 
@@ -82,6 +83,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/backup',
         builder: (context, state) => const BackupScreen(),
+      ),
+      GoRoute(
+        path: '/household',
+        builder: (context, state) => const HouseholdScreen(),
       ),
     ],
     redirect: (context, state) {

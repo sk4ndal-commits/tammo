@@ -47,6 +47,8 @@ class FeedingCheckIn {
   final int scheduleId;
   final DateTime timestamp;
   final DateTime plannedTimestamp;
+  final String? completedBy; // user_id oder eindeutiger Identifier
+  final String? completedByName; // Anzeigename für UI ("Alex", "Maria")
   final String? notes;
 
   FeedingCheckIn({
@@ -54,6 +56,28 @@ class FeedingCheckIn {
     required this.scheduleId,
     required this.timestamp,
     required this.plannedTimestamp,
+    this.completedBy,
+    this.completedByName,
     this.notes,
   });
+
+  FeedingCheckIn copyWith({
+    int? id,
+    int? scheduleId,
+    DateTime? timestamp,
+    DateTime? plannedTimestamp,
+    String? completedBy,
+    String? completedByName,
+    String? notes,
+  }) {
+    return FeedingCheckIn(
+      id: id ?? this.id,
+      scheduleId: scheduleId ?? this.scheduleId,
+      timestamp: timestamp ?? this.timestamp,
+      plannedTimestamp: plannedTimestamp ?? this.plannedTimestamp,
+      completedBy: completedBy ?? this.completedBy,
+      completedByName: completedByName ?? this.completedByName,
+      notes: notes ?? this.notes,
+    );
+  }
 }

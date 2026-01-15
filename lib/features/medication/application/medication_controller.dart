@@ -122,6 +122,8 @@ class MedicationController extends StateNotifier<AsyncValue<List<MedicationSched
     required int scheduleId,
     required DateTime plannedTimestamp,
     bool isTaken = true,
+    String? completedBy,
+    String? completedByName,
     String? notes,
   }) async {
     final checkIn = MedicationCheckIn(
@@ -129,6 +131,8 @@ class MedicationController extends StateNotifier<AsyncValue<List<MedicationSched
       timestamp: DateTime.now(),
       plannedTimestamp: plannedTimestamp,
       isTaken: isTaken,
+      completedBy: completedBy,
+      completedByName: completedByName,
       notes: notes,
     );
 

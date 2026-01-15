@@ -239,5 +239,75 @@
   },
   "phaseResolved": "wieder unauffällig",
   "ongoingPhase": "Laufende Phase",
-  "lastResolvedPhase": "Zuletzt abgeschlossen"
+  "lastResolvedPhase": "Zuletzt abgeschlossen",
+  "householdTitle": "Haushalt & Mitglieder",
+  "householdSubtitle": "Aufgaben gemeinsam erledigen",
+  "householdLoginRequired": "Melde dich an, um einen Haushalt zu erstellen oder beizutreten.",
+  "householdNoHousehold": "Du bist noch keinem Haushalt beigetreten.",
+  "householdNoHouseholdHint": "Erstelle einen neuen Haushalt oder nimm eine Einladung an.",
+  "householdCreate": "Haushalt erstellen",
+  "householdEdit": "Haushalt bearbeiten",
+  "householdName": "Name des Haushalts",
+  "householdNameHint": "z.B. Familie Müller",
+  "householdCreated": "Haushalt erfolgreich erstellt",
+  "householdMembers": "Mitglieder",
+  "householdMemberCount": "{count} Mitglieder",
+  "@householdMemberCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "householdInvite": "Einladen",
+  "householdInviteSent": "Einladung wurde gesendet",
+  "householdInvitePending": "Einladung ausstehend",
+  "householdInviteRevoked": "Einladung widerrufen",
+  "householdPendingInvitations": "Offene Einladungen",
+  "householdInvitationFrom": "Einladung erhalten",
+  "householdInvitationRole": "Rolle: {role}",
+  "@householdInvitationRole": {
+    "placeholders": {
+      "role": {
+        "type": "String"
+      }
+    }
+  },
+  "householdAccept": "Annehmen",
+  "householdJoined": "Du bist dem Haushalt beigetreten",
+  "householdRole": "Rolle",
+  "householdRoleOwner": "Besitzer",
+  "householdRoleAdmin": "Administrator",
+  "householdRoleCaregiver": "Betreuer",
+  "householdChangeRole": "Rolle ändern",
+  "householdRemove": "Entfernen",
+  "householdRemoveConfirm": "Möchtest du {name} wirklich aus dem Haushalt entfernen?",
+  "@householdRemoveConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "householdMemberRemoved": "Mitglied wurde entfernt",
+  "householdYou": "(Du)",
+  "completedBy": "erledigt von {name}",
+  "@completedBy": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "completedByAt": "erledigt von {name} um {time}",
+  "@completedByAt": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }
