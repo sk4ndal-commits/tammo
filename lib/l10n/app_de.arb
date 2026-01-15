@@ -109,6 +109,29 @@
   "timeEvening": "abends",
   "addTime": "Uhrzeit hinzufügen",
   "startToday": "Heute",
+  "backupTitle": "Backup & Wiederherstellung",
+  "backupSubtitle": "Sichere deine Daten sicher in der Cloud.",
+  "backupLogin": "Anmelden",
+  "backupRegister": "Account erstellen",
+  "backupLogout": "Abmelden",
+  "backupEmail": "E-Mail",
+  "backupPassword": "Passwort",
+  "backupNow": "Backup jetzt hochladen",
+  "backupRestore": "Backup wiederherstellen",
+  "backupRestoreWarning": "Warnung: Dies überschreibt alle lokalen Daten mit dem Stand aus der Cloud!",
+  "backupSuccess": "Backup erfolgreich hochgeladen.",
+  "restoreSuccess": "Daten erfolgreich wiederhergestellt.",
+  "backupError": "Fehler beim Backup.",
+  "restoreError": "Fehler beim Wiederherstellen.",
+  "notLoggedIn": "Nicht angemeldet.",
+  "loggedInAs": "Angemeldet als {email}",
+  "@loggedInAs": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "startPickDate": "Datum wählen",
   "durationUnlimited": "unbegrenzt",
   "durationUntil": "bis Datum",

@@ -135,6 +135,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   },
                 ),
               ),
+              ListTile(
+                leading: const Icon(Icons.cloud_sync),
+                title: Text(l10n.backupTitle),
+                onTap: () {
+                  context.pop();
+                  context.push('/backup');
+                },
+              ),
               const Divider(),
               ListTile(
                 leading: const Icon(Icons.add_rounded),

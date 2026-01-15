@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 import 'core/router.dart';
 import 'core/theme.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/notification_service.dart';
 
 final _logger = Logger('Main');
@@ -12,6 +13,12 @@ final _logger = Logger('Main');
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
+  // Setup Supabase (Placeholder credentials, real ones should come from env or config)
+  await Supabase.initialize(
+    url: 'https://wsnhystmxhmcyclntkok.supabase.co',
+    anonKey: 'sb_publishable_hj0B24_laK0KcRGniI1BMQ_XHCDUI9S',
+  );
+
   // Setup Notifications
   await NotificationService().init();
 

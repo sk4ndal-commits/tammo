@@ -710,6 +710,102 @@ abstract class AppLocalizations {
   /// **'Today'**
   String get startToday;
 
+  /// No description provided for @backupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup & Restore'**
+  String get backupTitle;
+
+  /// No description provided for @backupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Securely back up your data to the cloud.'**
+  String get backupSubtitle;
+
+  /// No description provided for @backupLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get backupLogin;
+
+  /// No description provided for @backupRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get backupRegister;
+
+  /// No description provided for @backupLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get backupLogout;
+
+  /// No description provided for @backupEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get backupEmail;
+
+  /// No description provided for @backupPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get backupPassword;
+
+  /// No description provided for @backupNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload Backup Now'**
+  String get backupNow;
+
+  /// No description provided for @backupRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Backup'**
+  String get backupRestore;
+
+  /// No description provided for @backupRestoreWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning: This will overwrite all local data with the cloud version!'**
+  String get backupRestoreWarning;
+
+  /// No description provided for @backupSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup uploaded successfully.'**
+  String get backupSuccess;
+
+  /// No description provided for @restoreSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Data restored successfully.'**
+  String get restoreSuccess;
+
+  /// No description provided for @backupError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error during backup.'**
+  String get backupError;
+
+  /// No description provided for @restoreError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error during restore.'**
+  String get restoreError;
+
+  /// No description provided for @notLoggedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Not logged in.'**
+  String get notLoggedIn;
+
+  /// No description provided for @loggedInAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Logged in as {email}'**
+  String loggedInAs(String email);
+
   /// No description provided for @startPickDate.
   ///
   /// In en, this message translates to:

@@ -330,6 +330,57 @@ class AppLocalizationsDe extends AppLocalizations {
   String get startToday => 'Heute';
 
   @override
+  String get backupTitle => 'Backup & Wiederherstellung';
+
+  @override
+  String get backupSubtitle => 'Sichere deine Daten sicher in der Cloud.';
+
+  @override
+  String get backupLogin => 'Anmelden';
+
+  @override
+  String get backupRegister => 'Account erstellen';
+
+  @override
+  String get backupLogout => 'Abmelden';
+
+  @override
+  String get backupEmail => 'E-Mail';
+
+  @override
+  String get backupPassword => 'Passwort';
+
+  @override
+  String get backupNow => 'Backup jetzt hochladen';
+
+  @override
+  String get backupRestore => 'Backup wiederherstellen';
+
+  @override
+  String get backupRestoreWarning =>
+      'Warnung: Dies überschreibt alle lokalen Daten mit dem Stand aus der Cloud!';
+
+  @override
+  String get backupSuccess => 'Backup erfolgreich hochgeladen.';
+
+  @override
+  String get restoreSuccess => 'Daten erfolgreich wiederhergestellt.';
+
+  @override
+  String get backupError => 'Fehler beim Backup.';
+
+  @override
+  String get restoreError => 'Fehler beim Wiederherstellen.';
+
+  @override
+  String get notLoggedIn => 'Nicht angemeldet.';
+
+  @override
+  String loggedInAs(String email) {
+    return 'Angemeldet als $email';
+  }
+
+  @override
   String get startPickDate => 'Datum wählen';
 
   @override

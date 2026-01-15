@@ -141,6 +141,29 @@
   "timeEvening": "evening",
   "addTime": "Add time",
   "startToday": "Today",
+  "backupTitle": "Backup & Restore",
+  "backupSubtitle": "Securely back up your data to the cloud.",
+  "backupLogin": "Log In",
+  "backupRegister": "Create Account",
+  "backupLogout": "Log Out",
+  "backupEmail": "Email",
+  "backupPassword": "Password",
+  "backupNow": "Upload Backup Now",
+  "backupRestore": "Restore Backup",
+  "backupRestoreWarning": "Warning: This will overwrite all local data with the cloud version!",
+  "backupSuccess": "Backup uploaded successfully.",
+  "restoreSuccess": "Data restored successfully.",
+  "backupError": "Error during backup.",
+  "restoreError": "Error during restore.",
+  "notLoggedIn": "Not logged in.",
+  "loggedInAs": "Logged in as {email}",
+  "@loggedInAs": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "startPickDate": "Pick date",
   "durationUnlimited": "unlimited",
   "durationUntil": "until date",

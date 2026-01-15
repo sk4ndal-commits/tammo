@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 
 class ToastUtils {
+  static void showSuccess(BuildContext context, String message) {
+    _showToast(context, message, Colors.green.shade700, Icons.check_circle_outline);
+  }
+
   static void showSuccessToast(BuildContext context, String message) {
+    showSuccess(context, message);
+  }
+
+  static void showError(BuildContext context, String message) {
+    _showToast(context, message, Colors.red.shade700, Icons.error_outline);
+  }
+
+  static void _showToast(BuildContext context, String message, Color bgColor, IconData icon) {
     final messenger = ScaffoldMessenger.of(context);
     
     messenger.clearSnackBars();
@@ -9,7 +21,7 @@ class ToastUtils {
       SnackBar(
         content: Row(
           children: [
-            const Icon(Icons.check_circle_outline, color: Colors.white),
+            Icon(icon, color: Colors.white),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
@@ -19,9 +31,9 @@ class ToastUtils {
             ),
           ],
         ),
-        backgroundColor: Colors.green.shade700,
+        backgroundColor: bgColor,
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 3),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.all(16),
       ),

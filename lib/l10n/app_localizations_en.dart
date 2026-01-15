@@ -330,6 +330,57 @@ class AppLocalizationsEn extends AppLocalizations {
   String get startToday => 'Today';
 
   @override
+  String get backupTitle => 'Backup & Restore';
+
+  @override
+  String get backupSubtitle => 'Securely back up your data to the cloud.';
+
+  @override
+  String get backupLogin => 'Log In';
+
+  @override
+  String get backupRegister => 'Create Account';
+
+  @override
+  String get backupLogout => 'Log Out';
+
+  @override
+  String get backupEmail => 'Email';
+
+  @override
+  String get backupPassword => 'Password';
+
+  @override
+  String get backupNow => 'Upload Backup Now';
+
+  @override
+  String get backupRestore => 'Restore Backup';
+
+  @override
+  String get backupRestoreWarning =>
+      'Warning: This will overwrite all local data with the cloud version!';
+
+  @override
+  String get backupSuccess => 'Backup uploaded successfully.';
+
+  @override
+  String get restoreSuccess => 'Data restored successfully.';
+
+  @override
+  String get backupError => 'Error during backup.';
+
+  @override
+  String get restoreError => 'Error during restore.';
+
+  @override
+  String get notLoggedIn => 'Not logged in.';
+
+  @override
+  String loggedInAs(String email) {
+    return 'Logged in as $email';
+  }
+
+  @override
   String get startPickDate => 'Pick date';
 
   @override
