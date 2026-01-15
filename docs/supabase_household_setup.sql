@@ -122,6 +122,17 @@ BEGIN
 END;
 $$;
 
+-- Funktion zum sicheren Abrufen der E-Mail des aktuellen Nutzers (vermeidet direkten Zugriff auf auth.users in Policies)
+CREATE OR REPLACE FUNCTION get_my_email()
+RETURNS TEXT
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+  RETURN (SELECT email FROM auth.users WHERE id = auth.uid());
+END;
+$$;
+
 -- ============================================================================
 -- 4. RLS POLICIES FÜR HOUSEHOLDS
 -- ============================================================================
@@ -204,7 +215,7 @@ ON household_invitations FOR SELECT
 TO authenticated
 USING (
   (SELECT is_household_member(household_id))
-  OR email = (SELECT email FROM auth.users WHERE id = (SELECT auth.uid()))
+  OR email = (SELECT get_my_email())
 );
 
 -- Owner/Admin können Einladungen erstellen
@@ -221,7 +232,7 @@ ON household_invitations FOR UPDATE
 TO authenticated
 USING (
   (SELECT can_manage_household(household_id))
-  OR email = (SELECT email FROM auth.users WHERE id = (SELECT auth.uid()))
+  OR email = (SELECT get_my_email())
 );
 
 -- ============================================================================
