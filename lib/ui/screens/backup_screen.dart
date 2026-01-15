@@ -56,7 +56,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
   Future<void> _handleBackup() async {
     setState(() => _isLoading = true);
     try {
-      await ref.read(backupServiceProvider).uploadBackup();
+      await ref.read(backupServiceProvider).uploadBackup(force: true);
       if (mounted) ToastUtils.showSuccess(context, AppLocalizations.of(context)!.backupSuccess);
     } catch (e) {
       if (mounted) ToastUtils.showError(context, e.toString());

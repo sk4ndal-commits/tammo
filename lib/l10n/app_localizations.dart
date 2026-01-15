@@ -710,6 +710,18 @@ abstract class AppLocalizations {
   /// **'Today'**
   String get startToday;
 
+  /// No description provided for @lastBackupAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Last backed up {time} ago'**
+  String lastBackupAt(String time);
+
+  /// No description provided for @backupNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Not backed up yet'**
+  String get backupNever;
+
   /// No description provided for @backupTitle.
   ///
   /// In en, this message translates to:

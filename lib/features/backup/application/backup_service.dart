@@ -1,22 +1,35 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/providers.dart';
 import '../../../data/app_database.dart';
 import '../domain/backup_data.dart';
 import '../data/supabase_provider.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 final backupServiceProvider = Provider<BackupService>((ref) {
   final db = ref.watch(databaseProvider);
   final supabase = ref.watch(supabaseClientProvider);
-  return BackupService(db, supabase);
+  return BackupService(db, supabase, ref);
+});
+
+final backupStatusProvider = StateProvider<String?>((ref) => null);
+
+final lastBackupTimeProvider = FutureProvider<DateTime?>((ref) async {
+  final backupService = ref.watch(backupServiceProvider);
+  return backupService.getLastBackupTime();
 });
 
 class BackupService {
   final AppDatabase _db;
   final SupabaseClient _supabase;
+  final Ref ref;
+  static const String _lastBackupTimeKey = 'last_backup_time';
+  static const String _lastBackupHashKey = 'last_backup_hash';
 
-  BackupService(this._db, this._supabase);
+  BackupService(this._db, this._supabase, this.ref);
 
   Future<void> signUp(String email, String password) async {
     await _supabase.auth.signUp(email: email, password: password);
@@ -30,19 +43,48 @@ class BackupService {
     await _supabase.auth.signOut();
   }
 
-  Future<void> uploadBackup() async {
+  Future<void> uploadBackup({bool force = false}) async {
     final user = _supabase.auth.currentUser;
     if (user == null) return;
 
     final backupData = await _prepareBackupData();
+    final jsonData = backupData.toJson();
+    final currentHash = _calculateHash(jsonData);
+
+    final prefs = await SharedPreferences.getInstance();
+    final lastHash = prefs.getString(_lastBackupHashKey);
+
+    if (!force && lastHash == currentHash) {
+      // No changes, skip upload but update last backup time if it was never set
+      if (prefs.getString(_lastBackupTimeKey) == null) {
+        await prefs.setString(_lastBackupTimeKey, DateTime.now().toIso8601String());
+        ref.invalidate(lastBackupTimeProvider);
+      }
+      return;
+    }
     
     await _supabase
         .from('backups')
         .upsert({
           'user_id': user.id,
-          'data': backupData.toJson(),
+          'data': jsonData,
           'updated_at': DateTime.now().toIso8601String(),
         });
+
+    await prefs.setString(_lastBackupTimeKey, DateTime.now().toIso8601String());
+    await prefs.setString(_lastBackupHashKey, currentHash);
+    ref.invalidate(lastBackupTimeProvider);
+  }
+
+  String _calculateHash(Map<String, dynamic> data) {
+    final jsonString = jsonEncode(data);
+    return sha256.convert(utf8.encode(jsonString)).toString();
+  }
+
+  Future<DateTime?> getLastBackupTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    final timeStr = prefs.getString(_lastBackupTimeKey);
+    return timeStr != null ? DateTime.parse(timeStr) : null;
   }
 
   Future<void> restoreBackup() async {
@@ -58,6 +100,13 @@ class BackupService {
     if (response != null && response['data'] != null) {
       final backupData = BackupData.fromJson(response['data'] as Map<String, dynamic>);
       await _applyBackupData(backupData);
+
+      // Reset local sync state after restore
+      final prefs = await SharedPreferences.getInstance();
+      final currentHash = _calculateHash(response['data'] as Map<String, dynamic>);
+      await prefs.setString(_lastBackupTimeKey, DateTime.now().toIso8601String());
+      await prefs.setString(_lastBackupHashKey, currentHash);
+      ref.invalidate(lastBackupTimeProvider);
     }
   }
 

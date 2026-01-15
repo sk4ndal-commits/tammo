@@ -330,6 +330,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get startToday => 'Heute';
 
   @override
+  String lastBackupAt(String time) {
+    return 'Zuletzt gesichert vor $time';
+  }
+
+  @override
+  String get backupNever => 'Noch nicht gesichert';
+
+  @override
   String get backupTitle => 'Backup & Wiederherstellung';
 
   @override

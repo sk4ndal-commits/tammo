@@ -10,6 +10,8 @@ import '../../features/event/application/narrative_engine.dart';
 import '../../features/event/domain/event.dart';
 import '../../features/medication/application/medication_controller.dart';
 import '../../features/feeding/application/feeding_controller.dart';
+import '../../features/backup/application/backup_service.dart';
+import '../../features/backup/data/supabase_provider.dart';
 import '../widgets/localization_helpers.dart';
 import '../widgets/toast_utils.dart';
 import '../widgets/today_section.dart';
@@ -30,6 +32,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     _showTimeline = widget.expandTimeline;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _runBackgroundBackup();
+    });
+  }
+
+  Future<void> _runBackgroundBackup() async {
+    final user = ref.read(currentUserProvider);
+    if (user != null) {
+      try {
+        await ref.read(backupServiceProvider).uploadBackup();
+      } catch (e) {
+        // Silent error for background backup, but could log it
+        debugPrint('Background backup failed: $e');
+      }
+    }
   }
 
   @override
@@ -138,6 +155,41 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ListTile(
                 leading: const Icon(Icons.cloud_sync),
                 title: Text(l10n.backupTitle),
+                subtitle: Consumer(
+                  builder: (context, ref, _) {
+                    final lastBackup = ref.watch(lastBackupTimeProvider);
+                    return lastBackup.when(
+                      data: (time) {
+                        if (time == null) {
+                          return Text(
+                            l10n.backupNever,
+                            style: const TextStyle(fontSize: 12),
+                          );
+                        }
+                        final diff = DateTime.now().difference(time);
+                        String timeAgo;
+                        if (diff.inDays > 0) {
+                          timeAgo = "${diff.inDays}d";
+                        } else if (diff.inHours > 0) {
+                          timeAgo = "${diff.inHours}h";
+                        } else if (diff.inMinutes > 0) {
+                          timeAgo = "${diff.inMinutes}m";
+                        } else {
+                          timeAgo = "< 1m";
+                        }
+                        return Text(
+                          l10n.lastBackupAt(timeAgo),
+                          style: const TextStyle(fontSize: 12),
+                        );
+                      },
+                      loading: () => const Text("...", style: TextStyle(fontSize: 12)),
+                      error: (_, __) => Text(
+                        l10n.backupNever,
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    );
+                  },
+                ),
                 onTap: () {
                   context.pop();
                   context.push('/backup');

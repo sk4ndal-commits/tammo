@@ -109,6 +109,15 @@
   "timeEvening": "abends",
   "addTime": "Uhrzeit hinzufügen",
   "startToday": "Heute",
+  "lastBackupAt": "Zuletzt gesichert vor {time}",
+  "@lastBackupAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "backupNever": "Noch nicht gesichert",
   "backupTitle": "Backup & Wiederherstellung",
   "backupSubtitle": "Sichere deine Daten sicher in der Cloud.",
   "backupLogin": "Anmelden",

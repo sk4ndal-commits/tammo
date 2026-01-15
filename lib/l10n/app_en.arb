@@ -141,6 +141,15 @@
   "timeEvening": "evening",
   "addTime": "Add time",
   "startToday": "Today",
+  "lastBackupAt": "Last backed up {time} ago",
+  "@lastBackupAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "backupNever": "Not backed up yet",
   "backupTitle": "Backup & Restore",
   "backupSubtitle": "Securely back up your data to the cloud.",
   "backupLogin": "Log In",
