@@ -38,6 +38,11 @@ class DriftDocumentRepository implements DocumentRepository {
   }
 
   @override
+  Future<void> deleteDocumentsForPet(String petId) async {
+    await (_db.delete(_db.documents)..where((t) => t.petId.equals(petId))).go();
+  }
+
+  @override
   Future<domain.Document?> getDocumentById(int id) async {
     final query = _db.select(_db.documents)..where((t) => t.id.equals(id));
     final result = await query.getSingleOrNull();

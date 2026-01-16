@@ -5,4 +5,5 @@ abstract class DocumentRepository {
   Future<int> saveDocument(Document document);
   Future<void> deleteDocument(int id);
   Future<Document?> getDocumentById(int id);
+  Future<void> deleteDocumentsForPet(String petId);
 }

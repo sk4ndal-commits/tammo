@@ -19,7 +19,13 @@ final databaseProvider = Provider<AppDatabase>((ref) {
 
 final petRepositoryProvider = Provider<PetRepository>((ref) {
   final db = ref.watch(databaseProvider);
-  return DriftPetRepository(db);
+  return DriftPetRepository(
+    db,
+    eventRepository: ref.watch(eventRepositoryProvider),
+    medicationRepository: ref.watch(medicationRepositoryProvider),
+    feedingRepository: ref.watch(feedingRepositoryProvider),
+    documentRepository: ref.watch(documentRepositoryProvider),
+  );
 });
 
 final eventRepositoryProvider = Provider<EventRepository>((ref) {

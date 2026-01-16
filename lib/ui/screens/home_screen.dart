@@ -152,6 +152,28 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   },
                 ),
               ),
+              const Spacer(),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.add_rounded),
+                title: Text(l10n.addAnotherPet),
+                onTap: () {
+                  Navigator.pop(context);
+                  context.push('/onboarding');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.people),
+                title: Text(l10n.householdTitle),
+                subtitle: Text(
+                  l10n.householdSubtitle,
+                  style: const TextStyle(fontSize: 12),
+                ),
+                onTap: () {
+                  context.pop();
+                  context.push('/household');
+                },
+              ),
               ListTile(
                 leading: const Icon(Icons.cloud_sync),
                 title: Text(l10n.backupTitle),
@@ -193,27 +215,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 onTap: () {
                   context.pop();
                   context.push('/backup');
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.people),
-                title: Text(l10n.householdTitle),
-                subtitle: Text(
-                  l10n.householdSubtitle,
-                  style: const TextStyle(fontSize: 12),
-                ),
-                onTap: () {
-                  context.pop();
-                  context.push('/household');
-                },
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.add_rounded),
-                title: Text(l10n.addAnotherPet),
-                onTap: () {
-                  Navigator.pop(context);
-                  context.push('/onboarding');
                 },
               ),
               const SizedBox(height: 16),

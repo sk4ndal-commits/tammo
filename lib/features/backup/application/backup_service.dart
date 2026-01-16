@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/providers.dart';
+import '../../pet/application/pet_controller.dart';
 import '../../../data/app_database.dart';
 import '../domain/backup_data.dart';
 import '../data/supabase_provider.dart';
@@ -10,9 +11,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
 final backupServiceProvider = Provider<BackupService>((ref) {
-  final db = ref.watch(databaseProvider);
-  final supabase = ref.watch(supabaseClientProvider);
-  return BackupService(db, supabase, ref);
+  return BackupService(ref);
 });
 
 final backupStatusProvider = StateProvider<String?>((ref) => null);
@@ -23,13 +22,14 @@ final lastBackupTimeProvider = FutureProvider<DateTime?>((ref) async {
 });
 
 class BackupService {
-  final AppDatabase _db;
-  final SupabaseClient _supabase;
-  final Ref ref;
+  final Ref _ref;
   static const String _lastBackupTimeKey = 'last_backup_time';
   static const String _lastBackupHashKey = 'last_backup_hash';
 
-  BackupService(this._db, this._supabase, this.ref);
+  BackupService(this._ref);
+
+  AppDatabase get _db => _ref.read(databaseProvider);
+  SupabaseClient get _supabase => _ref.read(supabaseClientProvider);
 
   Future<void> signUp(String email, String password) async {
     await _supabase.auth.signUp(email: email, password: password);
@@ -58,7 +58,7 @@ class BackupService {
       // No changes, skip upload but update last backup time if it was never set
       if (prefs.getString(_lastBackupTimeKey) == null) {
         await prefs.setString(_lastBackupTimeKey, DateTime.now().toIso8601String());
-        ref.invalidate(lastBackupTimeProvider);
+        _ref.invalidate(lastBackupTimeProvider);
       }
       return;
     }
@@ -73,7 +73,7 @@ class BackupService {
 
     await prefs.setString(_lastBackupTimeKey, DateTime.now().toIso8601String());
     await prefs.setString(_lastBackupHashKey, currentHash);
-    ref.invalidate(lastBackupTimeProvider);
+    _ref.invalidate(lastBackupTimeProvider);
   }
 
   String _calculateHash(Map<String, dynamic> data) {
@@ -106,7 +106,11 @@ class BackupService {
       final currentHash = _calculateHash(response['data'] as Map<String, dynamic>);
       await prefs.setString(_lastBackupTimeKey, DateTime.now().toIso8601String());
       await prefs.setString(_lastBackupHashKey, currentHash);
-      ref.invalidate(lastBackupTimeProvider);
+      
+      // Invalidate providers to refresh UI with restored data
+      _ref.invalidate(lastBackupTimeProvider);
+      // We need to reload all data in the app controllers
+      _ref.read(petControllerProvider.notifier).loadPets();
     }
   }
 

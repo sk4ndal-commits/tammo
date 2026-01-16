@@ -92,8 +92,40 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
             notes: _notesController.text,
           );
       if (mounted) {
-        ToastUtils.showSuccessToast(context, AppLocalizations.of(context)!.petUpdated);
+        ToastUtils.showSuccessToast(
+            context, AppLocalizations.of(context)!.petUpdated);
         context.pop();
+      }
+    }
+  }
+
+  Future<void> _deletePet(Pet pet) async {
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.delete),
+        content: Text(pet.name), // Using name as content for now as no specific confirm msg exists
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.undo),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.error,
+            ),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await ref.read(petControllerProvider.notifier).deletePet(pet.petId);
+      if (mounted) {
+        context.pop(); // Go back to home
       }
     }
   }
@@ -106,6 +138,19 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.editPetTitle),
+        actions: [
+          petState.maybeWhen(
+            data: (state) => state.activePet != null
+                ? IconButton(
+                    icon: const Icon(Icons.delete_outline),
+                    onPressed: () => _deletePet(state.activePet!),
+                    tooltip: l10n.delete,
+                    color: Theme.of(context).colorScheme.error,
+                  )
+                : const SizedBox.shrink(),
+            orElse: () => const SizedBox.shrink(),
+          ),
+        ],
       ),
       body: petState.when(
         data: (controllerState) {
@@ -156,7 +201,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
-                    initialValue: LocalizationHelpers.normalizeSpecies(_selectedSpecies),
+                    value: LocalizationHelpers.normalizeSpecies(_selectedSpecies),
                     decoration: InputDecoration(
                       labelText: l10n.speciesLabel,
                       border: const OutlineInputBorder(),
@@ -198,7 +243,7 @@ class _PetEditScreenState extends ConsumerState<PetEditScreen> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
-                    initialValue: LocalizationHelpers.normalizeGender(_selectedGender),
+                    value: LocalizationHelpers.normalizeGender(_selectedGender),
                     decoration: InputDecoration(
                       labelText: l10n.genderLabel,
                       border: const OutlineInputBorder(),

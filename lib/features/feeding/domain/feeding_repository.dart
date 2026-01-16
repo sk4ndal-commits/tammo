@@ -8,4 +8,6 @@ abstract class FeedingRepository {
   Future<List<FeedingCheckIn>> getCheckInsForSchedule(int scheduleId);
   Future<int> saveCheckIn(FeedingCheckIn checkIn);
   Future<void> deleteCheckIn(int id);
+  Future<void> deleteSchedulesForPet(String petId);
+  Future<void> deleteCheckInsForPet(String petId);
 }

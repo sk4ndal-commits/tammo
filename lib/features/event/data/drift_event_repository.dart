@@ -38,6 +38,11 @@ class DriftEventRepository implements EventRepository {
     await (_db.delete(_db.events)..where((t) => t.id.equals(id))).go();
   }
 
+  @override
+  Future<void> deleteEventsForPet(String petId) async {
+    await (_db.delete(_db.events)..where((t) => t.petId.equals(petId))).go();
+  }
+
   domain.Event _mapToEntity(db.Event data) {
     return domain.Event(
       id: data.id,

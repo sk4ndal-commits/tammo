@@ -81,6 +81,24 @@ class DriftMedicationRepository implements MedicationRepository {
     await (_db.delete(_db.medicationCheckIns)..where((t) => t.id.equals(id))).go();
   }
 
+  @override
+  Future<void> deleteSchedulesForPet(String petId) async {
+    await (_db.delete(_db.medicationSchedules)..where((t) => t.petId.equals(petId))).go();
+  }
+
+  @override
+  Future<void> deleteCheckInsForPet(String petId) async {
+    final scheduleIdsQuery = _db.selectOnly(_db.medicationSchedules)
+      ..addColumns([_db.medicationSchedules.id])
+      ..where(_db.medicationSchedules.petId.equals(petId));
+    
+    final scheduleIds = (await scheduleIdsQuery.get()).map((r) => r.read(_db.medicationSchedules.id)!).toList();
+    
+    if (scheduleIds.isNotEmpty) {
+      await (_db.delete(_db.medicationCheckIns)..where((t) => t.scheduleId.isIn(scheduleIds))).go();
+    }
+  }
+
   domain.MedicationSchedule _mapScheduleToEntity(db.MedicationSchedule data) {
     return domain.MedicationSchedule(
       id: data.id,

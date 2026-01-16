@@ -84,8 +84,8 @@ class LocalizationHelpers {
     }
   }
 
-  static String normalizeGender(String? gender) {
-    if (gender == null) return '';
+  static String? normalizeGender(String? gender) {
+    if (gender == null) return null;
     switch (gender.toLowerCase()) {
       case 'male':
       case 'männlich':
@@ -98,8 +98,8 @@ class LocalizationHelpers {
     }
   }
 
-  static String normalizeSpecies(String? species) {
-    if (species == null) return '';
+  static String? normalizeSpecies(String? species) {
+    if (species == null) return null;
     switch (species.toLowerCase()) {
       case 'dog':
       case 'hund':

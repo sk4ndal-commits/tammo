@@ -123,7 +123,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                initialValue: LocalizationHelpers.normalizeSpecies(_selectedSpecies),
+                value: LocalizationHelpers.normalizeSpecies(_selectedSpecies),
                 decoration: InputDecoration(
                   labelText: l10n.speciesLabel,
                   border: const OutlineInputBorder(),
@@ -165,7 +165,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                initialValue: LocalizationHelpers.normalizeGender(_selectedGender),
+                value: LocalizationHelpers.normalizeGender(_selectedGender),
                 decoration: InputDecoration(
                   labelText: l10n.genderLabel,
                   border: const OutlineInputBorder(),

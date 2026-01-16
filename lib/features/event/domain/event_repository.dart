@@ -4,4 +4,5 @@ abstract class EventRepository {
   Future<List<Event>> getEventsForPet(String petId);
   Future<void> saveEvent(Event event);
   Future<void> deleteEvent(int id);
+  Future<void> deleteEventsForPet(String petId);
 }
